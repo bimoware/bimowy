@@ -1,25 +1,24 @@
 from InquirerPy import prompt
 import os
 import subprocess
-from random import shuffle, sample
-from pprint import pprint
-import json
+from random import shuffle
+from pprint import pprint  # Debugging
 import importlib.util
 import sys
-
-rewards = {
-    60: "🤗 Still some work to do...",
-    70: "👏 Getting there..",
-    80: "👍 Good job.",
-    90: "✨ So close to perfection!!",
-    100: "🔥 Perfect.",
-}
 
 
 def choose_reward_text(score: float):
     """
     Choose the encouraging text based on the score.
     """
+    rewards = {
+        60: "🤗 Still some work to do...",
+        70: "👏 Getting there..",
+        80: "👍 Good job.",
+        90: "✨ So close to perfection!!",
+        100: "🔥 Perfect.",
+    }
+
     for reward_score, reward_text in rewards.items():
         if score < reward_score:
             return reward_text
@@ -41,7 +40,7 @@ def display_score(total: int, correct: int):
     bar = "🟢" * filled + "🔴" * (bar_length - filled)
     text = choose_reward_text(percentage)
 
-    print(f"{bar} {correct}/{total} ({percentage:.0f}%): {text}")
+    print(f"{bar} {correct}/{total} ({percentage:.0f}%): {text}") # NOTE: Check if this is asthetically pleasing
 
 
 class Question:
@@ -103,14 +102,10 @@ class Quiz:
     """
     A class to represent a quiz (multiple questions).
     """
-
     def __init__(self, questions: list[Question]):
         self.questions = questions
 
     def start(self):
-        """
-        Start the quiz.
-        """
         total_q = len(self.questions)
         correct_q = 0
         for question in self.questions:
@@ -141,6 +136,7 @@ def ask_if_stop():
     )[0]
 
 
+# FIXME: Randomly generated answers may give the same answers.
 def get_questions(n: int):
     """
     Shows the user recursively the tree of the file db/ until they get to a folder with a single "gen.py" file. Then runs the file
@@ -159,17 +155,20 @@ def get_questions(n: int):
 
 
 def find_gen_py(path):
+    """
+    Recursively find the gen.py file in the given folder.
+    """
     # List all directories and files in the current path
     items = os.listdir(path)
 
-    # Filter to get only directories
+    # Filter so to only get directories
     directories = [
         item
         for item in items
         if "_" not in item and os.path.isdir(os.path.join(path, item))
     ]
 
-    # If there are no directories, check for gen.py file
+    # If there are no directories just check for gen.py file
     if not directories:
         if "gen.py" in items:
             return os.path.join(path, "gen.py")
@@ -190,7 +189,11 @@ def find_gen_py(path):
     return find_gen_py(next_path)  # Recurse into the selected folder
 
 
+# TODO: Find a better more modular way to run the file
 def execute_python_file(file_path):
+    """
+    Execute the given python file and return the appropriate get_question function.
+    """
     # Load the module from the given file path
     spec = importlib.util.spec_from_file_location("module.name", file_path)
     module = importlib.util.module_from_spec(spec)
@@ -198,6 +201,7 @@ def execute_python_file(file_path):
     spec.loader.exec_module(module)  # Execute the module
     return module.get_question
 
-
+# In case defs.py is run instead of main.py
+# TODO: check if this is actually necessary
 if __name__ == "__main__":
     import main
