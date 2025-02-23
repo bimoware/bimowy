@@ -1,2 +1,4 @@
 # math-exercices
- Quiz-based math exercices using Python and json databses.
+Quiz-based math exercices using Python terminal UI.
+
+![Demo](demo.mp4)
