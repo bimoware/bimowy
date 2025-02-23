@@ -40,7 +40,9 @@ def display_score(total: int, correct: int):
     bar = "🟢" * filled + "🔴" * (bar_length - filled)
     text = choose_reward_text(percentage)
 
-    print(f"{bar} {correct}/{total} ({percentage:.0f}%): {text}") # NOTE: Check if this is asthetically pleasing
+    print(
+        f"{bar} {correct}/{total} ({percentage:.0f}%): {text}"
+    )  # NOTE: Check if this is asthetically pleasing
 
 
 class Question:
@@ -102,6 +104,7 @@ class Quiz:
     """
     A class to represent a quiz (multiple questions).
     """
+
     def __init__(self, questions: list[Question]):
         self.questions = questions
 
@@ -200,6 +203,7 @@ def execute_python_file(file_path):
     sys.modules["module.name"] = module  # Add to sys.modules
     spec.loader.exec_module(module)  # Execute the module
     return module.get_question
+
 
 # In case defs.py is run instead of main.py
 # TODO: check if this is actually necessary
