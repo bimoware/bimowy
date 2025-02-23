@@ -26,7 +26,7 @@ I was inspired by Khan academy, I usually love this website but the lack of cont
    ```sh
    pip3 install -r requirements.txt
    ```
-3. Run the program:
+3. Run the program (better on VSCODE terminal):
    ```sh
    python main.py
    ```
