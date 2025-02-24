@@ -108,6 +108,6 @@ def get_question():  # this will just ask the user to change the base of a numbe
     n = random.choice(ns)
     return {
         "type": 0,
-        "question": f"Convert {n} to binary.",
-        "answer": bin(n)[2:]
+        "question": f"The decimal number {n} in binary is",
+        "answer": bin(n)[2:],
     }
