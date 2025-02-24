@@ -21,5 +21,7 @@
 - [ ] TODO 16: Find a better more modular way to run the gen.py file
 - [✅] TODO 17: Decide if running main in defs if run as the main program is actually necessary
 
-
 # 23/02/2025
+
+- ✅ Confirmed TODO 17
+- [ ] TODO 18: Add a tutorial level for new users.
