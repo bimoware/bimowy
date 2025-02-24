@@ -1,18 +1,24 @@
 import random
 
-def get_question():
-    n1 = random.randint(0, 101)
-    n2 = random.randint(0, 101)
+def fix_question_v1(n1,n2,sum):
     return {
-        "question": f"{n1} + {n2} = ?",
-        "choices": [
-            str(n1 + n2),
-            str(n1 + n2 + 1),
-            str(n1 + n2 - 10),
-            str(n1 + n2 + n1 % 2),
-            str(abs(n1 + n2 - n1 // 2)),
-            str(abs(n1 + n2 + n1 // 2)),
-            str(abs(n1 + 2*n2)),
-        ],
-        "answer_i": 0,
+        "type": 0,
+        "question": f"{n1} + {n2} =",
+        "answer": sum,
     }
+
+
+def get_random_int():
+    n = random.random()
+    if n < 0.3:
+        return random.randint(1, 10)
+    elif n < 0.6:
+        return random.randint(10, 100)
+    elif n < 0.8:
+        return random.randint(100, 1000)
+    else:
+        return random.randint(1000, 10000)
+def get_question():
+    n1,n2 = get_random_int(),get_random_int()
+    sum = n1 + n2
+    return fix_question_v1(n1,n2,sum)
