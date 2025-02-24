@@ -212,8 +212,3 @@ def execute_python_file(file_path):
     sys.modules["module.name"] = module
     spec.loader.exec_module(module)
     return module
-
-
-# In case defs.py is run instead of main.py
-if __name__ == "__main__":
-    import main
