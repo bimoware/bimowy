@@ -1,8 +1,9 @@
 # 24/02/2025
+
 ## Added TODOs:
 
 - [✅] Make "types" of questions, as in 0: Input, 1: "Multiple Choice"
-- [🚧] "type" of question boolean (True/False)
+- [✅] "type" of question boolean (True/False)
 - [ ] TODO 2: Make it so that when an answer is false, it doesn't get validated on "prompt" and the user can try again (but still, the variable "correct_on_first_try" keeps it's purpose).
 - [✅] TODO 3: Make sure question answers don't repeat (review generating questions)
 - [✅] TODO 4: More questions. And more "manually" created questions for pattern-recognition testing.
@@ -16,6 +17,6 @@
 - [ ] TODO 12: Add a "skip" system, where the user can skip the question
 - [ ] TODO 13: Lessons system, where the user can learn the subject before taking the quiz
 - [ ] TODO 14: General Math Quiz, where the user can get quizzed on general questions (systems of questions, real-world geometry problems)
-- [ ] TODO 15: Bookark system, where the user can bookmark a subject 
+- [ ] TODO 15: Bookark system, where the user can bookmark a subject
 - [ ] TODO 16: Find a better more modular way to run the gen.py file
 - [✅] TODO 17: Decide if running main is defs is run as main program is actually necessary
