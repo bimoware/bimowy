@@ -1,4 +1,4 @@
-import defs
+import src.defs as defs
 
 # Clear the console
 defs.clear_console()
