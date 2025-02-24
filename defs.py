@@ -12,7 +12,7 @@ def choose_reward_text(score: float):
     Choose the encouraging text based on the score.
     """
     rewards = {
-        60: "🤗 Still some work to do...",
+        60: None,
         70: "👏 Getting there..",
         80: "👍 Good job.",
         90: "✨ So close to perfection!!",
@@ -29,18 +29,12 @@ def display_score(total: int, correct: int):
     """
     Display the score in a progress bar format.
     """
-    bar_length = None
-
-    if total < 20:
-        bar_length = total
-    else:
-        bar_length = 20
     percentage = (correct / total) * 100
-    filled = int((correct / total) * bar_length)
-    bar = "🟢" * filled + "🔴" * (bar_length - filled)
+    filled = correct
+    bar = "🟢" * filled + "⚫" * (total - filled)
     text = choose_reward_text(percentage)
 
-    print(f"{bar} {correct}/{total} ({percentage:.0f}%): {text}")
+    print(f"{bar} {correct}/{total} ({percentage:.0f}%){f": {text}" if text else ''}")
 
 
 class Question:
@@ -69,6 +63,7 @@ class Question:
         """
         if result.lower() == "s":
             self.correct_on_first_try = False
+            self.skipped = True
             return True
         elif result.lower() == "e":
             self.exit = True
@@ -102,8 +97,9 @@ class Question:
                 prompt_question["choices"] = questions
 
             # Ask the question
-            result = prompt([prompt_question])[0]
-
+            prompt([prompt_question])
+            if self.skipped or self.exit:
+                print(f'⏩ Correct answer was {self.answer}')
             break
         return self
 
@@ -141,7 +137,8 @@ def ask_if_stop():
     """
     Ask the user if they want to stop the quiz.
     """
-    return prompt(
+    print()
+    res = prompt(
         questions=[
             {
                 "type": "confirm",
@@ -150,6 +147,8 @@ def ask_if_stop():
             }
         ],
     )[0]
+    print()
+    return res
 
 
 def get_questions(n: int):
