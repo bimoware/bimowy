@@ -51,7 +51,7 @@ class Question:
     def __init__(
         self,
         question: str,
-        type: int,  # 0: Input, 1: MCQ, 2: Y/N
+        type: int,  # 0: Input, 1: MCQ
         answer: int,
         choices: list[str] = None,
     ):
@@ -60,17 +60,26 @@ class Question:
         self.answer = answer
         self.choices = choices
         self.correct_on_first_try = None
+        self.skipped = False
+        self.exit = False
 
     def validate(self, result):
         """
         Validate the user's answer.
         """
+        if result.lower() == "s":
+            self.correct_on_first_try = False
+            return True
+        elif result.lower() == "e":
+            self.exit = True
+            return True
         is_correct = str(result) == str(self.answer)
-        
+
         if self.correct_on_first_try is None:
             self.correct_on_first_try = is_correct
-            
+
         return is_correct
+
     def ask(self):
         """
         Keeps asking the question until the user gets it right.
@@ -91,14 +100,12 @@ class Question:
                 shuffle(questions)
                 prompt_question["type"] = "list"
                 prompt_question["choices"] = questions
-            elif self.type == 2:
-                prompt_question["type"] = "confirm"
-            
+
             # Ask the question
-            prompt([prompt_question])
+            result = prompt([prompt_question])[0]
 
             break
-        return self.correct_on_first_try
+        return self
 
 
 class Quiz:
@@ -113,7 +120,12 @@ class Quiz:
 
     def start(self):
         for question in self.questions:
-            correct = question.ask()
+            question.ask()
+            correct = question.correct_on_first_try
+            if question.exit:
+                break
+            if question.skipped:
+                continue
             self.correct_q += 1 if correct == True else 0
         display_score(self.total_q, self.correct_q)
 
@@ -198,7 +210,7 @@ def execute_python_file(file_path):
     """
     spec = importlib.util.spec_from_file_location("module.name", file_path)
     module = importlib.util.module_from_spec(spec)
-    sys.modules["module.name"] = module 
+    sys.modules["module.name"] = module
     spec.loader.exec_module(module)
     return module
 
