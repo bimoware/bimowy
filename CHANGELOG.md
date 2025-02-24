@@ -11,7 +11,7 @@
 - [ ] TODO 6: Programming subjects maybe? idk
 - [ ] TODO 7: Add a "score" system, where the user can see how well they did on each subject (db.json file)
 - [ ] TODO 8: Add a "difficulty" system, where the user can choose the difficulty of the questions from Easy to Medium to Hard to Evil (either the questions get more compactly complex, not just too long, or just the subject gets more complicated like 1+1 -> 4-8 + 2/2) (Also saved on db.json file)
-- [ ] TODO 9: Give the ability to stop the quiz at any time/skip a question and get marked as false
+- [✅] TODO 9: Give the ability to stop the quiz at any time/skip a question and get marked as false
 - [ ] TODO 10: Show the detailed answer to the user after they answer/skip the question
 - [ ] TODO 11: Add a "hint" system, where the user can ask for a hint on the question
 - [✅] TODO 12: Add a "skip" system, where the user can skip the question
@@ -27,3 +27,4 @@
 - [ ] TODO 18: Add a tutorial level for new users.
 - ✅ Confirmed TODO 12
 - [✅] TODO 19: Added an exit option to leave the whole quiz.
+- [✅] Confirmed TODO 9
