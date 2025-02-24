@@ -83,7 +83,7 @@ class Question:
             elif self.type == 2:
                 prompt_question["type"] = "confirm"
             result = prompt([prompt_question])[0]
-            correct = result == str(self.answer)
+            correct = str(result) == str(self.answer)
 
             if correct_on_first_try is None:
                 correct_on_first_try = correct
