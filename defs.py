@@ -108,14 +108,14 @@ class Quiz:
 
     def __init__(self, questions: list[Question]):
         self.questions = questions
+        self.total_q = len(self.questions)
+        self.correct_q = 0
 
     def start(self):
-        total_q = len(self.questions)
-        correct_q = 0
         for question in self.questions:
             correct = question.ask()
-            correct_q += 1 if correct == True else 0
-        display_score(total_q, correct_q)
+            self.correct_q += 1 if correct == True else 0
+        display_score(self.total_q, self.correct_q)
 
 
 def clear_console():
@@ -149,10 +149,10 @@ def get_questions(n: int):
     if not path:
         print("No gen.py file found.")
         return questions
-    get_question = execute_python_file(path)
+    gen = execute_python_file(path)
 
     for _ in range(n):
-        questions.append(Question(**get_question()))
+        questions.append(Question(**gen.get_question()))
 
     return questions
 
@@ -196,12 +196,11 @@ def execute_python_file(file_path):
     """
     Execute the given python file and return the appropriate get_question function.
     """
-    # Load the module from the given file path
     spec = importlib.util.spec_from_file_location("module.name", file_path)
     module = importlib.util.module_from_spec(spec)
-    sys.modules["module.name"] = module  # Add to sys.modules
-    spec.loader.exec_module(module)  # Execute the module
-    return module.get_question
+    sys.modules["module.name"] = module 
+    spec.loader.exec_module(module)
+    return module
 
 
 # In case defs.py is run instead of main.py
