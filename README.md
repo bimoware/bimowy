@@ -33,7 +33,7 @@ I was inspired by Khan academy, I usually love this website but the lack of cont
 
 ## 🤝 Contributing
 
-There are a lot of # TODO: ... and # FIXEME: if you want to know where to start.
+See CHANGELOG.md TODO's if you want to know where to start.
 
 1. Fork the repository
 2. Create a new branch:
