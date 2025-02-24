@@ -59,18 +59,29 @@ class Question:
         self.type = type
         self.answer = answer
         self.choices = choices
+        self.correct_on_first_try = None
 
+    def validate(self, result):
+        """
+        Validate the user's answer.
+        """
+        is_correct = str(result) == str(self.answer)
+        
+        if self.correct_on_first_try is None:
+            self.correct_on_first_try = is_correct
+            
+        return is_correct
     def ask(self):
         """
         Keeps asking the question until the user gets it right.
 
         Returns True if the user gets it right on the first try.
         """
-        correct_on_first_try = None
         while True:
             prompt_question = {
                 "message": self.question,
                 "invalid_message": "❌ Incorrect. Try again.",
+                "validate": lambda result: self.validate(result),
             }
 
             if self.type == 0:
@@ -82,19 +93,12 @@ class Question:
                 prompt_question["choices"] = questions
             elif self.type == 2:
                 prompt_question["type"] = "confirm"
-            result = prompt([prompt_question])[0]
-            correct = str(result) == str(self.answer)
+            
+            # Ask the question
+            prompt([prompt_question])
 
-            if correct_on_first_try is None:
-                correct_on_first_try = correct
-
-            if correct:
-                print("✅\n")
-                break
-            else:
-                print("❌ Incorrect; Try again.\n")
-                continue
-        return correct_on_first_try
+            break
+        return self.correct_on_first_try
 
 
 class Quiz:

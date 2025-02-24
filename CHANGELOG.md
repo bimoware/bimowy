@@ -4,7 +4,7 @@
 
 - [✅] Make "types" of questions, as in 0: Input, 1: "Multiple Choice"
 - [✅] "type" of question boolean (True/False)
-- [ ] TODO 2: Make it so that when an answer is false, it doesn't get validated on "prompt" and the user can try again (but still, the variable "correct_on_first_try" keeps it's purpose).
+- [✅] TODO 2: Make it so that when an answer is false, it doesn't get validated on "prompt" and the user can try again (but still, the variable "correct_on_first_try" keeps it's purpose).
 - [✅] TODO 3: Make sure question answers don't repeat (review generating questions)
 - [✅] TODO 4: More questions. And more "manually" created questions for pattern-recognition testing.
 - [ ] TODO 5: More subjects (Set theory, logic, etc... Khan academy for inspiration)
