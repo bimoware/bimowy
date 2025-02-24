@@ -14,7 +14,7 @@
 - [ ] TODO 9: Give the ability to stop the quiz at any time/skip a question and get marked as false
 - [ ] TODO 10: Show the detailed answer to the user after they answer/skip the question
 - [ ] TODO 11: Add a "hint" system, where the user can ask for a hint on the question
-- [ ] TODO 12: Add a "skip" system, where the user can skip the question
+- [✅] TODO 12: Add a "skip" system, where the user can skip the question
 - [ ] TODO 13: Lessons system, where the user can learn the subject before taking the quiz
 - [ ] TODO 14: General Math Quiz, where the user can get quizzed on general questions (systems of questions, real-world geometry problems)
 - [ ] TODO 15: Bookark system, where the user can bookmark a subject
@@ -25,3 +25,5 @@
 
 - ✅ Confirmed TODO 17
 - [ ] TODO 18: Add a tutorial level for new users.
+- ✅ Confirmed TODO 12
+- [✅] TODO 19: Added an exit option to leave the whole quiz.
