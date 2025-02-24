@@ -107,14 +107,7 @@ ns = [
 def get_question():  # this will just ask the user to change the base of a number from decimal to binary
     n = random.choice(ns)
     return {
+        "type": 0,
         "question": f"Convert {n} to binary.",
-        "choices": [
-            f"{n:b}",
-            f"{round(n*(15/9)):b}",
-            f"{round(n*(9/10)):b}",
-            f"{round((n+1)):b}",
-            f"{(n+round(n*(1/2))):b}",
-            f"{(n-round(n*(1/3))):b}",
-        ],
-        "answer_i": 0,
+        "answer": bin(n)[2:]
     }
