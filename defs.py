@@ -191,7 +191,7 @@ def find_gen_py(path):
     choice = prompt(
         [
             {
-                "message": "Choose a directory:",
+                "message": "Choose a subject:",
                 "type": "list",
                 "choices": [f"{directory}" for directory in directories],
                 "default": None,
