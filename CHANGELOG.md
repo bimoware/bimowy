@@ -1,4 +1,4 @@
-# 24/02/2025
+# 23/02/2025
 
 ## Added TODOs:
 
@@ -19,4 +19,7 @@
 - [ ] TODO 14: General Math Quiz, where the user can get quizzed on general questions (systems of questions, real-world geometry problems)
 - [ ] TODO 15: Bookark system, where the user can bookmark a subject
 - [ ] TODO 16: Find a better more modular way to run the gen.py file
-- [✅] TODO 17: Decide if running main is defs is run as main program is actually necessary
+- [✅] TODO 17: Decide if running main in defs if run as the main program is actually necessary
+
+
+# 23/02/2025
