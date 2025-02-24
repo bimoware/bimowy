@@ -40,9 +40,7 @@ def display_score(total: int, correct: int):
     bar = "🟢" * filled + "🔴" * (bar_length - filled)
     text = choose_reward_text(percentage)
 
-    print(
-        f"{bar} {correct}/{total} ({percentage:.0f}%): {text}"
-    )  # NOTE: Check if this is asthetically pleasing
+    print(f"{bar} {correct}/{total} ({percentage:.0f}%): {text}")
 
 
 class Question:
@@ -53,14 +51,14 @@ class Question:
     def __init__(
         self,
         question: str,
-        choices: list[str],
-        answer_i: int,
-        random_order: bool = True,
+        type: int,  # 0: Input, 1: MCQ, 2: Y/N
+        answer: int,
+        choices: list[str] = None,
     ):
         self.question = question
+        self.type = type
+        self.answer = answer
         self.choices = choices
-        self.answer_i = answer_i
-        self.random_order = random_order
 
     def ask(self):
         """
@@ -70,32 +68,31 @@ class Question:
         """
         correct_on_first_try = None
         while True:
-            questions = self.choices[:]
-            if self.random_order:
+            prompt_question = {
+                "message": self.question,
+                "invalid_message": "❌ Incorrect. Try again.",
+            }
+
+            if self.type == 0:
+                prompt_question["type"] = "input"
+            elif self.type == 1:
+                questions = self.choices[:]
                 shuffle(questions)
-            result = prompt(
-                questions=[
-                    {
-                        "type": "list",
-                        "message": self.question,
-                        "choices": questions,
-                        # "validate": lambda result: result
-                        # == self.choices[self.answer_i],
-                        "invalid_message": "❌ Incorrect. Try again.",
-                        "default": None,
-                    }
-                ],
-            )[0]
-            correct = result == self.choices[self.answer_i]
+                prompt_question["type"] = "list"
+                prompt_question["choices"] = questions
+            elif self.type == 2:
+                prompt_question["type"] = "confirm"
+            result = prompt([prompt_question])[0]
+            correct = result == str(self.answer)
 
             if correct_on_first_try is None:
                 correct_on_first_try = correct
 
             if correct:
-                print("✅ Correct!\n")
+                print("✅\n")
                 break
             else:
-                print("❌ Incorrect. Try again.\n")
+                print("❌ Incorrect; Try again.\n")
                 continue
         return correct_on_first_try
 
@@ -139,7 +136,6 @@ def ask_if_stop():
     )[0]
 
 
-# FIXME: Randomly generated answers may give the same answers.
 def get_questions(n: int):
     """
     Shows the user recursively the tree of the file db/ until they get to a folder with a single "gen.py" file. Then runs the file
@@ -192,7 +188,6 @@ def find_gen_py(path):
     return find_gen_py(next_path)  # Recurse into the selected folder
 
 
-# TODO: Find a better more modular way to run the file
 def execute_python_file(file_path):
     """
     Execute the given python file and return the appropriate get_question function.
@@ -206,6 +201,5 @@ def execute_python_file(file_path):
 
 
 # In case defs.py is run instead of main.py
-# TODO: check if this is actually necessary
 if __name__ == "__main__":
     import main
