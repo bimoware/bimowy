@@ -57,6 +57,10 @@ math-exercices/
    python main.py
    ```
 
+## ⭐ Stars History
+
+<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=Z2hwX21DbUd4Q1dTSEVIS0JPdnlQRWNxT0pmRTNOVGJVZTBJTXNUag==#bimoware/math-exercices&Date" frameBorder="0"></iframe>
+
 ## 🤝 Contributing
 
 See CHANGELOG.md TODO's if you want to know where to start.
