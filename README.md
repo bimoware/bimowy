@@ -59,7 +59,18 @@ math-exercices/
 
 ## ⭐ Stars History
 
-<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=Z2hwX21DbUd4Q1dTSEVIS0JPdnlQRWNxT0pmRTNOVGJVZTBJTXNUag==#bimoware/math-exercices&Date" frameBorder="0"></iframe>
+<div align="center">
+
+<a href="https://star-history.com/#bimoware/math-exercices&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bimoware/math-exercices&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bimoware/math-exercices&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bimoware/math-exercices&type=Date" />
+ </picture>
+</a>
+
+
+<div align="left">
 
 ## 🤝 Contributing
 
