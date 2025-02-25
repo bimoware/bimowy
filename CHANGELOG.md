@@ -17,7 +17,7 @@
 - [✅] TODO 12: Add a "skip" system, where the user can skip the question
 - [ ] TODO 13: Lessons system, where the user can learn the subject before taking the quiz
 - [ ] TODO 14: General Math Quiz, where the user can get quizzed on general questions (systems of questions, real-world geometry problems)
-- [ ] TODO 15: Bookark system, where the user can bookmark a subject
+- [ ] TODO 15: Bookmark system, where the user can bookmark a subject
 - [ ] TODO 16: Find a better more modular way to run the gen.py file
 - [✅] TODO 17: Decide if running main in defs if run as the main program is actually necessary
 
