@@ -99,7 +99,7 @@ class Question:
             # Ask the question
             prompt([prompt_question])
             if self.skipped or self.exit:
-                print(f'⏩ Correct answer was {self.answer}')
+                print(f"⏩ Correct answer was {self.answer}")
             break
         return self
 
@@ -156,7 +156,7 @@ def get_questions(n: int):
     Shows the user recursively the tree of the file db/ until they get to a folder with a single "gen.py" file. Then runs the file
     """
     questions = []
-    path = find_gen_py("db")
+    path = find_gen_py("src/db")
     if not path:
         print("No gen.py file found.")
         return questions
