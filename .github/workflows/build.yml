@@ -26,7 +26,7 @@ jobs:
 
       - name: Build EXE including dynamically imported Python files
         run: |
-          pyinstaller --onefile --console --paths src/ --collect-submodules src main.py
+          pyinstaller --onefile --console --hidden-import InquirePy --paths src/ --collect-submodules src main.py
         shell: bash
 
       - name: Move EXE to root
