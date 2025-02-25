@@ -3,7 +3,7 @@ name: Build EXE
 on:
   push:
     branches:
-      - main  # Change if your default branch is different
+      - main 
   workflow_dispatch:
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Build EXE including dynamically imported Python files
         run: |
-          pyinstaller --onefile --console --paths src/ --collect-submodules src src/main.py
+          pyinstaller --onefile --console --paths src/ --collect-submodules src main.py
         shell: bash
 
       - name: Move EXE to root
