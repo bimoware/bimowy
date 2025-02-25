@@ -3,12 +3,14 @@ name: Build EXE
 on:
   push:
     branches:
-      - main 
+      - main
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
