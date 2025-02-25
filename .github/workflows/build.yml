@@ -40,7 +40,7 @@ jobs:
       - name: Upload to Releases
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: release-${{ steps.date.outputs.DATE }}
+          tag_name: release-${{ env.DATE }}
           files: main.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
