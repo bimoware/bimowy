@@ -155,23 +155,20 @@ def get_questions(n: int):
     """
     Shows the user recursively the tree of the file db/ until they get to a folder with a single "gen.py" file. Then runs the file
     """
-    questions = []
     path = find_gen_py("src/db")
     if not path:
         print("No gen.py file found.")
-        return questions
+        return []
     gen = execute_python_file(path)
 
-    for _ in range(n):
-        questions.append(Question(**gen.get_question()))
-
-    return questions
+    return gen.gen_questions(n,0)
 
 
 def find_gen_py(path):
     """
     Recursively find the gen.py file in the given folder.
     """
+
     # List all directories and files in the current path
     items = os.listdir(path)
 
@@ -179,7 +176,7 @@ def find_gen_py(path):
     directories = [
         item
         for item in items
-        if "_" not in item and os.path.isdir(os.path.join(path, item))
+        if "__" not in item and os.path.isdir(os.path.join(path, item))
     ]
 
     # If there are no directories just check for gen.py file
