@@ -1,38 +1,28 @@
 <div align="center">
 
-# bimowy
+## 📽️ Demo
 
-Quiz-based math exercises using a Python terminal UI.
+![Demo video](https://github.com/user-attachments/assets/ec3d6c96-a0d7-47ec-80d5-b4a394bd0c20)
 
 ## ⭐ Idea
 <div align="left">
-I was inspired by Khan academy, I usually love this website but the lack of content there really pmo once, I understand that's it's a non-profit so I have no right to be mad, but after seeing that there were no exercices for base conversion for me, I decided to make my own since it can't be that hard.
+Heavily inspired by Khan academy's core concept, I usually love this website but the lack of content there and the unused potential really pmo multiple times. The last straw was seeing no exercices for base (hexadecimal, decimal, binary) conversion for me, I decided to make my own since it can't be that hard. Every course & exercice is on a database on a server (/server) and the react/tailwind is in it's own directory (/client). Two different projects linked together in a single repository is called a MonoRepo.
 <div align="center">
-
-## 📺 Demo
-
-[DEMO COMMING...]
-
-<div align="left">
-
-- Navigate mcq answers -> `Up arrow key`, `Down arrow key`
-- Confirm an answer -> `Enter`
-- Yes/No answers -> `Y`, `N`
-- Quit -> `Esc` (or select `N` when prompted to leave)
 
 ## 🚀 Installation
 
 1. Clone the repository:
-   ```sh
+2. For each individual project (/server & /client), install the necessary dependencies.
+3. Run the program. (Better on VSCODE Terminal):
+   ```sh   
    git clone https://github.com/bimoware/bimowy.git
    cd bimowy
-   ```
-2. Install necessary dependencies as per the requirements.txt file (use `pip` if `pip3` doesn't work)
-   ```sh
-   npm install
-   ```
-3. Run the program (better on VSCODE terminal):
-   ```sh
+   
+   cd server
+   npm i
+   cd ../client
+   npm i
+   cd ../
    npm run dev
    ```
 
@@ -53,22 +43,38 @@ I was inspired by Khan academy, I usually love this website but the lack of cont
 
 ## 🤝 Contributing
 
-See CHANGELOG.md TODO's if you want to know where to start.
+### 1. Clone the Repository
+1. Open [GitHub Desktop](https://desktop.github.com/).
+2. Click **File** > **Clone repository**.
+3. Select the repository you forked.
+4. Choose a local directory and click **Clone**.
 
-1. Fork the repository
-2. Create a new branch:
-   ```sh
-   git checkout -b feature-branch
-   ```
-3. Commit your changes
-   ```sh
-   git commit -m "Add a new feature"
-   ```
-4. Push to **YOUR** branch
-   ```sh
-   git push origin feature-branch
-   ```
-5. Open a pull request detailing as much as possible your change (why, did you run into a problem before that needed this fix etc..)
+### 2. Create a New Branch
+1. In GitHub Desktop, go to the **Current Branch** dropdown.
+2. Click **New Branch**, give it a meaningful name, and create it.
+
+### 3. Make Your Changes
+1. Open the project in your preferred editor.
+2. Make the necessary changes and save them.
+
+### 4. Commit Your Changes
+1. Return to GitHub Desktop.
+2. In the **Changes** tab, review your changes.
+3. Enter a clear commit message.
+4. Click **Commit to [your-branch-name]**.
+
+### 5. Push Your Changes
+1. Click **Push origin** to upload your changes to your forked repository.
+
+### 6. Create a Pull Request
+1. Go to your forked repository on GitHub.
+2. Click **Compare & pull request**.
+3. Add a description of your changes.
+4. Click **Create pull request**.
+
+### 7. Wait for Review
+The maintainer (for now, only me, bimoware) will review your PR and may request changes. Please do not make a PR just to removal an unecessary condition. For minor details like this, use Discussions.
+
 
 ## 📜 License
 
