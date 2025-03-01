@@ -1,13 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import DashboardPage from './pages/DashboardPage.tsx';
 import HomePage from './pages/HomePage.tsx';
 import SettingsPage from './pages/SettingsPage.tsx';
 
 import SideBar from "./components/SideBar.tsx";
 import PageSection from "./components/PageSection.tsx";
 
-import settingsIcon from '/svgs/settings.svg';
 import homeIcon from '/svgs/home.svg';
+import dashboardIcon from '/svgs/dashboard.svg';
+import historyIcon from '/svgs/history.svg';
+import settingsIcon from '/svgs/settings.svg';
+import HistoryPage from "./pages/HistoryPage.tsx";
 
 
 export const routes = [
@@ -16,6 +20,16 @@ export const routes = [
         element: <HomePage />,
         icon: homeIcon,
         href: "/"
+    },
+    {
+        id: "dashboard",
+        element: <DashboardPage />,
+        icon: dashboardIcon,
+    },
+    {
+        id: "history",
+        element: <HistoryPage />,
+        icon: historyIcon
     },
     {
         id: "settings",
