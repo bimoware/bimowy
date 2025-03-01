@@ -6,3 +6,4 @@ node_modules/
 .vit/
 .vscode/
 cache/
+**/package-lock.json
