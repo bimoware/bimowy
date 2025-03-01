@@ -2,40 +2,32 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import DashboardPage from './pages/DashboardPage.tsx';
-import HomePage from './pages/HomePage.tsx';
-import SettingsPage from './pages/SettingsPage.tsx';
+// import HomePage from './pages/HomePage.tsx';
+// import SettingsPage from './pages/SettingsPage.tsx';
 
 import SideBar from "./components/SideBar.tsx";
 import PageSection from "./components/PageSection.tsx";
 
-import homeIcon from '/svgs/home.svg';
+import testIcon from '/svgs/test.svg';
+// import homeIcon from '/svgs/home.svg';
 import dashboardIcon from '/svgs/dashboard.svg';
-import historyIcon from '/svgs/history.svg';
-import settingsIcon from '/svgs/settings.svg';
-import HistoryPage from "./pages/HistoryPage.tsx";
+import TestPage from "./pages/TestPage.tsx";
+// import historyIcon from '/svgs/history.svg';
+// import settingsIcon from '/svgs/settings.svg';
+// import HistoryPage from "./pages/HistoryPage.tsx";
 
 
 export const routes = [
     {
-        id: "home",
-        element: <HomePage />,
-        icon: homeIcon,
+        id: "test",
+        element: <TestPage />,
+        icon: testIcon,
         href: "/"
     },
     {
         id: "dashboard",
         element: <DashboardPage />,
         icon: dashboardIcon,
-    },
-    {
-        id: "history",
-        element: <HistoryPage />,
-        icon: historyIcon
-    },
-    {
-        id: "settings",
-        element: <SettingsPage />,
-        icon: settingsIcon
     }
 ]
     .map(route => ({ ...route, href: route.href || ("/" + route.id) }))
