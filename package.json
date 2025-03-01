@@ -3,9 +3,9 @@
 	"version": "0.0.0",
 	"main": "index.js",
 	"scripts": {
-		"start": "concurrently \"npm run start:client\" \"npm run start:server\"",
-		"start:client": "cd client && npm run dev",
-		"start:server": "cd server && npm run dev"
+		"dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+		"dev:client": "cd client && npm run dev",
+		"dev:server": "cd server && npm run dev"
 	},
 	"keywords": [],
 	"author": "",
