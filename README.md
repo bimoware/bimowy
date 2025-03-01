@@ -11,7 +11,7 @@ I was inspired by Khan academy, I usually love this website but the lack of cont
 
 ## 📺 Demo
 
-[![Watch the video](https://img.youtube.com/vi/e3aad00e-7a24-4cf0-bbb9-2626dc1e6a25/maxresdefault.jpg)](https://github.com/user-attachments/assets/e3aad00e-7a24-4cf0-bbb9-2626dc1e6a25)
+[DEMO COMMING...]
 
 <div align="left">
 
