@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "**/node_modules": true,
+        "tsconfig*": true,
+        "eslint*": true,
+        ".github": true,
+        ".git": true,
+        ".gitattributes": true,
+        "**/package-lock.json": true
+        
+    },
+}

@@ -4,9 +4,18 @@
   "description": "Bimowy server-side",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.ts", 
+    "dev": "node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "typescript": "^5.8.2"
+  }
 }
