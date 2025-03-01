@@ -50,8 +50,11 @@ export function SubjectBloc({ title, content }: SubjectBlocProps) {
   return (
     <div className={`w-70 bg-indigo-700/20 p-4 rounded-xl
       flex flex-col
-      transition cursor-pointer hover:scale-105 
-    ${randomRotationClass}`}>
+      transition cursor-pointer
+      hover:ring
+      hover:scale-105 ${randomRotationClass}
+      hover:shadow-2xl shadow-black
+      inset-shadow-xs inset-shadow-white/5`}>
       <h4 className="self-center">{title}</h4>
       <span>{content}</span>
     </div>
