@@ -1,11 +1,11 @@
 {
 	"name": "bimowy",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"main": "index.js",
 	"scripts": {
 		"start": "concurrently \"npm run start:client\" \"npm run start:server\"",
 		"start:client": "cd client && npm run dev",
-		"start:server": "cd server && node index.ts"
+		"start:server": "cd server && npm run dev"
 	},
 	"keywords": [],
 	"author": "",

@@ -1,9 +1,10 @@
 {
   "name": "bimowy-server",
-  "version": "1.0.0",
+  "version": "9.0.0",
   "description": "Bimowy server-side",
   "main": "index.js",
   "scripts": {
+    "dev": "node index.ts", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
