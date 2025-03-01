@@ -1,0 +1,10 @@
+{
+	"files.exclude": {
+		"tsconfig*.json": true,
+        "package*.json": true,
+        "LICENSE": true,
+        "*/vite-env.d.ts": true,
+        ".git*": false,
+        "eslint.config.js": true
+	}
+}

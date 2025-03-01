@@ -1,6 +1,6 @@
 <div align="center">
 
-# math-exercices
+# bimowy
 
 Quiz-based math exercises using a Python terminal UI.
 
@@ -20,52 +20,31 @@ I was inspired by Khan academy, I usually love this website but the lack of cont
 - Yes/No answers -> `Y`, `N`
 - Quit -> `Esc` (or select `N` when prompted to leave)
 
-
-## 📂 Main Structure
-
-```sh
-math-exercices/
-├── src/ # Main source code for exercises
-│   ├── db/ # Database for all exercices and problems
-│   │   ├── Basic Algebra/ # Algebra-related problems
-│   │   │   ├── .../
-│   │   ├── Number Theory/
-│   │   │   ├── .../
-│   │   ├── etc.../
-│   ├── defs.py # Definitions (classes, functions)
-├── main.py # Main program (small, most things on defs.py)
-├── README.md # Project documentation and suggestions
-├── CHANGELOG.md # TODO's and commits
-├── requirements.txt # avoid environement conflicts (pip install -r requirements.txt)
-├── ... # Other inumportant files you don't need to worry about
-
-
-```
 ## 🚀 Installation
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/bimoware/math-exercices.git
-   cd math-exercices
+   git clone https://github.com/bimoware/bimowy.git
+   cd bimowy
    ```
 2. Install necessary dependencies as per the requirements.txt file (use `pip` if `pip3` doesn't work)
    ```sh
-   pip3 install -r requirements.txt
+   npm install
    ```
 3. Run the program (better on VSCODE terminal):
    ```sh
-   python main.py
+   npm run dev
    ```
 
 ## ⭐ Stars History
 
 <div align="center">
 
-<a href="https://star-history.com/#bimoware/math-exercices&Date">
+<a href="https://star-history.com/#bimoware/bimowy&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bimoware/math-exercices&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bimoware/math-exercices&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bimoware/math-exercices&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date" />
  </picture>
 </a>
 

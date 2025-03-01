@@ -30,3 +30,6 @@
 - [✅] Confirmed TODO 9
 - [ ] TODO 20: Change the way questions are getten to also add the number of questions wanted, check the max n of questions available, check the available difficulties, the number of questions
 - [ ] TODO 21: Change the way user prompt is gotten.InquirePy doesn't work with releases
+
+# 01/03/2025
+* Switched to Vite/React/Tailwind project.
