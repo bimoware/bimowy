@@ -16,7 +16,7 @@ export default function DashboardPage() {
   return (
     <>
       <h1>Dashboard</h1>
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-6 flex-wrap justify-center">
         {subjects.map(({ title, content }, i) => (
           <SubjectBloc key={i} title={title} content={content} />
         ))}
@@ -33,7 +33,6 @@ interface SubjectBlocProps {
 export function SubjectBloc({ title, content }: SubjectBlocProps) {
   // Define a set of rotation classes you want to choose from
   const rotationClasses = [
-    "hover:rotate-0",
     "hover:rotate-1",
     "hover:-rotate-1",
     "hover:rotate-2",
@@ -49,7 +48,10 @@ export function SubjectBloc({ title, content }: SubjectBlocProps) {
   }, []);
 
   return (
-    <div className={`w-65 bg-[#5865F2]/25 p-2 rounded-xl flex flex-col transition cursor-pointer hover:scale-105 ${randomRotationClass}`}>
+    <div className={`w-70 bg-indigo-700/20 p-4 rounded-xl
+      flex flex-col
+      transition cursor-pointer hover:scale-105 
+    ${randomRotationClass}`}>
       <h4 className="self-center">{title}</h4>
       <span>{content}</span>
     </div>
