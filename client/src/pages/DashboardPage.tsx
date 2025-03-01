@@ -31,7 +31,6 @@ interface SubjectBlocProps {
 }
 
 export function SubjectBloc({ title, content }: SubjectBlocProps) {
-  // Define a set of rotation classes you want to choose from
   const rotationClasses = [
     "hover:rotate-1",
     "hover:-rotate-1",
@@ -41,20 +40,32 @@ export function SubjectBloc({ title, content }: SubjectBlocProps) {
     "hover:-rotate-3",
   ];
 
-  // Use useMemo so the random class is set once per component instance
+  const translationXClasses = [
+    "hover:translate-x-0",
+    "hover:translate-x-1",
+    "hover:translate-x-2"
+  ];
+  const translationYClasses = [
+    "hover:translate-y-0",
+    "hover:translate-y-1",
+    "hover:translate-y-2"
+  ];
+
+  const randomFrom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)]
   const randomRotationClass = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * rotationClasses.length);
-    return rotationClasses[randomIndex];
+    return [rotationClasses, translationXClasses, translationYClasses]
+      .map(randomFrom)
   }, []);
 
   return (
     <div className={`w-70 bg-indigo-700/20 p-4 rounded-xl
       flex flex-col
       transition cursor-pointer
-      hover:ring
-      hover:scale-105 ${randomRotationClass}
+      hover:ring-1 hover:scale-105
+      ${randomRotationClass.join(' ')}
       hover:shadow-2xl shadow-black
-      inset-shadow-xs inset-shadow-white/5`}>
+      inset-shadow-xs inset-shadow-white/5
+      select-none`}>
       <h4 className="self-center">{title}</h4>
       <span>{content}</span>
     </div>
