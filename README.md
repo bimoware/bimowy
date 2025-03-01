@@ -1,13 +1,13 @@
-<div align="center">
-
 ## 📽️ Demo
 
-![Demo video](https://github.com/user-attachments/assets/ec3d6c96-a0d7-47ec-80d5-b4a394bd0c20)
+<div align="center">
+
+https://github.com/user-attachments/assets/ec3d6c96-a0d7-47ec-80d5-b4a394bd0c20
+
+<div align="left">
 
 ## ⭐ Idea
-<div align="left">
 Heavily inspired by Khan academy's core concept, I usually love this website but the lack of content there and the unused potential really pmo multiple times. The last straw was seeing no exercices for base (hexadecimal, decimal, binary) conversion for me, I decided to make my own since it can't be that hard. Every course & exercice is on a database on a server (/server) and the react/tailwind is in it's own directory (/client). Two different projects linked together in a single repository is called a MonoRepo.
-<div align="center">
 
 ## 🚀 Installation
 
