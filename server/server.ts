@@ -1,15 +1,35 @@
 import express from "express";
-import fs from "fs";
 import cors from "cors";
+import fs from "fs";
 
 const app = express();
 const PORT = 5000;
+const subjects = new Map<string, subject>();
 
-app.use(cors()); // Enable CORS
+app.use(cors());
 
-app.get("/api/", (req, res) => {
-	const folders = fs.readdirSync('./db').map(name => name.replace('_',' '))
-	res.json(folders)
+function fetchSubjects() {
+	for (let file of fs.readdirSync("./subjects")) {
+		let data = require("./subjects/" + file).default;
+		subjects.set(data.id, data);
+	}
+}
+
+fetchSubjects();
+
+app.get("/subjects/", (req, res) => {
+	res.json(Array.from(subjects.values()));
+});
+
+app.get("/quiz/:id", (req, res) => {
+	const { id } = req.params;
+	let subject = subjects.get(id);
+	if (!subject) {
+		res.status(404).json(`No quiz found for ID '${id}'`);
+	} else {
+		const questions = Array.from({ length: 7 }, () => subject.questionGenerator[0]("easy"));
+		res.json(questions);
+	}
 });
 
 app.listen(PORT, () => {
