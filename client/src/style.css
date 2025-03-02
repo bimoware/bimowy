@@ -1,26 +1,33 @@
-@import url(https://db.onlinewebfonts.com/c/6ab539c6fc2b21ff0b149b3d06d7f97c?family=Minecraft+Regular);
+/* @import url(https://db.onlinewebfonts.com/c/6ab539c6fc2b21ff0b149b3d06d7f97c?family=Minecraft+Regular); */
+@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
 @import "tailwindcss";
 
 @theme {
-    --font-main: "Minecraft Regular";
+	/* --font-main: "Minecraft Regular"; */
+	--font-main: "Outfit";
 }
-
+p {
+	@apply my-4 leading-7;
+}
 body {
-	@apply bg-neutral-950 text-white font-main leading-5
+	@apply bg-neutral-950 text-white font-main leading-5;
 }
 
+button {
+	@apply p-4 py-6 leading-0 bg-indigo-800 rounded-2xl text-2xl cursor-pointer hover:scale-105 transition shadow-md shadow-black/50
+}
 h1 {
-	@apply text-5xl mb-10
+	@apply text-5xl mb-10;
 }
 
 h2 {
-	@apply text-4xl mb-6
+	@apply text-4xl mb-6;
 }
 
 h3 {
-	@apply text-3xl mb-4
+	@apply text-3xl mb-4;
 }
 
 h4 {
-	@apply text-2xl mb-2
+	@apply text-2xl mb-2;
 }
