@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import ConditionalHref from '../components/ConditionalHref';
 
 export default function DashboardPage() {
   const subjects = [
@@ -26,11 +27,12 @@ export default function DashboardPage() {
 }
 
 interface SubjectBlocProps {
-  title: string,
-  content: string
+  title: string;
+  content: string;
+  href?: string;
 }
 
-export function SubjectBloc({ title, content }: SubjectBlocProps) {
+export function SubjectBloc({ title, content, href }: SubjectBlocProps) {
   const rotationClasses = [
     "hover:rotate-1",
     "hover:-rotate-1",
@@ -61,7 +63,7 @@ export function SubjectBloc({ title, content }: SubjectBlocProps) {
       .map(randomFrom)
   }, []);
 
-  return (
+  return <ConditionalHref href={href}>
     <div className={`w-70 bg-neutral-700/20 p-4 rounded-xl
       flex flex-col
       transition cursor-pointer
@@ -73,5 +75,5 @@ export function SubjectBloc({ title, content }: SubjectBlocProps) {
       <h4 className="self-center">{title}</h4>
       <span>{content}</span>
     </div>
-  );
+  </ConditionalHref>
 }
