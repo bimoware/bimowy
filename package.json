@@ -2,6 +2,9 @@
 	"name": "bimowy",
 	"version": "0.0.0",
 	"main": "index.js",
+	"repository": {
+		"url": "https://github.com/bimoware/bimowy"
+	},
 	"scripts": {
 		"dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
 		"dev:client": "cd client && npm run dev",
