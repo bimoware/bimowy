@@ -72,7 +72,7 @@ export function SubjectBloc({ title, content, href }: SubjectBlocProps) {
       hover:shadow-2xl shadow-black
       inset-shadow-xs inset-shadow-white/5
       select-none`}>
-      <h4 className="self-center">{title}</h4>
+      <h4 className="self-center text-big">{title}</h4>
       <span>{content}</span>
     </div>
   </ConditionalHref>
