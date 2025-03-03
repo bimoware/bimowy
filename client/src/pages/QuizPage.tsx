@@ -39,10 +39,7 @@ export default function QuizPage() {
                     const inputElement = document.getElementById(`input-${inputIndex}`) as HTMLInputElement;
                     if (inputElement) {
                         const isCorrect = inputElement.value.trim() == q.answer;
-                        if (!isCorrect) {
-                            inputElement.classList.add("bg-red-500");
-                            allCorrect = false;
-                        }
+                        inputElement.style.backgroundColor = isCorrect ? "#008236" : "#c10007";
                         inputIndex++;
                     }
                 }
@@ -88,7 +85,7 @@ export default function QuizPage() {
                                             <input
                                                 id={currentId}
                                                 className={`w-12 rounded-sm p-1 
-                                                    ${state === "corrected" ? "bg-white/10 cursor-not-allowed" : ""}`}
+                                                    ${state === "corrected" ? "opacity-50 cursor-not-allowed" : ""}`}
                                                 disabled={state === "corrected"}
                                             />
                                         </div>
