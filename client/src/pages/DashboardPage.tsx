@@ -16,7 +16,6 @@ export default function DashboardPage() {
 
   return (
     <>
-      <h1>Dashboard</h1>
       <div className="flex gap-6 flex-wrap justify-center">
         {subjects.map(({ title, content }, i) => (
           <SubjectBloc key={i} title={title} content={content} />
