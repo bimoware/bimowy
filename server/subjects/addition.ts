@@ -1,3 +1,5 @@
+const getAnswer = (n1: number, n2: number) => n1 + n2;
+
 export default {
 	type: "subject",
 	id: "add",
@@ -17,9 +19,10 @@ export default {
 				{
 					type: "input",
 					title: n1 + " + " + n2,
-					answer: n1 + n2
+					answer: getAnswer(n1, n2)
 				}
 			];
 		}
-	]
+	],
+	getAnswer
 };
