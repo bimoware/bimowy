@@ -19,7 +19,7 @@ export default function QuizPage() {
     const [questions, setQuestions] = useState<questionPart[][]>([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/quiz/${params.quizid}`)
+        fetch(`http://localhost:60000/quiz/${params.quizid}`)
             .then((res) => res.json())
             .then((questions) => setQuestions(questions))
             .catch((err) => console.error("Error:", err));
@@ -84,7 +84,7 @@ export default function QuizPage() {
                                             )}
                                             <input
                                                 id={currentId}
-                                                className={`w-12 rounded-sm p-1 
+                                                className={`w-12 rounded-md p-1 
                                                     ${state === "corrected" ? "opacity-50 cursor-not-allowed" : ""}`}
                                                 disabled={state === "corrected"}
                                             />

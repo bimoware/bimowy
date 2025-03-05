@@ -8,7 +8,7 @@ export default function SubjectsPage() {
     const [data, setData] = useState<null | subject[]>(null);
 
     useEffect(() => {
-        fetch("http://localhost:5000/subjects/")
+        fetch("http://localhost:60000/subjects/")
             .then((res) => res.json())
             .then((data: subject[]) => setData(data))
             .catch((err) => console.error("Error:", err));
