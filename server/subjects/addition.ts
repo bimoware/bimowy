@@ -1,22 +1,23 @@
+import { ExerciceGenerator, Difficulty } from "../defs";
+
 const getAnswer = ([n1, n2]: number[]) => n1 + n2;
 
-export default {
-	type: "subject",
-	id: "substract",
-	name: "Substraction",
+export default new ExerciceGenerator({
+	id: "addition",
+	name: "Addition",
 	description: "Taking the sum of multiple numbers",
-	questionVariations: [
+	questionGenerators: [
 		{
 			id: "basic",
 			getAnswer,
-			generate: (difficulty: difficulty) => {
-				const ranges = {
-					easy: [1, 10],
-					medium: [10, 1e2],
-					hard: [1e2, 1e3],
-					evil: [1e5, 1e10]
+			generate: (difficulty: Difficulty) => {
+				const difficultyRanges = {
+					0: [1, 10],
+					1: [10, 1e2],
+					2: [1e2, 1e3],
+					3: [1e5, 1e10]
 				};
-				const range = ranges[difficulty];
+				const range = difficultyRanges[difficulty];
 				const [n1, n2] = [range, range].map(
 					(r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0]
 				);
@@ -33,4 +34,4 @@ export default {
 			}
 		}
 	]
-};
+});
