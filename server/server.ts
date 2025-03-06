@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs";
+import { ExerciceGenerator } from "./defs";
 
 const app = express();
-const PORT = 60000;
-const subjects = new Map<string, subject>();
+const PORT = 60001;
+const subjects = new Map<string, ExerciceGenerator>();
 
 app.use(cors());
 
@@ -18,18 +19,9 @@ function fetchSubjects() {
 fetchSubjects();
 
 app.get("/subjects/", (req, res) => {
+	console.log(subjects)
+	// res.json('ok')
 	res.json(Array.from(subjects.values()));
-});
-
-app.get("/quiz/:id", (req, res) => {
-	const { id } = req.params;
-	let subject = subjects.get(id);
-	if (!subject) {
-		res.status(404).json(`No quiz found for ID '${id}'`);
-	} else {
-		const questions = Array.from({ length: 7 }, () => subject.questionGenerator[0]("easy"));
-		res.json(questions);
-	}
 });
 
 app.listen(PORT, () => {
