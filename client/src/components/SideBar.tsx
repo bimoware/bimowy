@@ -7,7 +7,7 @@ import subjectIcon from '/svgs/subject.svg';
 
 import TestPage from "../pages/TestPage";
 import DashboardPage from "../pages/DashboardPage";
-import SubjectsPage from "../pages/SubjectsPage";
+import SubjectsPage from "../pages/ExercicesListPage";
 
 const routes = [
     {
