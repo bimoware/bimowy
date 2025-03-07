@@ -1,13 +1,16 @@
 import { StrictMode } from 'react'
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
+
 import './style.css';
-import DashboardPage from './pages/DashboardPage.tsx';
+
 import SideBar from './components/SideBar.tsx';
 import PageSection from './components/PageSection.tsx';
+
+import DashboardPage from './pages/DashboardPage.tsx';
 import TestPage from './pages/TestPage.tsx';
-import QuizPage from './pages/QuizPage.tsx';
-import SubjectsPage from './pages/SubjectsPage.tsx';
+import ExercicePage from './pages/ExercicePage.tsx';
+import ExercicesListPage from './pages/ExercicesListPage.tsx';
 
 const root = document.getElementById("root")!;
 
@@ -19,9 +22,9 @@ ReactDOM.createRoot(root).render(
         <Routes>
           <Route index element={<TestPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="subjects" element={<SubjectsPage />} />
-          <Route path="quiz">
-            <Route path=":quizid" element={<QuizPage />} />
+          <Route path="subjects" element={<ExercicesListPage />} />
+          <Route path="exercice">
+            <Route path=":exercice_id" element={<ExercicePage />} />
           </Route>
         </Routes>
       </PageSection>
