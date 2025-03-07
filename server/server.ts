@@ -11,7 +11,7 @@ app.use(cors());
 
 function fetchSubjects() {
 	console.log("⬜ Fetching ressources...");
-	ressources.clear()
+	ressources.clear();
 	for (let file of fs.readdirSync("./ressources")) {
 		let data: Ressource = require("./ressources/" + file).default;
 		ressources.set(data.id, data);

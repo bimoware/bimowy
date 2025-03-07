@@ -15,7 +15,7 @@ export enum RessourceType {
 
 export type questionPart = {
 	type: QuestionPartType;
-	title?: string
+	title?: string;
 };
 export type Exercice = {
 	id: string;
@@ -24,7 +24,11 @@ export type Exercice = {
 	format: (inputs: number[]) => questionPart[];
 };
 
-const idToName = (id: string) => id.split(' ').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')
+const idToName = (id: string) =>
+	id
+		.split(" ")
+		.map((word) => word[0].toUpperCase() + word.slice(1))
+		.join(" ");
 
 export class Ressource {
 	constructor(
@@ -51,14 +55,14 @@ export class ExerciceRessource extends Ressource {
 		public exercices: Exercice[]
 	) {
 		super(RessourceType.Exercice, id, name, description);
-		this.name = this.name || idToName(this.id)
+		this.name = this.name || idToName(this.id);
 	}
 
 	generateRandomQuestion({ difficulty }: { difficulty: Difficulty }) {
 		const questionI = Math.floor(Math.random() * this.exercices.length);
 		const questionGenerator = this.exercices[questionI];
 		const questionInputs = questionGenerator.generate(difficulty);
-		const question = questionGenerator.format(questionInputs)
+		const question = questionGenerator.format(questionInputs);
 		return question;
 	}
 	validateAnswer({ id, params, answer }: { id: string; params: number[]; answer: number }) {
@@ -76,6 +80,6 @@ export class LessonRessource extends Ressource {
 		public content: string
 	) {
 		super(RessourceType.Exercice, id, name, description);
-		this.name = this.name || idToName(this.id)
+		this.name = this.name || idToName(this.id);
 	}
 }
