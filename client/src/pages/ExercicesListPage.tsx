@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import LoadingIcon from "../components/LoadingIcon";
-import { SubjectBloc } from "./DashboardPage";
+import { Card } from "./DashboardPage";
 import { subject } from "../defs";
 
 
-export default function SubjectsPage() {
+export default function ExercicesListPage() {
     const [data, setData] = useState<null | subject[]>(null);
 
     useEffect(() => {
@@ -16,8 +16,8 @@ export default function SubjectsPage() {
 
     return data
         ? <div className="flex gap-4">
-            {data.map(subject => <SubjectBloc
-                href={`/quiz/${subject.id}`}
+            {data.map(subject => <Card
+                href={`/exercice/${subject.id}`}
                 key={subject.id}
                 title={subject.name}
                 content={subject.description}
