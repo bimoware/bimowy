@@ -1,12 +1,12 @@
-import { ExerciceGenerator, Difficulty } from "../defs";
+import { Difficulty, ExerciceRessource, QuestionPartType } from "../defs";
 
 const getAnswer = ([n1, n2]: number[]) => n1 - n2;
 
-export default new ExerciceGenerator({
-	id: "substract",
-	name: "Substraction",
-	description: "Taking a number and removing from it other number(s)",
-	questionGenerators: [
+export default new ExerciceRessource(
+	"substraction",
+	null,
+	"Removing a number from another number",
+	[
 		{
 			id: "basic",
 			getAnswer,
@@ -23,10 +23,11 @@ export default new ExerciceGenerator({
 				);
 				return [n1, n2];
 			},
-			format: ([n1, n2]: number[]) => {
+			format: (inputs: number[]) => {
+				const [n1, n2] = inputs;
 				return [
 					{
-						type: "input",
+						type: QuestionPartType.Input,
 						title: n1 + " - " + n2,
 						answer: getAnswer([n1, n2])
 					}
@@ -34,4 +35,4 @@ export default new ExerciceGenerator({
 			}
 		}
 	]
-});
+);
