@@ -18,20 +18,20 @@ export default function DashboardPage() {
     <>
       <div className="flex gap-6 flex-wrap justify-center">
         {subjects.map(({ title, content }, i) => (
-          <SubjectBloc key={i} title={title} content={content} />
+          <Card key={i} title={title} content={content} />
         ))}
       </div>
     </>
   );
 }
 
-interface SubjectBlocProps {
+interface CardProps {
   title: string;
   content: string;
   href?: string;
 }
 
-export function SubjectBloc({ title, content, href }: SubjectBlocProps) {
+export function Card({ title, content, href }: CardProps) {
   const rotationClasses = [
     "hover:rotate-1",
     "hover:-rotate-1",
