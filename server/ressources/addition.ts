@@ -21,8 +21,11 @@ export default new ExerciceRessource("addition", null, "Taking the sum of multip
 			const [n1, n2] = inputs;
 			return [
 				{
-					type: QuestionPartType.Input,
-					title: n1 + " + " + n2 + " = "
+					type: QuestionPartType.Text,
+					text: n1 + " + " + n2 + " = "
+				},
+				{
+					type: QuestionPartType.Input
 				}
 			];
 		}
