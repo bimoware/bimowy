@@ -12,11 +12,12 @@ export enum RessourceType {
 	Exercice = 0,
 	Lesson = 1
 }
-
-export type questionPart = {
-	type: QuestionPartType;
-	title?: string;
-};
+export type questionPart =
+	| { type: QuestionPartType.Input }
+	| {
+			type: QuestionPartType.Text;
+			text: string;
+	  };
 export type Exercice = {
 	id: string;
 	getAnswer: (inputs: number[]) => number;
@@ -57,17 +58,25 @@ export class ExerciceRessource extends Ressource {
 		super(RessourceType.Exercice, id, name, description);
 		this.name = this.name || idToName(this.id);
 	}
-
-	generateRandomQuestion({ difficulty }: { difficulty: Difficulty }) {
-		const questionI = Math.floor(Math.random() * this.exercices.length);
-		const questionGenerator = this.exercices[questionI];
-		const questionInputs = questionGenerator.generate(difficulty);
-		const question = questionGenerator.format(questionInputs);
+	getExercice(id: string) {
+		return this.exercices.find((exercice) => exercice.id === id);
+	}
+	getRandomExercice() {
+		return this.exercices[Math.floor(Math.random() * this.exercices.length)];
+	}
+	generateRandomInputs({ exerciceId, difficulty }: { exerciceId: string; difficulty: Difficulty }) {
+		const exercice = this.getExercice(exerciceId)!;
+		const questionInputs = exercice.generate(difficulty);
+		return questionInputs;
+	}
+	generateRandomQuestion(difficulty: Difficulty, exerciceId?: string) {
+		const exercice = exerciceId ? this.getExercice(exerciceId)! : this.getRandomExercice();
+		const questionInputs = this.generateRandomInputs({ exerciceId: exercice.id, difficulty });
+		const question = exercice.format(questionInputs);
 		return question;
 	}
 	validateAnswer({ id, params, answer }: { id: string; params: number[]; answer: number }) {
-		const question = this.exercices.find((q) => q.id === id);
-		if (!question) return new Error(`Question w/ id "${id}" not found`);
+		const question = this.exercices.find((q) => q.id === id)!;
 		return question.getAnswer(params) === answer;
 	}
 }
