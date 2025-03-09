@@ -1,21 +1,36 @@
 /* @import url(https://db.onlinewebfonts.com/c/6ab539c6fc2b21ff0b149b3d06d7f97c?family=Minecraft+Regular); */
-@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
+@import 'tailwindcss';
 
 @theme {
-	--font-mono: monospace,"Minecraft Regular";
-	--font-main: "Outfit";
-	--text-basic: 1rem;
-	--text-big: 1.5rem;
-	--text-title: 3rem;
+  --font-mono: monospace, 'Minecraft Regular';
+  --font-main: 'Outfit';
+  --text-basic: 1rem;
+  --text-big: 1.5rem;
+  --text-title: 3rem;
 }
+
+span,
 p {
-	@apply my-4 leading-7 text-sm;
+  @apply text-big;
 }
 body {
-	@apply bg-neutral-950 text-white font-main leading-5;
+  @apply bg-neutral-950 text-white font-main leading-5;
+}
+
+input {
+  @apply bg-white/5 rounded-md text-big w-fit p-2;
 }
 
 button {
-	@apply p-4 py-6 leading-0 bg-indigo-800 rounded-2xl text-2xl cursor-pointer hover:scale-105 transition shadow-md shadow-black/50;
+  @apply bg-indigo-900 p-2 rounded-2xl cursor-pointer hover:scale-105 transition shadow-md shadow-black/20 w-fit;
+}
+
+button:disabled,
+input:disabled {
+  @apply cursor-not-allowed opacity-50 shadow-none;
+}
+
+button:disabled:hover {
+  @apply scale-100;
 }

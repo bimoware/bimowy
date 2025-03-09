@@ -1,44 +1,69 @@
-import express from "express";
-import cors from "cors";
-import fs from "fs";
-import { ExerciceRessource, Ressource } from "./defs";
+import express from 'express'
+import cors from 'cors'
+import fs from 'fs'
+import { ExerciceRessource, Ressource } from './defs'
 
-const app = express();
-const PORT = 1230;
-const ressources = new Map<string, Ressource>();
+const app = express()
+const PORT = 1230
+const ressources = new Map<string, Ressource>()
 
-app.use(cors());
+app.use(cors())
 
 function fetchSubjects() {
-	ressources.clear();
-	for (let file of fs.readdirSync("./ressources")) {
-		let data: Ressource = require("./ressources/" + file).default;
-		ressources.set(data.id, data);
-	}
+  ressources.clear()
+  for (let file of fs.readdirSync('./ressources')) {
+    let data: Ressource = require('./ressources/' + file).default
+    ressources.set(data.id, data)
+  }
 }
 
-fetchSubjects();
+fetchSubjects()
 
 app.listen(PORT, () => {
-	console.log(`🌐 Server running on port http://localhost:${PORT}`);
-});
+  console.log(`🌐 Server running on port http://localhost:${PORT}`)
+})
 
-app.get("/api/ressources", (req, res) => {
-	res.json(Array.from(ressources.values()));
-});
+app.get('/api/ressources', (req, res) => {
+  res.json(Array.from(ressources.values()))
+})
 
-app.get("/api/exercice/:exercice_id", (req, res) => {
-	const { exercice_id } = req.params;
-	const difficulty = Number(req.query["difficulty"]) || 0;
-	const exercice = ressources.get(exercice_id);
-	if (!exercice) {
-		res.status(404).send(`Exercice with ID '${exercice_id}' not found`);
-	} else if (!(exercice instanceof ExerciceRessource)) {
-		res.status(400).send("Exercice is not an exercice ressource");
-	} else {
-		const questions = Array.from({ length: 3 }).map((_, i) => ({
-			parts: exercice.generateRandomQuestion(difficulty)
-		}));
-		res.json(questions);
-	}
-});
+app.get('/api/get-exercice/:exercice_id', (req, res) => {
+  const { exercice_id } = req.params
+  const difficulty = Number(req.query['difficulty']) || 0
+  const exercice = ressources.get(exercice_id)
+  if (!exercice) {
+    res.status(404).send(`Exercice with ID '${exercice_id}' not found`)
+  } else if (!(exercice instanceof ExerciceRessource)) {
+    console.log(exercice)
+    res.status(400).send('Exercice is not an exercice ressource')
+  } else {
+    const questions = Array.from({ length: 3 }).map((_, i) => ({
+      parts: exercice.generateRandomQuestion(difficulty),
+    }))
+    res.json(questions)
+  }
+})
+
+type ValidateAnswerQuery = {
+  id: string
+  answer: string
+  inputs: string
+}
+
+app.get('/api/validate-answer', (req, res) => {
+  const { id, answer, inputs } = req.query as ValidateAnswerQuery
+  const fixedInputs = inputs.split(',').map((i) => Number(i))
+  const exercice = ressources.get(id)
+  if (!exercice) {
+    res.status(404).send(`Exercice with ID '${id}' not found`)
+  } else if (!(exercice instanceof ExerciceRessource)) {
+    res.status(400).send('Exercice is not an exercice ressource')
+  } else {
+    const isCorrect = exercice.validateAnswer({
+      id,
+      inputs: fixedInputs,
+      answer,
+    })
+    res.json({ isCorrect })
+  }
+})
