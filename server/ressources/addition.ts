@@ -1,33 +1,33 @@
-import { Difficulty, ExerciceRessource, QuestionPartType, Ressource, RessourceType } from '../defs'
+import { ExercicePartType, ExerciceRessource } from '../defs'
 
-const getAnswer = ([n1, n2]: number[]) => String(n1 + n2)
+export default new ExerciceRessource(
+  'addition',
+  null,
+  'Taking the sum of multiple numbers',
+  getAnswer,
+  generateInputs,
+  getExerciceParts
+)
 
-export default new ExerciceRessource('addition', null, 'Taking the sum of multiple numbers', [
-  {
-    id: 'basic',
-    getAnswer,
-    generate: (difficulty: Difficulty) => {
-      const difficultyRanges = {
-        0: [1, 10],
-        1: [10, 1e2],
-        2: [1e2, 1e3],
-        3: [1e5, 1e10],
-      }
-      const range = difficultyRanges[difficulty]
-      const [n1, n2] = [range, range].map((r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0])
-      return [n1, n2]
+function getAnswer([n1, n2]: number[]) {
+  return String(n1 + n2)
+}
+
+function generateInputs() {
+  const range = [1, 10]
+  const [n1, n2] = [range, range].map((r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0])
+  return [n1, n2]
+}
+
+function getExerciceParts(inputs: number[]) {
+  const [n1, n2] = inputs
+  return [
+    {
+      type: ExercicePartType.Text,
+      text: n1 + ' + ' + n2 + ' = '
     },
-    format: (inputs: number[]) => {
-      const [n1, n2] = inputs
-      return [
-        {
-          type: QuestionPartType.Text,
-          text: n1 + ' + ' + n2 + ' = ',
-        },
-        {
-          type: QuestionPartType.Input,
-        },
-      ]
-    },
-  },
-])
+    {
+      type: ExercicePartType.Input
+    }
+  ]
+}

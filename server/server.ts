@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import fs from 'fs'
-import { ExerciceRessource, Ressource } from './defs'
+import { ExercicesRessource, Ressource } from './defs'
 
 const app = express()
 const PORT = 1230
@@ -9,10 +9,10 @@ const ressources = new Map<string, Ressource>()
 
 app.use(cors())
 
-function fetchSubjects() {
+async function fetchSubjects() {
   ressources.clear()
-  for (let file of fs.readdirSync('./ressources')) {
-    let data: Ressource = require('./ressources/' + file).default
+  for (const file of fs.readdirSync('./ressources')) {
+    const data: Ressource = (await import('./ressources/' + file)).default
     ressources.set(data.id, data)
   }
 }
@@ -27,19 +27,20 @@ app.get('/api/ressources', (req, res) => {
   res.json(Array.from(ressources.values()))
 })
 
-app.get('/api/get-exercice/:exercice_id', (req, res) => {
+
+app.get('/api/generate-exercices/:exercice_id', (req, res) => {
   const { exercice_id } = req.params
-  const difficulty = Number(req.query['difficulty']) || 0
+  const difficulty = 0
   const exercice = ressources.get(exercice_id)
   if (!exercice) {
     res.status(404).send(`Exercice with ID '${exercice_id}' not found`)
-  } else if (!(exercice instanceof ExerciceRessource)) {
+  } else if (!(exercice instanceof ExercicesRessource)) {
     console.log(exercice)
     res.status(400).send('Exercice is not an exercice ressource')
   } else {
-    const questions = Array.from({ length: 3 }).map((_, i) => ({
-      parts: exercice.generateRandomQuestion(difficulty),
-    }))
+    const questions = Array.from({ length: 3 }).map(() =>
+      exercice.generateRandomExercice(difficulty)
+    )
     res.json(questions)
   }
 })
@@ -47,22 +48,21 @@ app.get('/api/get-exercice/:exercice_id', (req, res) => {
 type ValidateAnswerQuery = {
   id: string
   answer: string
-  inputs: string
+  inputs: string[]
 }
 
 app.get('/api/validate-answer', (req, res) => {
-  const { id, answer, inputs } = req.query as ValidateAnswerQuery
-  const fixedInputs = inputs.split(',').map((i) => Number(i))
-  const exercice = ressources.get(id)
+  const { exercice_id, answer, inputs } = req.body as ValidateAnswerQuery
+  const exercice = ressources.get(exercice_id)
   if (!exercice) {
-    res.status(404).send(`Exercice with ID '${id}' not found`)
-  } else if (!(exercice instanceof ExerciceRessource)) {
+    res.status(404).send(`Exercice with ID '${exercice_id}' not found`)
+  } else if (!(exercice instanceof ExercicesRessource)) {
     res.status(400).send('Exercice is not an exercice ressource')
   } else {
     const isCorrect = exercice.validateAnswer({
-      id,
-      inputs: fixedInputs,
-      answer,
+      id:exercice_id,
+      inputs: inputs.map((input) => Number(input)),
+      answer
     })
     res.json({ isCorrect })
   }

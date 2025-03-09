@@ -1,97 +1,100 @@
-export enum Difficulty {
-  Easy = 0,
-  Medium = 1,
-  Hard = 2,
-  Evil = 3,
-}
-export enum QuestionPartType {
+export enum ExercicePartType {
   Text = 0,
-  Input = 1,
-}
-export enum RessourceType {
-  Exercice = 0,
-  Lesson = 1,
-}
-export type questionPart =
-  | { type: QuestionPartType.Input }
-  | {
-      type: QuestionPartType.Text
-      text: string
-    }
-export type Exercice = {
-  id: string
-  getAnswer: (inputs: number[]) => string
-  generate: (difficulty: Difficulty) => number[]
-  format: (inputs: number[]) => questionPart[]
+  Input = 1
 }
 
-const idToName = (id: string) =>
-  id
+export enum RessourceType {
+  Exercice = 0,
+  Lesson = 1
+}
+
+export type exercicePart =
+  | { type: ExercicePartType.Input }
+  | {
+      type: ExercicePartType.Text
+      text: string
+    }
+
+export type Exercice = {
+  exerciceID: string
+  getAnswer: (inputs: number[]) => string
+  generateInputs: () => number[]
+  getExerciceParts: (inputs: number[]) => exercicePart[]
+}
+
+export function idToName(id: string) {
+  return id
     .split(' ')
     .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(' ')
+}
 
 export class Ressource {
   constructor(
     public type: RessourceType,
-    public id: string,
+    public ressourceID: string,
     public name: string | null,
-    public description: string,
+    public description: string
   ) {}
   toJSON() {
     return {
       type: this.type,
-      id: this.id,
+      ressourceID: this.ressourceID,
       name: this.name,
-      description: this.description,
+      description: this.description
     }
   }
 }
 
-export class ExerciceRessource extends Ressource {
+type ExerciceParams = {
+  id: string
+  desc: string
+  getAnswer: (inputs: number[]) => string
+  generateInputs: (difficulty?: Difficulty) => number[]
+  getExerciceParts: (inputs: number[]) => { type: ExercicePartType; text?: string }[]
+}
+
+class ExerciceResource {
   constructor(
     public id: string,
-    public name: string | null,
-    public description: string,
-    public exercices: Exercice[],
-  ) {
-    super(RessourceType.Exercice, id, name, description)
-    this.name = this.name || idToName(this.id)
+    public category: string | null,
+    public desc: string,
+    public getAnswer: (inputs: number[]) => string,
+    public generateInputs: () => number[],
+    public getExerciceParts: (inputs: number[]) => { type: ExercicePartType; text?: string }[]
+  ) {}
+
+  generate() {
+    const inputs = this.generateInputs(0)
+
+    return {
+      exerciceID: exercice.exerciceID,
+      seed: questionInputs,
+      parts: exercice.getExerciceParts(questionInputs)
+    }
   }
-  getExercice(id: string) {
-    return this.exercices.find((exercice) => exercice.id === id)
-  }
-  getRandomExercice() {
-    return this.exercices[Math.floor(Math.random() * this.exercices.length)]
-  }
-  generateRandomInputs({ exerciceId, difficulty }: { exerciceId: string; difficulty: Difficulty }) {
-    const exercice = this.getExercice(exerciceId)!
-    const questionInputs = exercice.generate(difficulty)
-    return questionInputs
-  }
-  generateRandomQuestion(difficulty: Difficulty, exerciceId?: string) {
-    const exercice = exerciceId ? this.getExercice(exerciceId)! : this.getRandomExercice()
-    const questionInputs = this.generateRandomInputs({
-      exerciceId: exercice.id,
-      difficulty,
-    })
-    const question = exercice.format(questionInputs)
-    return question
-  }
-  validateAnswer({ id, inputs, answer }: { id: string; inputs: number[]; answer: string }) {
-    const question = this.exercices.find((q) => q.id === id)!
-    return question.getAnswer(params) == answer
+  validateAnswer({
+    exerciceID,
+    inputs,
+    answer
+  }: {
+    exerciceID: string
+    inputs: number[]
+    answer: string
+  }) {
+    const exercice = this.exercices.find((q) => q.exerciceID === exerciceID)!
+    return exercice.getAnswer(inputs) == answer
   }
 }
 
 export class LessonRessource extends Ressource {
   constructor(
-    public id: string,
+    public ressourceID: string,
     public name: string | null,
     public description: string,
-    public content: string,
+    public content: string
   ) {
-    super(RessourceType.Exercice, id, name, description)
-    this.name = this.name || idToName(this.id)
+    super(RessourceType.Exercice, ressourceID, name, description)
+    this.name = this.name || idToName(this.ressourceID)
   }
 }
