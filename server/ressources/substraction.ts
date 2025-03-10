@@ -9,8 +9,19 @@ export default new ExerciceResource(
   getExerciceParts
 )
 
-function validateAnswers([n1, n2]: number[], [answer]: string[]) {
-  return [String(n1 - n2) == answer]
+function validateAnswers(
+  [n1, n2]: number[],
+  [answer1]: {
+    id: string
+    value: string
+  }[]
+) {
+  return [
+    {
+      id: answer1.id,
+      correct: String(answer1.value) === (n1 - n2).toString()
+    }
+  ]
 }
 
 function generateInputs() {
@@ -27,7 +38,8 @@ function getExerciceParts(inputs: number[]): exercicePart[] {
       text: n1 + ' - ' + n2 + ' = '
     },
     {
-      type: ExercicePartType.Input
+      type: ExercicePartType.Input,
+      id: 'answer'
     }
   ]
 }

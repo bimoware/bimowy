@@ -45,18 +45,26 @@ app.get('/api/generate-exercices/:exercice_id', (req, res) => {
 
 type ValidateAnswerQuery = {
   id: string
-  answers: string[]
+  answers: {
+    id: string
+    value: string
+  }[]
   seed: number[]
 }
 
 app.get('/api/validate-answers', (req, res) => {
-  const { id, answers, seed } = req.body as ValidateAnswerQuery
+  let { id, answers, seed } = req.query as unknown as ValidateAnswerQuery
+  answers = JSON.parse(answers as unknown as string)
+  seed = JSON.parse(seed as unknown as string)
+
   const exercice = exercices.get(id)
   if (!exercice) {
     res.status(404).send(`Exercice with ID '${id}' not found`)
   } else if (!(exercice instanceof ExerciceResource)) {
     res.status(400).send('Exercice is not an exercice ressource')
   } else {
-    res.json(exercice.validateAnswers(seed, answers))
+    const correction = exercice.validateAnswers(seed, answers)
+    console.log(correction)
+    res.json(correction)
   }
 })
