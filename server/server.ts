@@ -1,19 +1,20 @@
 import express from 'express'
 import cors from 'cors'
 import fs from 'fs'
-import { ExercicesRessource, Ressource } from './defs'
+import { ExerciceResource } from './defs'
 
 const app = express()
 const PORT = 1230
-const ressources = new Map<string, Ressource>()
+const exercices = new Map<string, ExerciceResource>()
 
 app.use(cors())
 
 async function fetchSubjects() {
-  ressources.clear()
+  exercices.clear()
   for (const file of fs.readdirSync('./ressources')) {
-    const data: Ressource = (await import('./ressources/' + file)).default
-    ressources.set(data.id, data)
+    const data: ExerciceResource = (await import('./ressources/' + file)).default
+    if (exercices.has(data.id)) throw new Error(`Duplicate subject with ID '${data.id}'`)
+    exercices.set(data.id, data)
   }
 }
 
@@ -24,46 +25,38 @@ app.listen(PORT, () => {
 })
 
 app.get('/api/ressources', (req, res) => {
-  res.json(Array.from(ressources.values()))
+  res.json(Array.from(exercices.values()))
 })
-
 
 app.get('/api/generate-exercices/:exercice_id', (req, res) => {
   const { exercice_id } = req.params
-  const difficulty = 0
-  const exercice = ressources.get(exercice_id)
+  const n = Number(req.query.n) || 5
+  const exercice = exercices.get(exercice_id)
   if (!exercice) {
     res.status(404).send(`Exercice with ID '${exercice_id}' not found`)
-  } else if (!(exercice instanceof ExercicesRessource)) {
+  } else if (!(exercice instanceof ExerciceResource)) {
     console.log(exercice)
     res.status(400).send('Exercice is not an exercice ressource')
   } else {
-    const questions = Array.from({ length: 3 }).map(() =>
-      exercice.generateRandomExercice(difficulty)
-    )
+    const questions = Array.from({ length: n }).map(() => exercice.generate())
     res.json(questions)
   }
 })
 
 type ValidateAnswerQuery = {
   id: string
-  answer: string
-  inputs: string[]
+  answers: string[]
+  seed: number[]
 }
 
-app.get('/api/validate-answer', (req, res) => {
-  const { exercice_id, answer, inputs } = req.body as ValidateAnswerQuery
-  const exercice = ressources.get(exercice_id)
+app.get('/api/validate-answers', (req, res) => {
+  const { id, answers, seed } = req.body as ValidateAnswerQuery
+  const exercice = exercices.get(id)
   if (!exercice) {
-    res.status(404).send(`Exercice with ID '${exercice_id}' not found`)
-  } else if (!(exercice instanceof ExercicesRessource)) {
+    res.status(404).send(`Exercice with ID '${id}' not found`)
+  } else if (!(exercice instanceof ExerciceResource)) {
     res.status(400).send('Exercice is not an exercice ressource')
   } else {
-    const isCorrect = exercice.validateAnswer({
-      id:exercice_id,
-      inputs: inputs.map((input) => Number(input)),
-      answer
-    })
-    res.json({ isCorrect })
+    res.json(exercice.validateAnswers(seed, answers))
   }
 })

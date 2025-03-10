@@ -1,16 +1,16 @@
-import { ExercicePartType, ExerciceRessource } from '../defs'
+import { exercicePart, ExercicePartType, ExerciceResource } from '../defs'
 
-export default new ExerciceRessource(
+export default new ExerciceResource(
   'addition',
   null,
   'Taking the sum of multiple numbers',
-  getAnswer,
+  validateAnswers,
   generateInputs,
   getExerciceParts
 )
 
-function getAnswer([n1, n2]: number[]) {
-  return String(n1 + n2)
+function validateAnswers([n1, n2]: number[], [answer]: string[]) {
+  return [String(n1 + n2) == answer]
 }
 
 function generateInputs() {
@@ -19,7 +19,7 @@ function generateInputs() {
   return [n1, n2]
 }
 
-function getExerciceParts(inputs: number[]) {
+function getExerciceParts(inputs: number[]): exercicePart[] {
   const [n1, n2] = inputs
   return [
     {

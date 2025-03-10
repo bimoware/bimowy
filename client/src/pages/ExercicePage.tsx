@@ -17,7 +17,6 @@ export default function ExercicePage() {
   const [pageState, setPageState] = useState<pageState>('not-started-yet')
   const [questions, setQuestionsData] = useState<exerciceData>([])
   const [currentInputs, setCurrentInputs] = useState<{ [key: string]: string }>({})
-  const [exerciceCorrections, setExerciceCorrections] = useState([])
 
   useEffect(() => {
     fetch(`http://localhost:1230/api/generate-exercices/${exercice_id}`)
@@ -34,17 +33,14 @@ export default function ExercicePage() {
     } else if (pageState === 'correcting') {
       const question = questions[questionIndex]
 
+      const url = new URL('http://localhost:1230/api/validate-answers');
 
-      fetch(`http://localhost:1230/api/validate-answers`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: {
-          exercice_id: question.exercice_id,
+      url.searchParams.append('id', question.exercice_id);
+      url.searchParams.append('answers', JSON.stringify(Object.values(currentInputs)));
+      url.searchParams.append('seed', question.seed);
 
-        }
-      })
+
+      fetch(url).then((res) => res.json()).then(console.log)
 
     }
   }, [pageState])
@@ -66,8 +62,8 @@ export default function ExercicePage() {
             questions[questionIndex].parts.map((questionPart, i) => {
               switch (questionPart.type) {
                 case ExercicePartType.Input:
-                  let id = `input-${questionIndex}-${i}`
-                  let currentInput = currentInputs[id]
+                  const id = `input-${questionIndex}-${i}`
+                  const currentInput = currentInputs[id]
                   return (
                     <input
                       key={id}
