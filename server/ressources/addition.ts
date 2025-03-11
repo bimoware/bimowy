@@ -4,6 +4,7 @@ export default new ExerciceResource(
   'addition',
   null,
   'Taking the sum of multiple numbers',
+  ["basic-arithmetic"],
   validateAnswers,
   generateInputs,
   getExerciceParts
