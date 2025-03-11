@@ -22,17 +22,30 @@ export default function ExercicePage() {
 
   function handleEnter() {
     if (pageState === 'not-started-yet') return setPageState('ongoing')
-    if (pageState === 'ongoing') return setPageState('correcting')
+    if (pageState === 'ongoing') {
+      playCorrect()
+      return setPageState('correcting')
+    }
     if (pageState === 'corrected') {
+      const allCorrect = exercices[exerciceIndex].parts
+        .filter(part => part.type === ExercicePartType.Input)
+        .every(part => part.correct);
+
+      if (!allCorrect) return setPageState('ongoing')
+
+
       if (exerciceIndex === exercices.length - 1) return setPageState('finished')
       setPageState('ongoing')
       setExerciceIndex((prev) => prev + 1)
     }
   }
+
+  // Auto Focus
   useEffect(() => {
     firstInputToFocus.current?.focus();
   });
 
+  // Handle enter
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Enter") return;
@@ -43,12 +56,14 @@ export default function ExercicePage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [pageState]);
 
+  // Generate exercices
   useEffect(() => {
     fetch(`http://localhost:1230/api/generate-exercices/${exercice_id}`)
       .then((res) => res.json())
       .then((exerciceParts) => setExercices(exerciceParts))
   }, [])
 
+  // Correcting
   useEffect(() => {
     if (pageState === 'correcting') {
       const exercice = exercices[exerciceIndex]
@@ -91,8 +106,8 @@ export default function ExercicePage() {
       if (!exercices.length) return <LoadingIcon />
       return (
         <div className='flex flex-col gap-4'>
-          <p className='text-sm italic'>
-            exercice {exerciceIndex + 1}/{exercices.length}
+          <p className=''>
+            Exercice {exerciceIndex + 1}/{exercices.length}
           </p>
           {!exercices[exerciceIndex] ? (
             <LoadingIcon />
@@ -109,10 +124,12 @@ export default function ExercicePage() {
             />)
           )}
           <Buttons
+            currentExercice={exercices[exerciceIndex]}
             pageState={pageState}
             exerciceIndex={exerciceIndex}
             exercicesLength={exercices.length}
             handleEnter={handleEnter}
+            setPageState={setPageState}
           />
         </div>
       )
@@ -120,16 +137,21 @@ export default function ExercicePage() {
       return <p>Finished.</p>
   }
 }
+
 export function Buttons({
+  currentExercice,
   pageState,
   exerciceIndex,
   exercicesLength,
-  handleEnter
+  handleEnter,
+  setPageState
 }: {
+  currentExercice: exerciceData
   pageState: pageState,
   exerciceIndex: number
   exercicesLength: number,
-  handleEnter: () => any
+  handleEnter: () => any,
+  setPageState: Dispatch<pageState>
 }) {
   switch (pageState) {
     case 'correcting':
@@ -138,11 +160,20 @@ export function Buttons({
       return <button onClick={handleEnter}>Confirm</button>
     case 'corrected':
       const lastIndex = exercicesLength - 1
-      if (exerciceIndex <= lastIndex) {
-        return <button onClick={handleEnter}>Next</button>
-      } else {
-        return <button onClick={handleEnter}>Finish</button>
-      }
+      const allCorrect = currentExercice.parts
+        .filter(part => part.type === ExercicePartType.Input)
+        .every(part => part.correct);
+
+      return <div className='flex gap-4'>
+        {
+          allCorrect
+            ? <></>
+            : <button onClick={() => setPageState('ongoing')}>
+              Retry
+            </button>
+        }
+        <button onClick={handleEnter}>{exerciceIndex <= lastIndex ? "Next" : "Finish"}</button>
+      </div>
   }
 }
 
@@ -167,7 +198,7 @@ export function ExercicePart({
   switch (exercicePart.type) {
     case ExercicePartType.Input:
       return <input
-        ref={firstInputToFocus.current ? undefined : firstInputToFocus}
+        ref={firstInputToFocus}
         type='text'
         value={exercicePart.value || ''}
         onChange={(e) => {
