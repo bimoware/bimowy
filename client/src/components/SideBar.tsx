@@ -2,11 +2,9 @@ import PageSection from './PageSection'
 import SideBarIcon from './SideBarIcon'
 
 import testIcon from '/svgs/test.svg'
-import dashboardIcon from '/svgs/dashboard.svg'
 import subjectIcon from '/svgs/subject.svg'
 
 import TestPage from '../pages/TestPage'
-import DashboardPage from '../pages/DashboardPage'
 import SubjectsPage from '../pages/RessourcesPage'
 
 const routes = [
@@ -15,11 +13,6 @@ const routes = [
     element: <TestPage />,
     icon: testIcon,
     href: '/',
-  },
-  {
-    id: 'dashboard',
-    element: <DashboardPage />,
-    icon: dashboardIcon,
   },
   {
     id: 'subjects',

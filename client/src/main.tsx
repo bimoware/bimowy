@@ -7,7 +7,6 @@ import './style.css'
 import SideBar from './components/SideBar.tsx'
 import PageSection from './components/PageSection.tsx'
 
-import DashboardPage from './pages/DashboardPage.tsx'
 import TestPage from './pages/TestPage.tsx'
 import ExercicePage from './pages/ExercicePage.tsx'
 import RessourcesPage from './pages/RessourcesPage.tsx'
@@ -21,7 +20,6 @@ ReactDOM.createRoot(root).render(
       <PageSection className='w-full p-6'>
         <Routes>
           <Route index element={<TestPage />} />
-          <Route path='dashboard' element={<DashboardPage />} />
           <Route path='subjects' element={<RessourcesPage />} />
           <Route path='exercice'>
             <Route path=':exercice_id' element={<ExercicePage />} />
