@@ -15,8 +15,18 @@ body {
 }
 
 button {
-  @apply bg-indigo-800 hover:bg-indigo-700/50
+  @apply bg-indigo-800
+  hover:shadow-md shadow-black/50 transition-all
   w-fit px-3 py-1.5
-  cursor-pointer hover:scale-105 transition-transform
+  cursor-pointer hover:scale-105
   rounded-xl text-big;
+}
+
+button:disabled,
+input:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+/* Fix size of input */
+input {
+  @apply w-fit;
 }
