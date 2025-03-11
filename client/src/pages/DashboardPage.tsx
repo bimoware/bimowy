@@ -92,7 +92,7 @@ export function Card({ title, content, href }: CardProps) {
     <ConditionalHref href={href}>
       <div
         className={`w-70 bg-neutral-700/20 p-4 rounded-xl
-      flex flex-col
+      flex flex-col self-center h-fit
       transition cursor-pointer
       hover:ring-2 hover:scale-105
       ${randomRotationClass.join(' ')}
@@ -101,7 +101,7 @@ export function Card({ title, content, href }: CardProps) {
       select-none`}
       >
         <h4 className='self-center text-big'>{title}</h4>
-        <span>{content}</span>
+        <span className='text-basic'>{content}</span>
       </div>
     </ConditionalHref>
   )
