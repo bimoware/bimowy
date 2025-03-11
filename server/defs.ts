@@ -16,12 +16,25 @@ export type exercicePart =
       correctOnFirstTry?: boolean
     }
 
+export type ExerciceTags =  
+| "basic-arithmetic"
+| "geometry"
+| "trigonometry"
+| "algebra"
+| "calculus"
+| "statistics"
+| "probability"
+| "multivariable-calculus"
+
+
+
 export type Correction = { id: string; correct: boolean }
 export class ExerciceResource {
   constructor(
     public id: string,
     public name: string | null,
     public desc: string,
+    public tags: ExerciceTags[],
     public validateAnswers: (
       inputs: number[],
       answers: {
