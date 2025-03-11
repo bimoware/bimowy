@@ -105,8 +105,8 @@ export default function ExercicePage() {
     case 'corrected':
       if (!exercices.length) return <LoadingIcon />
       return (
-        <div className='flex flex-col gap-4'>
-          <p className=''>
+        <div className='flex flex-col gap-4 text-big'>
+          <p>
             Exercice {exerciceIndex + 1}/{exercices.length}
           </p>
           {!exercices[exerciceIndex] ? (
@@ -134,7 +134,8 @@ export default function ExercicePage() {
         </div>
       )
     case 'finished':
-      return <p>Finished.</p>
+      console.log(exercices)
+      return <p>Finished. GG</p>
   }
 }
 
