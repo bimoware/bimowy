@@ -4,6 +4,7 @@ export default new ExerciceResource(
   'substraction',
   null,
   'Taking the difference of two numbers',
+  ["basic-arithmetic"],
   validateAnswers,
   generateInputs,
   getExerciceParts
