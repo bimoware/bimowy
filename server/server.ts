@@ -64,7 +64,6 @@ app.get('/api/validate-answers', (req, res) => {
     res.status(400).send('Exercice is not an exercice ressource')
   } else {
     const correction = exercice.validateAnswers(seed, answers)
-    console.log(correction)
     res.json(correction)
   }
 })
