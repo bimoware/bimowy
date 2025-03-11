@@ -11,5 +11,6 @@
   "proseWrap": "preserve",
   "htmlWhitespaceSensitivity": "css",
   "quoteProps": "as-needed",
-  "embeddedLanguageFormatting": "auto"
+  "embeddedLanguageFormatting": "auto",
+  "trimTrailingWhitespace": true
 }
