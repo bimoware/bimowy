@@ -4,7 +4,7 @@ import fs from 'fs'
 import { ExerciceResource } from './defs'
 
 const app = express()
-const PORT = 1230
+const PORT = process.env.PORT || 8000;
 const exercices = new Map<string, ExerciceResource>()
 
 app.use(cors())
@@ -24,11 +24,11 @@ app.listen(PORT, () => {
   console.log(`🌐 Server running on port http://localhost:${PORT}`)
 })
 
-app.get('/api/ressources', (req, res) => {
+app.get('/ressources', (req, res) => {
   res.json(Array.from(exercices.values()))
 })
 
-app.get('/api/generate-exercices/:exercice_id', (req, res) => {
+app.get('/generate-exercices/:exercice_id', (req, res) => {
   const { exercice_id } = req.params
   const n = Number(req.query.n) || 5
   const exercice = exercices.get(exercice_id)
@@ -52,7 +52,7 @@ type ValidateAnswerQuery = {
   seed: number[]
 }
 
-app.get('/api/validate-answers', (req, res) => {
+app.get('/validate-answers', (req, res) => {
   let { id, answers, seed } = req.query as unknown as ValidateAnswerQuery
   answers = JSON.parse(answers as unknown as string)
   seed = JSON.parse(seed as unknown as string)

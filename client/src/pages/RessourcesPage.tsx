@@ -12,7 +12,7 @@ export default function RessourcesPage() {
   const [data, setData] = useState<subject[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:1230/api/ressources')
+    fetch('/api/ressources')
       .then((res) => res.json())
       .then((data: subject[]) => setData(data))
   }, [])

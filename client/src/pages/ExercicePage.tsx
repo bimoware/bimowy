@@ -58,7 +58,7 @@ export default function ExercicePage() {
 
   // Generate exercices
   useEffect(() => {
-    fetch(`http://localhost:1230/api/generate-exercices/${exercice_id}`)
+    fetch(`/api/generate-exercices/${exercice_id}`)
       .then((res) => res.json())
       .then((exerciceParts) => setExercices(exerciceParts))
   }, [])
@@ -67,7 +67,7 @@ export default function ExercicePage() {
   useEffect(() => {
     if (pageState === 'correcting') {
       const exercice = exercices[exerciceIndex]
-      const url = new URL('http://localhost:1230/api/validate-answers');
+      const url = new URL('/api/validate-answers', window.location.origin);
       const currentInputs = exercice.parts
         .filter((part) => part.type === ExercicePartType.Input)
         .map((part) => ({ id: part.id, value: part.value }))
