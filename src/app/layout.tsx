@@ -22,16 +22,16 @@ export default function RootLayout({
 }
 
 
-export function Body({ children }: { children: ReactNode }) {
+function Body({ children }: { children: ReactNode }) {
   return <Section id="body" className="w-full p-6">{children}</Section>
 }
-export function Section({ id, className, children }: { id: string, className?: string, children: React.ReactNode }) {
+function Section({ id, className, children }: { id: string, className?: string, children: React.ReactNode }) {
   return <div id={id} className={`bg-neutral-900 m-4 rounded-3xl p-2 ${className}`}>
     {children}
   </div>
 }
 
-export function SideBar() {
+function SideBar() {
   return <Section id="sidebar" className="flex flex-col items-center">
     {
       [
@@ -44,7 +44,7 @@ export function SideBar() {
   </Section>
 }
 
-export function SideBarIcon({ icon, path, label }: { icon: string, path: string, label: string }) {
+function SideBarIcon({ icon, path, label }: { icon: string, path: string, label: string }) {
   return <Link href={path} className="aspect-square rounded-xl 
   hover:bg-neutral-50/5 hover:scale-105
   p-2 m-1">
