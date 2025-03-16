@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./style.css";
+import Link from "next/link";
+import Image from "next/image";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,8 +17,43 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <SideBar />
+        <Body>
+          {children}
+        </Body>
       </body>
     </html>
   );
+}
+
+
+export function Body({ children }: { children: ReactNode }) {
+  return <Section id="body" className="w-full p-6">{children}</Section>
+}
+export function Section({ id, className, children }: { id: string, className?: string, children: React.ReactNode }) {
+  return <div id={id} className={`bg-neutral-900 m-4 rounded-3xl p-2 ${className}`}>
+    {children}
+  </div>
+}
+
+export function SideBar() {
+  return <Section id="sidebar" className="flex flex-col items-center">
+    {
+      [
+        { id: "home", data: { icon: "/svgs/home.svg", path: "/", label: "Home" } },
+        { id: 'test', data: { icon: "/svgs/test.svg", path: "/test", label: "Test" } },
+        { id: 'ex', data: { icon: "/svgs/exercices.svg", path: "/exercices", label: "Exercices" } }
+      ]
+        .map(btn => <SideBarIcon {...btn.data} key={btn.id} />)
+    }
+  </Section>
+}
+
+export function SideBarIcon({ icon, path, label }: { icon: string, path: string, label: string }) {
+  return <Link href={path} className="aspect-square rounded-xl 
+  hover:bg-neutral-50/5 hover:scale-105
+  p-2 m-1">
+    <Image src={icon} alt={label} layout="intrinsic" width={40} height={40} />
+  </Link>
+
 }
