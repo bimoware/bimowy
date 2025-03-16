@@ -5,7 +5,7 @@
 	"arrowParens": "always",
 	"tabWidth": 4,
 	"useTabs": true,
-	"printWidth": 100,
+	"printWidth": 80,
 	"bracketSpacing": true,
 	"jsxSingleQuote": true,
 	"endOfLine": "lf",
