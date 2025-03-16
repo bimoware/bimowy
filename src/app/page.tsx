@@ -35,5 +35,5 @@ export function SideBar() {
 }
 
 export function Body() {
-  return <Section id="body" className="w-full">body</Section>
+  return <Section id="body" className="w-full p-6">[Body]</Section>
 }
