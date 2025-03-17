@@ -35,7 +35,7 @@ interface CardProps {
     href: string
 }
 
-export function Card({ name, content, href }: CardProps) {
+function Card({ name, content, href }: CardProps) {
 
     const randomFrom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)]
     const randomRotationClass = useMemo(() => {
