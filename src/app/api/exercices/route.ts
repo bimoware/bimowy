@@ -1,3 +1,9 @@
+import { NextResponse } from "next/server";
+import db from './exercices_db';
+
+// To handle a GET request to /api
 export async function GET() {
-	return Response.json({ ok: true })
+  // Do whatever you want
+  return NextResponse.json(db, { status: 200 });
 }
+
