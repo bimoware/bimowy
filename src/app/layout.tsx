@@ -48,7 +48,7 @@ function SideBarIcon({ icon, path, label }: { icon: string, path: string, label:
   return <Link href={path} className="aspect-square rounded-xl 
   hover:bg-neutral-50/5 hover:scale-105
   p-2 m-1">
-    <Image src={icon} alt={label} layout="intrinsic" width={40} height={40} />
+    <Image src={icon} alt={label} width={40} height={40} />
   </Link>
 
 }
