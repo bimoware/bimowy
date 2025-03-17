@@ -30,3 +30,7 @@ input:disabled {
 input {
 	@apply w-fit;
 }
+
+h1 {
+	@apply text-3xl font-bold tracking-wider
+}
