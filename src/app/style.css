@@ -1,17 +1,13 @@
-/* @import url(https://db.onlinewebfonts.com/c/6ab539c6fc2b21ff0b149b3d06d7f97c?family=Minecraft+Regular); */
-@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
 @import 'tailwindcss';
 
 @theme {
-	--font-mono: monospace, 'Minecraft Regular';
-	--font-main: 'Outfit';
 	--text-basic: 1rem;
 	--text-big: 1.5rem;
 	--text-title: 2rem;
 }
 
 body {
-	@apply bg-neutral-950 text-white font-main w-[100vw] h-[100vh] overflow-clip flex;
+	@apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
 }
 
 button {

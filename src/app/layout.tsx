@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ReactNode } from "react";
-
+import { Outfit } from 'next/font/google'
+ 
+const outfit = Outfit({
+  subsets: ['latin'],
+})
+ 
 import "./style.css";
 
 export default function RootLayout({
@@ -10,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={outfit.className}>
       <body>
         <SideBar />
         <Body>
