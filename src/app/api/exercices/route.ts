@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import db from './exercices_db';
+import db from './db';
 
 // To handle a GET request to /api
 export async function GET() {
