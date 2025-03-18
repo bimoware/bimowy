@@ -5,6 +5,16 @@ A Khan Academy inspired project to help everyone be able to train in any math do
 
 https://github.com/user-attachments/assets/87d8345b-b909-48c1-8753-d32c8538f94f
 
+## ⭐ Star History (i live for stars)
+
+<a href="https://www.star-history.com/#bimoware/bimowy&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date" />
+ </picture>
+</a>
+
 ## 📁 File Structure
 
 ```plaintext
