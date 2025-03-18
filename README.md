@@ -1,7 +1,11 @@
-# Bimowy
+# ✨ Bimowy 
 A Khan Academy inspired project to help everyone be able to train in any math domain they want to.
 
-## File Structure
+## 🎥 Demo
+
+https://github.com/user-attachments/assets/87d8345b-b909-48c1-8753-d32c8538f94f
+
+## 📁 File Structure
 
 ```plaintext
 src/
@@ -25,7 +29,7 @@ src/
    └─ style.css                # Global styles for the app (Tailwindcss)
 ```
 
-## Setup
+## ⚙️ Setup
 
 1. Clone the repository:
    ```bash
@@ -45,7 +49,7 @@ src/
 
 4. Open your browser and visit `http://localhost:3000`.
 
-## API Endpoints
+## 🛠️ API Endpoints
 
 ### /api/exercices
 - Description: Fetch all exercices.
@@ -71,10 +75,10 @@ src/
     - Returns the validation result, which could include whether the answers are correct or not.
 
 
-## Contributing
+## 🤝 Contributing
 
 Feel free to fork the repository and create pull requests. Please make sure to make meaningful commits. Performance or bug fixes are welcome. Random commits will not be accepted.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
