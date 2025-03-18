@@ -1,13 +1,17 @@
-# ✨ Bimowy 
+# ⚠️ Project is still in work. Don't expect it to work for now. ⚠️
+
+# ✨ Bimowy
+
 A Khan Academy inspired project to help everyone be able to train in any math domain they want to.
+
+## ⭐ Star History (i live for stars) (yes even thought it's not working yet)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy#gh-light-mode-only)](https://star-history.com/#bimoware/bimowy#gh-light-mode-only)
+[![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy&theme=dark#gh-dark-mode-only)](https://star-history.com/#bimoware/bimowy#gh-dark-mode-only)
 
 ## 🎥 Demo
 
 https://github.com/user-attachments/assets/87d8345b-b909-48c1-8753-d32c8538f94f
-
-## ⭐ Star History (i live for stars)
-
-[![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date)](https://www.star-history.com/#bimoware/bimowy&Date)
 
 ## 📁 File Structure
 
@@ -36,48 +40,53 @@ src/
 ## ⚙️ Setup
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/bimoware/bimowy
-   cd bimowy
-   ```
+
+    ```bash
+    git clone https://github.com/bimoware/bimowy
+    cd bimowy
+    ```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
+
+    ```bash
+    npm install
+    ```
 
 3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+
+    ```bash
+    npm run dev
+    ```
 
 4. Open your browser and visit `http://localhost:3000`.
 
 ## 🛠️ API Endpoints
 
 ### /api/exercices
-- Description: Fetch all exercices.
-- Method: `GET`
+
+-   Description: Fetch all exercices.
+-   Method: `GET`
 
 ### /api/generate
-- Description: Generate (5 by default) exercices for a specific exercice.
-- Method: `POST`
-- Body:
-    - `exercice_id`: string (ID of the exercice to generate questions for)
-    - `n`: number (Optional) The number of questions to generate (default is 5)
-- Response:
-    - Returns an array of generated questions for the specified exercice.
+
+-   Description: Generate (5 by default) exercices for a specific exercice.
+-   Method: `POST`
+-   Body:
+    -   `exercice_id`: string (ID of the exercice to generate questions for)
+    -   `n`: number (Optional) The number of questions to generate (default is 5)
+-   Response:
+    -   Returns an array of generated questions for the specified exercice.
 
 ### /api/validate
-- Description: Validate user input for exercices.
-- Method: `POST`
-- Body:
-    - `exercice_id`: string (ID of the exercice to validate answers for)
-    - `answers`: array (Answers submitted for the exercice)
-    - `seed`: string or number (Seed used to generate the exercice, may vary for each user or session)
-- Response:
-    - Returns the validation result, which could include whether the answers are correct or not.
 
+-   Description: Validate user input for exercices.
+-   Method: `POST`
+-   Body:
+    -   `exercice_id`: string (ID of the exercice to validate answers for)
+    -   `answers`: array (Answers submitted for the exercice)
+    -   `seed`: string or number (Seed used to generate the exercice, may vary for each user or session)
+-   Response:
+    -   Returns the validation result, which could include whether the answers are correct or not.
 
 ## 🤝 Contributing
 
