@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bimowy
+A Khan Academy inspired project to help everyone be able to train in any math domain they want to.
 
-## Getting Started
+## File Structure
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```plaintext
+src/
+└─ app/
+   ├─ api/
+   │  ├─ exercices/
+   │  │  ├─ db.ts              # Database exercices
+   │  │  ├─ defs.ts            # Definitions and types for exercices
+   │  │  └─ route.ts           # API route for getting all exercices data
+   │  ├─ generate/
+   │  │  └─ route.ts           # API Route to generate an exercice from it's ID
+   │  └─ validate/
+   │     └─ route.ts           # API Route for validating an exercice's answers
+   ├─ exercices/
+   │  ├─ [exercice_id]/
+   │  │  └─ page.tsx           # Page for displaying a specific exercice
+   │  └─ page.tsx              # List page for exercices
+   ├─ layout.tsx               # Layout for the application
+   ├─ not-found.tsx            # Custom 404 page
+   ├─ page.tsx                 # Main page for the app
+   └─ style.css                # Global styles for the app (Tailwindcss)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/bimoware/bimowy
+   cd bimowy
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open your browser and visit `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### /api/exercices
+- Description: Fetch all exercices.
+- Method: `GET`
 
-## Deploy on Vercel
+### /api/generate
+- Description: Generate (5 by default) exercices for a specific exercice.
+- Method: `POST`
+- Body:
+    - `exercice_id`: string (ID of the exercice to generate questions for)
+    - `n`: number (Optional) The number of questions to generate (default is 5)
+- Response:
+    - Returns an array of generated questions for the specified exercice.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### /api/validate
+- Description: Validate user input for exercices.
+- Method: `POST`
+- Body:
+    - `exercice_id`: string (ID of the exercice to validate answers for)
+    - `answers`: array (Answers submitted for the exercice)
+    - `seed`: string or number (Seed used to generate the exercice, may vary for each user or session)
+- Response:
+    - Returns the validation result, which could include whether the answers are correct or not.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Contributing
+
+Feel free to fork the repository and create pull requests. Please make sure to make meaningful commits. Performance or bug fixes are welcome. Random commits will not be accepted.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
