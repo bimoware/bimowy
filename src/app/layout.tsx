@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ReactNode } from "react";
 import { Outfit } from 'next/font/google'
+import { ReactNode } from "react";
  
 const outfit = Outfit({
   subsets: ['latin'],
