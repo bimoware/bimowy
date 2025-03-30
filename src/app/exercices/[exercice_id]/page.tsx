@@ -97,9 +97,16 @@ export default function ExercicePage() {
       });
   }, [pageState, exerciceIndex, exercice_id, exercices]);
 
+
+  useEffect(() => {
+    if (pageState === 'finished') { console.log(exercices) };
+  }, [pageState, exercices]);
+
   switch (pageState) {
     case 'not-started-yet':
       return <button onClick={handleEnter}>Start</button>;
+    case 'finished':
+      return <p>Finished. GG</p>;
     case 'ongoing':
     case 'correcting':
     case 'corrected':
@@ -134,8 +141,6 @@ export default function ExercicePage() {
           />
         </div>
       );
-    case 'finished':
-      return <p>Finished. GG</p>;
     default:
       return null;
   }
@@ -168,16 +173,14 @@ const Buttons = memo(function Buttons({
         .every(part => part.correct);
       return (
         <div className="flex gap-4">
-          {!allCorrect && (
-            <button onClick={() => setPageState('ongoing')}>Retry</button>
-          )}
+          {!allCorrect && <button onClick={() => setPageState('ongoing')}>Retry</button>}
           <button onClick={handleEnter}>
             {exerciceIndex < lastIndex ? 'Next' : 'Finish'}
           </button>
         </div>
       );
     default:
-      return null;
+      return <></>;
   }
 });
 
@@ -223,8 +226,6 @@ const ExercicePart = memo(function ExercicePart({
     case ExercicePartType.Text:
       return <span key={`text-${exerciceIndex}-${i}`}>{exercicePart.text}</span>;
     default:
-      return null;
+      return <></>;
   }
 });
-
-export { Buttons, ExercicePart };
