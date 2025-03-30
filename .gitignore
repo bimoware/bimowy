@@ -43,3 +43,5 @@ next-env.d.ts
 .vercel
 
 .vscode
+
+/src/app/test
