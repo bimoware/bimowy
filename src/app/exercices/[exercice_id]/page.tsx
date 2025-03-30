@@ -20,6 +20,7 @@ export default function ExercicePage() {
   const [exercices, setExercices] = useState<ExerciceData[]>([]);
   const firstInputToFocus = useRef<HTMLInputElement>(null);
 
+  // Handle pageState when ENTER key is pressed
   const handleEnter = useCallback(() => {
     if (pageState === 'not-started-yet') return setPageState('ongoing');
     if (pageState === 'ongoing') return setPageState('correcting');
@@ -36,8 +37,11 @@ export default function ExercicePage() {
     }
   }, [pageState, exerciceIndex, exercices]);
 
+  // Focus on the first input everytime the pageState changes (and current is something lol)
   useEffect(() => {
-    firstInputToFocus.current?.focus();
+    if (!firstInputToFocus.current) return;
+    firstInputToFocus.current.focus();
+    firstInputToFocus.current.select();
   }, [pageState]);
 
   useEffect(() => {
