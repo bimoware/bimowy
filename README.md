@@ -1,4 +1,4 @@
-# ⚠️ Project is still in work. Don't expect it to work for now. ⚠️
+*⚠️ Project is still in work. Don't expect any login functionality or functionality ⚠️*
 
 # ✨ Bimowy
 
@@ -11,7 +11,7 @@ A Khan Academy inspired project to help everyone be able to train in any math do
 
 ## 🎥 Demo
 
-https://github.com/user-attachments/assets/87d8345b-b909-48c1-8753-d32c8538f94f
+https://github.com/user-attachments/assets/2164fda3-8869-4577-a07e-2e7be444c8f9
 
 ## 📁 File Structure
 
