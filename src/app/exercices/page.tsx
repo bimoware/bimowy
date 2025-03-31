@@ -23,25 +23,12 @@ export default function Page() {
 
   return (
     <div className="flex gap-5 flex-wrap">
-      {exercices.map((ex) => (
-        <Card
-          key={ex.id}
-          name={ex.name}
-          content={ex.desc}
-          href={`/exercices/${ex.id}`}
-        />
-      ))}
+      {exercices.map((exercice) => <Card key={exercice.id} exercice={exercice} />)}
     </div>
   );
 }
 
-interface CardProps {
-  name: string;
-  content: string;
-  href: string;
-}
-
-function Card({ name, content, href }: CardProps) {
+function Card({ exercice }: { exercice: ExerciceResource }) {
   const randomFrom = useCallback((arr: string[]) => arr[Math.floor(Math.random() * arr.length)], []);
 
   const randomRotationClass = useMemo(() => {
@@ -54,14 +41,20 @@ function Card({ name, content, href }: CardProps) {
   }, [randomFrom]);
 
   return (
-    <Link href={href} className={`w-70 h-fit bg-neutral-700/20 p-4 rounded-xl
-    flex flex-col self-center
+    <Link href={`/exercices/${exercice.id}`} className={`w-70 h-fit bg-neutral-700/20 p-4 rounded-xl
+    flex flex-col self-center gap-2
     transition select-none cursor-pointer
     hover:ring-2 hover:scale-105 hover:shadow-2xl
     shadow-black inset-shadow-xs inset-shadow-white/5
     ${randomRotationClass}`}>
-      <h4 className="self-center text-big">{name}</h4>
-      <span className="text-basic">{content}</span>
+      <h4 className="self-center text-big">{exercice.name}</h4>
+      <span className="text-basic">{exercice.desc}</span>
+      {/* Tags */}
+      <div className="flex gap-2">
+        {exercice.tags.map(tag => <span key={tag}
+          className="bg-main/30 px-2 py-1 rounded-full leading-4">{tag}</span>)}
+      </div>
+
     </Link>
   );
 }
