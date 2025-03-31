@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 				{ status: 404 }
 			)
 		} else {
-			const questions = Array.from({ length: n || 5 }).map(() =>
+			const questions = Array.from({ length: n || 3 }).map(() =>
 				exercice.generate()
 			)
 			return NextResponse.json(questions)
