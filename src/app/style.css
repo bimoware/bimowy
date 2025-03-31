@@ -4,6 +4,7 @@
 	--text-basic: 1rem;
 	--text-big: 1.5rem;
 	--text-title: 2rem;
+	--color-main: #372aac;
 }
 
 body {
@@ -11,7 +12,7 @@ body {
 }
 
 button {
-	@apply bg-indigo-800
+	@apply bg-main
   hover:shadow-md shadow-black/50 transition-all
   w-fit px-3 py-1.5
   cursor-pointer hover:scale-105
