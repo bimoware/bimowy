@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { ExerciceResource } from '../api/exercices/defs';
+import { ExerciceResource } from '../api/defs';
 import Link from 'next/link';
 
 export default function Page() {

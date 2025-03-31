@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import db from '../exercices/db'
-import { ExerciceResource } from '@/app/api/exercices/defs'
+import db from '../db'
+import { ExerciceResource } from '@/app/api/defs'
 
 // Handle a POST request to /api/validate-answers
 export async function POST(req: Request) {

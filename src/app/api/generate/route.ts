@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
-import db from '../exercices/db'
+import db from '../db'
 
 // To handle a POST request to /api/generate-exercices
 export async function POST(req: Request) {
 	try {
 		// Parse the incoming JSON body
 		const { exercice_id, n } = await req.json()
-		const exercice = db.find((ex) => ex.id === exercice_id) 
+		const exercice = db.find((ex) => ex.id === exercice_id)
 
 		if (!exercice) {
 			return NextResponse.json(

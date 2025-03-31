@@ -6,7 +6,7 @@ const db = [
 		'Addition',
 		'Taking the sum of multiple numbers',
 		['basic-arithmetic'],
-        // validateAnswers
+		// validateAnswers
 		function (
 			[n1, n2]: number[],
 			[answer1]: {
@@ -21,7 +21,7 @@ const db = [
 				}
 			]
 		},
-        // generateInputs
+		// generateInputs
 		function () {
 			const range = [1, 10]
 			const [n1, n2] = [range, range].map(
@@ -29,7 +29,7 @@ const db = [
 			)
 			return [n1, n2]
 		},
-        // getExerciceParts
+		// getExerciceParts
 		function (inputs: number[]): exercicePart[] {
 			const [n1, n2] = inputs
 			return [

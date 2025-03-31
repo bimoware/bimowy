@@ -2,7 +2,7 @@
 
 import React, { Dispatch, RefObject, useCallback, useEffect, useRef, useState, memo } from 'react';
 import { useParams } from 'next/navigation';
-import { Correction, exercicePart, ExercicePartType } from '@/app/api/exercices/defs';
+import { Correction, exercicePart, ExercicePartType } from '@/app/api/defs';
 
 type PageState = 'not-started-yet' | 'ongoing' | 'correcting' | 'corrected' | 'finished';
 
