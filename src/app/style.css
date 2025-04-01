@@ -1,22 +1,15 @@
 @import 'tailwindcss';
 
-@theme {
-	--text-basic: 1rem;
-	--text-big: 1.5rem;
-	--text-title: 2rem;
-	--color-main: #372aac;
-}
-
 body {
 	@apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
 }
 
 button {
-	@apply bg-main
+	@apply bg-indigo-800
   hover:shadow-md shadow-black/50 transition-all
   w-fit px-3 py-1.5
   cursor-pointer hover:scale-105
-  rounded-xl text-big;
+  rounded-xl text-2xl;
 }
 
 button:disabled,
@@ -30,4 +23,14 @@ input {
 
 h1 {
 	@apply text-3xl font-bold tracking-wider
+}
+
+
+@layer components {
+	.outline-incorrect {
+		@apply outline-2 outline-red-800;
+	}
+	.outline-correct {
+		@apply outline-2 outline-green-800;
+	}
 }
