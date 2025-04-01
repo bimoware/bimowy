@@ -45,17 +45,17 @@ function Card({ exercise }: { exercise: ExerciseResource }) {
 
   return (
     <Link href={`/exercises/${exercise.id}`} className={`w-70 h-fit bg-neutral-700/20 p-4 rounded-xl
-    flex flex-col self-center gap-2
+    flex flex-col self-center gap-0.5
     transition select-none cursor-pointer
     hover:ring-2 hover:scale-105 hover:shadow-2xl
-    shadow-black inset-shadow-xs inset-shadow-white/5
+    shadow-black/20 inset-shadow-xs inset-shadow-white/5
     ${randomRotationClass}`}>
-      <h4 className="self-center text-big">{exercise.name}</h4>
+      <h4 className="self-center text-2xl">{exercise.name}</h4>
       <span className="text-basic">{exercise.desc}</span>
       {/* Tags */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap mt-2">
         {exercise.tags.map(tag => <span key={tag}
-          className="bg-main/30 px-2 py-1 rounded-full leading-4">{tag}</span>)}
+          className="bg-white/10 px-2 py-1 rounded-full leading-4">{tag}</span>)}
       </div>
 
     </Link>
