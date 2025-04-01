@@ -1,22 +1,6 @@
-export enum ExercicePartType {
-	Text = 0,
-	Input = 1
-}
-
-export type exercicePart =
-	| {
-			type: ExercicePartType.Text
-			text: string
-	  }
-	| {
-			type: ExercicePartType.Input
-			id: string
-			value?: string
-			correct?: boolean
-			correctOnFirstTry?: boolean
-	  }
-
-export type ExerciceTags =
+export type ExerciseInput = { id: string; type: string }
+export type Correction = { id: string; is_correct: boolean }
+export type ExerciseTags =
 	| 'basic-arithmetic'
 	| 'geometry'
 	| 'trigonometry'
@@ -25,14 +9,20 @@ export type ExerciceTags =
 	| 'statistics'
 	| 'probability'
 	| 'multivariable-calculus'
+	
+export type GeneratedExercise = {
+    exercise_id: string;
+    seed: number[];
+    context: string[];
+    inputs: ExerciseInput[];
+}
 
-export type Correction = { id: string; correct: boolean }
-export class ExerciceResource {
+export class ExerciseResource {
 	constructor(
 		public id: string,
 		public name: string,
 		public desc: string,
-		public tags: ExerciceTags[],
+		public tags: ExerciseTags[],
 		public validateAnswers: (
 			inputs: number[],
 			answers: {
@@ -40,16 +30,20 @@ export class ExerciceResource {
 				value: string
 			}[]
 		) => Correction[],
-		public generateInputs: () => number[],
-		public getExerciceParts: (inputs: number[]) => exercicePart[]
+		public generateSeed: () => number[],
+		public getContext: (inputs: number[]) => string[],
+		public getInputs: () => ExerciseInput[]
 	) {}
 
 	generate() {
-		const inputs = this.generateInputs()
+		const seed = this.generateSeed()
+		const context = this.getContext(seed)
+		const inputs = this.getInputs()
 		return {
-			exercice_id: this.id,
-			seed: inputs,
-			parts: this.getExerciceParts(inputs)
+			exercise_id: this.id,
+			seed,
+			context,
+			inputs
 		}
 	}
 }
