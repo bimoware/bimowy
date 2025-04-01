@@ -1,12 +1,16 @@
 _⚠️ Project is still in work. ⚠️_
-   
+
 # ✨ Bimowy
-<p align="center">A "Khan Academy"-inspired project to help everyone be able to train in any math domain they want to.</p>
+
+<div align="center">
+A "Khan Academy"-inspired project to help everyone be able to train in any math domain they want to.
+</div>
 
 ## ⭐ Star History (i love stars)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy#gh-light-mode-only)](https://star-history.com/#bimoware/bimowy#gh-light-mode-only)
-[![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy&theme=dark#gh-dark-mode-only)](https://star-history.com/#bimoware/bimowy#gh-dark-mode-only)
+<div align="center">
+<img src="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date" title="Star History Chart for bimoware/bimowy"/>
+</div>
 
 ## 🎥 Demo
 
@@ -19,9 +23,9 @@ src/
 └─ app/
    ├─ api/                     # API routes (generate, exercices & validate)
    ├─ exercises/               # Exercise list
-   │  ├─ page.tsx              
+   │  ├─ page.tsx
    │  └─ [exercise_id]/        # Specific exercise
-   │     └─ page.tsx           
+   │     └─ page.tsx
    ├─ layout.tsx               # Universal Layout
    ├─ not-found.tsx            # Universal 404 page
    ├─ page.tsx                 # Main page
@@ -30,7 +34,8 @@ src/
 
 ## ⚙️ Setup
 
-1. Clone the repository using `git clone`, with Github Desktop or with the green download button on top.
+1. Clone the repository using `git clone`, with Github Desktop or with the green
+   download button on top.
 2. Install dependencies with `npm install`
 3. Run the development server with `npm run dev`
 4. Open your browser and visit `http://localhost:3000`
