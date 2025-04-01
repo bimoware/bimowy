@@ -2,7 +2,6 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Page not found",
-    description: "Unknown page",
     icons: "/svgs/report.svg"
 };
 
