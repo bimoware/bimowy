@@ -22,7 +22,7 @@ input {
 }
 
 h1 {
-	@apply text-3xl font-bold tracking-wider
+	@apply text-3xl font-bold tracking-wider mb-5
 }
 
 
