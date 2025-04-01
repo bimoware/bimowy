@@ -1,5 +1,5 @@
 import { Bloc } from "@/components/Bloc";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   title: "Bimowy - When math works",
@@ -14,6 +14,8 @@ export const metadata: Metadata = {
     images: "/media/logo_trans.png",
   }
 };
+
+export const viewport: Viewport = { themeColor: "#FFFFFE" }
 
 export default function Home() {
   return <Bloc type="full-body">
