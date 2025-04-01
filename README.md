@@ -1,9 +1,7 @@
 _⚠️ Project is still in work. ⚠️_
-
+   
 # ✨ Bimowy
-
-A "Khan Academy"-inspired project to help everyone be able to train in any math
-domain they want to.
+<p align="center">A "Khan Academy"-inspired project to help everyone be able to train in any math domain they want to.</p>
 
 ## ⭐ Star History (i love stars)
 
@@ -12,7 +10,7 @@ domain they want to.
 
 ## 🎥 Demo
 
-https://github.com/user-attachments/assets/2164fda3-8869-4577-a07e-2e7be444c8f9
+https://github.com/user-attachments/assets/df84bf85-2726-40a1-8cef-4b7eb47e5017
 
 ## 📁 File Structure
 
@@ -41,11 +39,14 @@ src/
 
 ### /api/exercises
 
+```md
 - Description: Fetch all exercises.
 - Method: `GET`
+```
 
 ### /api/generate
 
+```md
 - Description: Generate (5 by default) exercises for a specific exercise.
 - Method: `POST`
 - Body:
@@ -53,9 +54,11 @@ src/
   - `n`: number (Optional) The number of questions to generate (default is 5)
 - Response:
   - Returns an array of generated questions for the specified exercise.
+```
 
 ### /api/validate
 
+```md
 - Description: Validate user input for exercises.
 - Method: `POST`
 - Body:
@@ -66,6 +69,7 @@ src/
 - Response:
   - Returns the validation result, which could include whether the answers are
     correct or not.
+```
 
 ## 🤝 Contributing
 
