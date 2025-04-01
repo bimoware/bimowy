@@ -49,28 +49,27 @@ export default function ExercisePage() {
 
     // Handle pageState when ENTER key is pressed
     useEffect(() => {
+        if (inputs.current[0]?.ref && pageState == "answering") {
+            const input = inputs.current[0].ref
+            // input.value = ""
+            input.focus()
+            input.select()
+        }
+
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Enter') {
-                // if (inputs.current[0]?.ref && pageState == "answering") {
-                //     const input = inputs.current[0].ref
-                //     input.value = ""
-                //     input.focus()
-                //     input.select()
-                // }
-                if (pageState == "not-yet") setPageState('answering')
-                else if (pageState == "answering") setPageState('correcting')
-                else if (pageState == "corrected") {
-                    if (exerciseIndex < exercises!.length - 1) {
-                        setExerciseIndex(prev => prev + 1)
-                        setPageState('answering')
-                    } else setPageState('finished')
-                }
+            if (e.key !== 'Enter') return;
+            if (pageState == "not-yet") setPageState('answering')
+            else if (pageState == "answering") setPageState('correcting')
+            else if (pageState == "corrected") {
+                if (exerciseIndex < exercises!.length - 1) {
+                    setExerciseIndex(prev => prev + 1)
+                    setPageState('answering')
+                } else setPageState('finished')
             }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [pageState, exerciseIndex, exercises]);
-
 
     // Handle pageState == "correcting"
     useEffect(() => {
@@ -157,7 +156,7 @@ function Controls({ exerciseData, exercises, setPageState, setExerciseIndex, pag
                 }}
                 disabled={currentExercice && pageState !== "answering" && currentInput?.correct !== null}
                 onLoad={(ev) => { ev.currentTarget.focus(); ev.currentTarget.select() }}
-                key={input.id+"-"+exerciseIndex}
+                key={input.id + "-" + exerciseIndex}
                 id={input.id}
                 size={2}
                 className="bg-neutral-800 p-2 rounded-xl focus:outline-0 text-xl"
