@@ -1,4 +1,4 @@
-*⚠️ Project is still in work. Don't expect any login functionality or functionality ⚠️*
+_⚠️ Project is still in work. Don't expect any login functionality or functionality ⚠️_
 
 # ✨ Bimowy
 
@@ -19,18 +19,18 @@ https://github.com/user-attachments/assets/2164fda3-8869-4577-a07e-2e7be444c8f9
 src/
 └─ app/
    ├─ api/
-   │  ├─ exercices/
-   │  │  ├─ db.ts              # Database exercices
-   │  │  ├─ defs.ts            # Definitions and types for exercices
-   │  │  └─ route.ts           # API route for getting all exercices data
+   │  ├─ exercises/
+   │  │  ├─ db.ts              # Database exercises
+   │  │  ├─ defs.ts            # Definitions and types for exercises
+   │  │  └─ route.ts           # API route for getting all exercises data
    │  ├─ generate/
-   │  │  └─ route.ts           # API Route to generate an exercice from it's ID
+   │  │  └─ route.ts           # API Route to generate an exercise from it's ID
    │  └─ validate/
-   │     └─ route.ts           # API Route for validating an exercice's answers
-   ├─ exercices/
-   │  ├─ [exercice_id]/
-   │  │  └─ page.tsx           # Page for displaying a specific exercice
-   │  └─ page.tsx              # List page for exercices
+   │     └─ route.ts           # API Route for validating an exercise's answers
+   ├─ exercises/
+   │  ├─ [exercise_id]/
+   │  │  └─ page.tsx           # Page for displaying a specific exercise
+   │  └─ page.tsx              # List page for exercises
    ├─ layout.tsx               # Layout for the application
    ├─ not-found.tsx            # Custom 404 page
    ├─ page.tsx                 # Main page for the app
@@ -62,29 +62,29 @@ src/
 
 ## 🛠️ API Endpoints
 
-### /api/exercices
+### /api/exercises
 
--   Description: Fetch all exercices.
+-   Description: Fetch all exercises.
 -   Method: `GET`
 
 ### /api/generate
 
--   Description: Generate (5 by default) exercices for a specific exercice.
+-   Description: Generate (5 by default) exercises for a specific exercise.
 -   Method: `POST`
 -   Body:
-    -   `exercice_id`: string (ID of the exercice to generate questions for)
+    -   `exercise_id`: string (ID of the exercise to generate questions for)
     -   `n`: number (Optional) The number of questions to generate (default is 5)
 -   Response:
-    -   Returns an array of generated questions for the specified exercice.
+    -   Returns an array of generated questions for the specified exercise.
 
 ### /api/validate
 
--   Description: Validate user input for exercices.
+-   Description: Validate user input for exercises.
 -   Method: `POST`
 -   Body:
-    -   `exercice_id`: string (ID of the exercice to validate answers for)
-    -   `answers`: array (Answers submitted for the exercice)
-    -   `seed`: string or number (Seed used to generate the exercice, may vary for each user or session)
+    -   `exercise_id`: string (ID of the exercise to validate answers for)
+    -   `answers`: array (Answers submitted for the exercise)
+    -   `seed`: string or number (Seed used to generate the exercise, may vary for each user or session)
 -   Response:
     -   Returns the validation result, which could include whether the answers are correct or not.
 
