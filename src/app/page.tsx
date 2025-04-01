@@ -5,7 +5,11 @@ export const metadata: Metadata = {
   title: "Bimowy - When math works",
   icons: "/svgs/home.svg",
   description: "Bimowy is a free open-source math practice platform for students who feel stuck when trying to train on any math subject. Through quiz-based exercises, learning becomes interactive, free from frustration and ACTUALLY fun. All to help you finally understand topics that once felt impossible. Whether you're dealing with math anxiety, burnout or just need extra practice, Bimowy gives you instant feedback to reinforce learning and boost your confidence. Built with **Next.js**, it offers a smooth and responsive experience designed for self-paced learning, homework help, and exam preparation. Stop feeling lost and start using Bimowy!",
-  metadataBase: process.env.NEXT_PUBLIC_APP_URL ? new URL(process.env.NEXT_PUBLIC_APP_URL!) : new URL("http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000'
+  ),
   openGraph: {
     images: "/media/logo_trans.png",
   }
