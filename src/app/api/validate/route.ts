@@ -1,31 +1,31 @@
 import { NextResponse } from 'next/server'
+import { ExerciseResource } from '@/app/api/defs'
 import db from '../db'
-import { ExerciceResource } from '@/app/api/defs'
 
 // Handle a POST request to /api/validate-answers
 export async function POST(req: Request) {
 	try {
 		// Parse the request body (expects JSON)
-		const { exercice_id, answers, seed } = await req.json()
+		const { exercise_id, answers, seed } = await req.json()
 
 		// In case answers and seed are passed as strings, parse them.
 		const parsedAnswers =
 			typeof answers === 'string' ? JSON.parse(answers) : answers
 		const parsedSeed = typeof seed === 'string' ? JSON.parse(seed) : seed
 
-		const exercice = db.find((ex) => ex.id == exercice_id)
-		if (!exercice) {
+		const exercise = db.find((ex) => ex.id == exercise_id)
+		if (!exercise) {
 			return NextResponse.json(
-				{ message: `Exercice with ID '${exercice_id}' not found` },
+				{ message: `Exercise with ID '${exercise_id}' not found` },
 				{ status: 404 }
 			)
-		} else if (!(exercice instanceof ExerciceResource)) {
+		} else if (!(exercise instanceof ExerciseResource)) {
 			return NextResponse.json(
-				{ message: 'Exercice is not an exercice resource' },
+				{ message: 'Exercise is not an exercise resource' },
 				{ status: 400 }
 			)
 		} else {
-			const correction = exercice.validateAnswers(
+			const correction = exercise.validateAnswers(
 				parsedSeed,
 				parsedAnswers
 			)

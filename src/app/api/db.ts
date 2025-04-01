@@ -1,7 +1,7 @@
-import { exercicePart, ExercicePartType, ExerciceResource } from './defs'
+import { ExerciseResource } from './defs'
 
 const db = [
-	new ExerciceResource(
+	new ExerciseResource(
 		'addition',
 		'Addition',
 		'Taking the sum of multiple numbers',
@@ -17,11 +17,11 @@ const db = [
 			return [
 				{
 					id: answer1.id,
-					correct: String(answer1.value) === (n1 + n2).toString()
+					is_correct: String(answer1.value) === (n1 + n2).toString()
 				}
 			]
 		},
-		// generateInputs
+		// generateSeed
 		function () {
 			const range = [1, 10]
 			const [n1, n2] = [range, range].map(
@@ -29,28 +29,27 @@ const db = [
 			)
 			return [n1, n2]
 		},
-		// getExerciceParts
-		function (inputs: number[]): exercicePart[] {
-			const [n1, n2] = inputs
+		// getContext
+		function ([n1, n2]: number[]) {
+			return [`${n1} + ${n2} = ?`]
+		},
+		// getInputs
+		function () {
 			return [
 				{
-					type: ExercicePartType.Text,
-					text: n1 + ' + ' + n2 + ' = '
-				},
-				{
-					type: ExercicePartType.Input,
-					id: 'answer'
+					id: 'answer',
+					type: 'number'
 				}
 			]
 		}
 	),
-	new ExerciceResource(
+	new ExerciseResource(
 		'substraction',
 		'Substraction',
 		'Taking the difference of two numbers',
 		['basic-arithmetic'],
+		// validateAnswers
 		function (
-			// validateAnswers
 			[n1, n2]: number[],
 			[answer1]: {
 				id: string
@@ -60,29 +59,28 @@ const db = [
 			return [
 				{
 					id: answer1.id,
-					correct: String(answer1.value) === (n1 - n2).toString()
+					is_correct: String(answer1.value) === (n1 - n2).toString()
 				}
 			]
 		},
+		// generateSeed
 		function () {
-			// generateInputs
 			const range = [1, 10]
 			const [n1, n2] = [range, range].map(
 				(r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0]
 			)
 			return [n1, n2]
 		},
-		function (inputs: number[]): exercicePart[] {
-			// getExerciceParts
-			const [n1, n2] = inputs
+		// getContext
+		function ([n1, n2]: number[]) {
+			return [`${n1} - ${n2} = ?`]
+		},
+		// getInputs
+		function () {
 			return [
 				{
-					type: ExercicePartType.Text,
-					text: n1 + ' - ' + n2 + ' = '
-				},
-				{
-					type: ExercicePartType.Input,
-					id: 'answer'
+					id: 'answer',
+					type: 'number'
 				}
 			]
 		}
