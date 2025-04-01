@@ -6,7 +6,9 @@ export const metadata: Metadata = {
   icons: "/svgs/home.svg",
   description: "Bimowy is a free, open-source, exercices-focused math platform for students who feel stuck when trying to train on any math subject."
     + " With interactive learning and feedback loop, math becomes free from frustration and starts being actually fun.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000/')
+  metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL
+    ? ("https://" + process.env.NEXT_PUBLIC_VERCEL_URL)
+    : 'http://localhost:3000/')
 };
 
 export const viewport: Viewport = { themeColor: "#FFFFFE" }
