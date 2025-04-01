@@ -9,7 +9,10 @@ export const metadata: Metadata = {
     process.env.NODE_ENV == "production"
       ? `https://bimowy.vercel.app/`
       : 'http://localhost:3000/'
-  )
+  ),
+  twitter: {
+    card: "summary"
+  }
 };
 
 export const viewport: Viewport = { themeColor: "#FFFFFE" }
