@@ -9,12 +9,13 @@ export type ExerciseTags =
 	| 'statistics'
 	| 'probability'
 	| 'multivariable-calculus'
-	
+
 export type GeneratedExercise = {
-    exercise_id: string;
-    seed: number[];
-    context: string[];
-    inputs: ExerciseInput[];
+	exercise_id: string
+	seed: number[]
+	context: string[]
+	inputs: ExerciseInput[]
+	correctOnFirstTry?: boolean
 }
 
 export class ExerciseResource {

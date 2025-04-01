@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
+import { ExerciseResource } from '@/app/api/defs'
 import db from '../db'
-import { ExerciceResource } from '@/app/api/defs'
 
 // Handle a POST request to /api/validate-answers
 export async function POST(req: Request) {
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 				{ message: `Exercise with ID '${exercise_id}' not found` },
 				{ status: 404 }
 			)
-		} else if (!(exercise instanceof ExerciceResource)) {
+		} else if (!(exercise instanceof ExerciseResource)) {
 			return NextResponse.json(
 				{ message: 'Exercise is not an exercise resource' },
 				{ status: 400 }

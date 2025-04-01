@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import db from '../db'
+import getInvalidMethodResponse from '../get_invalid_method'
 
 export async function POST(req: Request) {
 	try {
@@ -59,3 +60,10 @@ export async function POST(req: Request) {
 		)
 	}
 }
+
+const invalidNextReponse = getInvalidMethodResponse("POST")
+
+export async function GET() { return invalidNextReponse }
+export async function PUT() { return invalidNextReponse }
+export async function PATCH() { return invalidNextReponse }
+export async function DELETE() { return invalidNextReponse }
