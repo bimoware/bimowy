@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return <Bloc type="full-body">
-    {Array.from({ length: 1000 }).map((e, i) => "HOME" + i).join(' ')}
+    <h1>Welcome!</h1>
+    <span>This home page is pretty empty right now... Maybe try checking the available exercices?</span>
   </Bloc>
 }
