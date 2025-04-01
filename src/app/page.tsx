@@ -1,3 +1,4 @@
+import { Bloc } from "@/components/Bloc";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <>
-    <h1>Bimowy</h1></>
+  return <Bloc type="full-body">
+    {Array.from({ length: 1000 }).map((e, i) => "HOME" + i).join(' ')}
+  </Bloc>
 }
