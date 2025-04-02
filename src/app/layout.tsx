@@ -1,5 +1,6 @@
 import { Outfit } from 'next/font/google'
 import { SideBar } from "../components/SideBar";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import "./style.css";
 
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className="flex w-screen h-screen">
         <SideBar />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
