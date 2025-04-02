@@ -3,18 +3,26 @@ _⚠️ Project is still in work. ⚠️_
 # ✨ Bimowy
 
 <div align="center">
+   
 A "Khan Academy"-inspired project to help everyone be able to train in any math domain they want to.
+
 </div>
 
 ## ⭐ Star History (i love stars)
 
 <div align="center">
-<img src="https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date" title="Star History Chart for bimoware/bimowy"/>
+
+   [![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date)](https://www.star-history.com/#bimoware/bimowy&Date)
+
 </div>
 
 ## 🎥 Demo
 
-https://github.com/user-attachments/assets/df84bf85-2726-40a1-8cef-4b7eb47e5017
+<div align="center">
+
+https://github.com/user-attachments/assets/b61f1f80-0e6d-4089-a054-9f2ef34c1119
+
+</div>
 
 ## 📁 File Structure
 
@@ -42,14 +50,14 @@ src/
 
 ## 🛠️ API Endpoints
 
-### /api/exercises
+- /api/exercises
 
 ```md
 - Description: Fetch all exercises.
 - Method: `GET`
 ```
 
-### /api/generate
+- /api/generate
 
 ```md
 - Description: Generate (5 by default) exercises for a specific exercise.
@@ -61,7 +69,7 @@ src/
   - Returns an array of generated questions for the specified exercise.
 ```
 
-### /api/validate
+- /api/validate
 
 ```md
 - Description: Validate user input for exercises.
