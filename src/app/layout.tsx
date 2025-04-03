@@ -1,5 +1,5 @@
 import { Outfit } from 'next/font/google'
-import { SideBar } from "../components/SideBar";
+import SideBar from "../components/SideBar";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import "./style.css";
