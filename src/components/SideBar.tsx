@@ -17,17 +17,19 @@ export default function SideBar() {
 }
 
 function SideBarIcon({ icon, path, label }: { icon: string, path: string, label: string }) {
-    const pathname = usePathname().split('/')[1] || ""; // Get the current path without the leading slash
+    const pathname = usePathname().split('/')[1] || ""; // Get the current path without the leading slash (/exercices/add -> exercices)
     const isActive = pathname === path; // Check if the current path matches the icon's path
 
-    return (
-        <Link
-            href={`/${path}`}
-            className={`aspect-square rounded-xl p-2 m-1 transition-transform hover:scale-105 hover:translate-x-1
-                ${isActive ? "bg-neutral-50/5" : "hover:bg-neutral-50/5 opacity-90"}
-            `}
-        >
-            <Image src={icon} alt={label} width={30} height={30} />
-        </Link>
-    );
+    const myDiv = <div
+        className={`aspect-square rounded-xl p-2 m-1 transition-transform hover:translate-x-1 hover:scale-105
+            ${isActive
+                ? "bg-neutral-50/5 cursor-default"
+                : "hover:bg-neutral-50/5 opacity-90"}
+                `}>
+        <Image src={icon} alt={label} width={30} height={30} />
+    </div>
+
+    return <Link href={`/${path}`}>
+        {myDiv}
+    </Link>
 }
