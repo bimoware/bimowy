@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { ExerciseInput, GeneratedExercise } from '@app/api/defs'
 import { useParams } from 'next/navigation'
@@ -47,12 +47,14 @@ export default function ExercisePage() {
 				setExercises(generatedExercises)
 			})
 	}, [exerciseId])
+
 	useEffect(() => {
 		if (pageState != 'corrected') return
 		const allCorrect = corrections.every((c) => c?.correct)
 		if (allCorrect) playCorrect()
 		else playIncorrect()
 	}, [pageState])
+
 	// Focus the first incorrect input when pageState becomes "answering"
 	useEffect(() => {
 		if (pageState === 'answering') {
@@ -179,7 +181,7 @@ export default function ExercisePage() {
 					<Context {...{ exerciseData, exercises, exerciseIndex, pageState }} />
 				</div>
 			</div>
-			<div className='grow bg-neutral-900 rounded-3xl p-4'>
+			<div className='grow h-full bg-neutral-900 rounded-3xl p-4'>
 				<Controls
 					{...{
 						exerciseData,

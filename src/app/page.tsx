@@ -20,8 +20,7 @@ export const viewport: Viewport = { themeColor: "#FFFFFE" }
 
 export default function Home() {
   return <Bloc type="full-body">
-    <h1>Welcome!</h1>
-    <p>This home page is pretty empty right now...</p>
-    <p>Maybe try checking the available exercices?</p>
+    <h1>Bimowy</h1>
+    <p>Not much to see here...</p>
   </Bloc>
 }
