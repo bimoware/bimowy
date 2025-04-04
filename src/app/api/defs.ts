@@ -15,26 +15,46 @@ export type GeneratedExercise = {
 	seed: number[]
 	context: string[]
 	inputs: ExerciseInput[]
-	correctOnFirstTry?: boolean
 }
 
-export class ExerciseResource {
-	constructor(
-		public id: string,
-		public name: string,
-		public desc: string,
-		public tags: ExerciseTags[],
-		public validateAnswers: (
+export class ExerciseGenerator {
+	public id: string
+	public name: string
+	public desc: string | null
+	public tags: ExerciseTags[]
+	public recent: boolean
+	public validateAnswers: (
+		inputs: number[],
+		answers: { id: string; value: string }[]
+	) => Correction[]
+	public generateSeed: () => number[]
+	public getContext: (inputs: number[]) => string[]
+	public getInputs: () => ExerciseInput[]
+
+	constructor(data: {
+		id: string
+		tags: ExerciseTags[]
+		name?: string
+		desc?: string
+		recent?: boolean
+		validateAnswers: (
 			inputs: number[],
-			answers: {
-				id: string
-				value: string
-			}[]
-		) => Correction[],
-		public generateSeed: () => number[],
-		public getContext: (inputs: number[]) => string[],
-		public getInputs: () => ExerciseInput[]
-	) {}
+			answers: { id: string; value: string }[]
+		) => Correction[]
+		generateSeed: () => number[]
+		getContext: (inputs: number[]) => string[]
+		getInputs: () => ExerciseInput[]
+	}) {
+		this.id = data.id
+		this.name = data.name ?? this.id[0].toUpperCase() + this.id.slice(1)
+		this.desc = data.desc ?? null
+		this.tags = data.tags ?? []
+		this.recent = data.recent ?? false
+		this.validateAnswers = data.validateAnswers
+		this.generateSeed = data.generateSeed
+		this.getContext = data.getContext
+		this.getInputs = data.getInputs
+	}
 
 	generate() {
 		const seed = this.generateSeed()

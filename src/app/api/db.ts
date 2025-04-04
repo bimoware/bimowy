@@ -1,13 +1,11 @@
-import { ExerciseResource } from './defs'
+import { ExerciseGenerator } from './defs'
 
 const db = [
-	new ExerciseResource(
-		'addition',
-		'Addition',
-		'Taking the sum of multiple numbers',
-		['basic-arithmetic'],
+	new ExerciseGenerator({
+		id: 'addition',
+		tags: ['basic-arithmetic'],
 		// validateAnswers
-		function (
+		validateAnswers: function (
 			[n1, n2]: number[],
 			[answer1]: {
 				id: string
@@ -22,7 +20,7 @@ const db = [
 			]
 		},
 		// generateSeed
-		function () {
+		generateSeed: function () {
 			const range = [1, 10]
 			const [n1, n2] = [range, range].map(
 				(r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0]
@@ -30,11 +28,11 @@ const db = [
 			return [n1, n2]
 		},
 		// getContext
-		function ([n1, n2]: number[]) {
+		getContext: function ([n1, n2]: number[]) {
 			return [`${n1} + ${n2} = ?`]
 		},
 		// getInputs
-		function () {
+		getInputs: function () {
 			return [
 				{
 					id: 'answer',
@@ -42,14 +40,12 @@ const db = [
 				}
 			]
 		}
-	),
-	new ExerciseResource(
-		'substraction',
-		'Substraction',
-		'Taking the difference of two numbers',
-		['basic-arithmetic'],
+	}),
+	new ExerciseGenerator({
+		id: 'substraction',
+		tags: ['basic-arithmetic'],
 		// validateAnswers
-		function (
+		validateAnswers: function (
 			[n1, n2]: number[],
 			[answer1]: {
 				id: string
@@ -64,7 +60,7 @@ const db = [
 			]
 		},
 		// generateSeed
-		function () {
+		generateSeed: function () {
 			const range = [1, 10]
 			const [n1, n2] = [range, range].map(
 				(r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0]
@@ -72,11 +68,11 @@ const db = [
 			return [n1, n2]
 		},
 		// getContext
-		function ([n1, n2]: number[]) {
+		getContext: function ([n1, n2]: number[]) {
 			return [`${n1} - ${n2} = ?`]
 		},
 		// getInputs
-		function () {
+		getInputs: function () {
 			return [
 				{
 					id: 'answer',
@@ -84,14 +80,14 @@ const db = [
 				}
 			]
 		}
-	),
-	new ExerciseResource(
-		'multiplication',
-		'Multiplication',
-		'Multiple two values together',
-		['basic-arithmetic'],
+	}),
+	new ExerciseGenerator({
+		id: 'multiplication',
+		desc: 'Repeated addition',
+		tags: ['basic-arithmetic'],
+		recent: true,
 		// validateAnswers
-		function (
+		validateAnswers: function (
 			[n1, n2]: number[],
 			[answer1]: {
 				id: string
@@ -106,7 +102,7 @@ const db = [
 			]
 		},
 		// generateSeed
-		function () {
+		generateSeed: function () {
 			const range = [1, 10]
 			const [n1, n2] = [range, range].map(
 				(r) => Math.floor(Math.random() * (r[1] - r[0])) + r[0]
@@ -114,11 +110,11 @@ const db = [
 			return [n1, n2]
 		},
 		// getContext
-		function ([n1, n2]: number[]) {
+		getContext: function ([n1, n2]: number[]) {
 			return [`${n1} * ${n2} = ?`]
 		},
 		// getInputs
-		function () {
+		getInputs: function () {
 			return [
 				{
 					id: 'answer',
@@ -126,7 +122,7 @@ const db = [
 				}
 			]
 		}
-	)
+	})
 ]
 
 export default db
