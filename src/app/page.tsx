@@ -1,4 +1,4 @@
-import { Bloc } from "@/components/Bloc";
+import { Bloc } from "@cpn/Bloc";
 import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
