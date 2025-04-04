@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@vercel/speed-insights": "^1.2.0",
+		"katex": "^0.16.21",
 		"next": "^15.2.4",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
