@@ -10,7 +10,6 @@ export default function SideBar() {
         {
             [
                 { id: "home", data: { icon: "/svgs/home.svg", path: "", label: "Home" } },
-                { id: 'test', data: { icon: "/svgs/test.svg", path: "test", label: "Test" } },
                 { id: 'ex', data: { icon: "/svgs/exercises.svg", path: "exercises", label: "Exercises" } },
                 { id: 'credits', data: { icon: "/svgs/crown.svg", path: "credits", label: "Credits" } }
             ]
