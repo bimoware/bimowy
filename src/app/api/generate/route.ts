@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 				{ status: 404 }
 			)
 		} else {
-			const exercises = Array.from({ length: n || 3 }).map(() =>
+			const exercises = Array.from({ length: n || 10 }).map(() =>
 				exercise.generate()
 			)
 			return NextResponse.json({ ...exercise, exercises }, { status: 200 })
@@ -61,9 +61,17 @@ export async function POST(req: Request) {
 	}
 }
 
-const invalidNextReponse = getInvalidMethodResponse("POST")
+const invalidNextReponse = getInvalidMethodResponse('POST')
 
-export async function GET() { return invalidNextReponse }
-export async function PUT() { return invalidNextReponse }
-export async function PATCH() { return invalidNextReponse }
-export async function DELETE() { return invalidNextReponse }
+export async function GET() {
+	return invalidNextReponse
+}
+export async function PUT() {
+	return invalidNextReponse
+}
+export async function PATCH() {
+	return invalidNextReponse
+}
+export async function DELETE() {
+	return invalidNextReponse
+}
