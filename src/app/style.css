@@ -22,9 +22,8 @@ input {
 }
 
 h1 {
-	@apply text-3xl font-bold tracking-wider mb-5
+	@apply text-3xl font-bold tracking-wider mb-5;
 }
-
 
 @layer components {
 	.outline-incorrect {

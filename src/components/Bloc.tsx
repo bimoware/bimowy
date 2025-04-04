@@ -1,5 +1,4 @@
-import { ReactNode } from "react";
-
+import { ReactNode } from 'react'
 export function Bloc({ type, children }: {
     type: "sidebar" | "full-body",
     children: ReactNode

@@ -25,10 +25,7 @@ export async function POST(req: Request) {
 				{ status: 400 }
 			)
 		} else {
-			const correction = exercise.validateAnswers(
-				parsedSeed,
-				parsedAnswers
-			)
+			const correction = exercise.validateAnswers(parsedSeed, parsedAnswers)
 			return NextResponse.json(correction)
 		}
 	} catch (error) {
