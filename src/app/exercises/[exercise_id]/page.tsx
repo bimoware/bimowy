@@ -1,37 +1,36 @@
 "use client";
 
-import { GeneratedExercise } from "@/app/api/defs";
+import { ExerciseInput, GeneratedExercise } from "@app/api/defs";
 import { useParams } from "next/navigation";
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { Bloc } from "@cpn/Bloc";
+import useSound from 'use-sound';
 
 type PageState =
-    'not-yet' // The user has not started the exercises yet
-    | 'answering' // The user is currently answering the exercises
-    | 'correcting' // Currently correcting the answers via the server API 
-    | 'corrected' // The server API responded and the correction is showing 
-    | 'finished' // The user has finished the exercises
+    'not-yet' |
+    'answering' |
+    'correcting' |
+    'corrected' |
+    'finished';
 
-type ExerciseData = {
-    name: string,
-    desc: string,
-    id: string
-}
+type ExerciseData = { name: string, desc: string, id: string }
+
+type ExerciseCorrection = { id: string, is_correct: boolean }
+
 export default function ExercisePage() {
     const params = useParams()
     const exerciseId = params["exercise_id"]!
 
-    const [exercises, setExercises] = useState<GeneratedExercise[]>()
+    const [exercises, setExercises] = useState<GeneratedExercise[]>([])
     const [pageState, setPageState] = useState<PageState>('not-yet')
     const [exerciseData, setExerciseData] = useState<ExerciseData>()
-    const [exerciseIndex, setExerciseIndex] = useState(0)
+    const [exerciseIndex, setExerciseIndex] = useState<number>(0)
+    const [corrections, setCorrections] = useState<Array<{ correctOnFirstTry: boolean; correct: boolean } | null>>([])
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
-    // Create a ref array for inputs
-    const inputs = useRef<{
-        ref: HTMLInputElement | null;
-        correct_on_first_try: boolean | null;
-        correct: boolean | null;
-    }[]>([]);
-
+    const [playCorrect] = useSound("/audios/correct.mp3", { volume: 0.5 })
+    const [playIncorrect] = useSound("/audios/incorrect.mp3", { volume: 0.5 })
 
     // Generate questions
     useEffect(() => {
@@ -41,178 +40,268 @@ export default function ExercisePage() {
         })
             .then((res) => res.json())
             .then((res) => {
-                const { name, desc, id }: { name: string, desc: string, id: string } = res
+                const { name, desc, id, exercises: generatedExercises } = res
                 setExerciseData({ name, desc, id })
-                setExercises(res.exercises)
+                setExercises(generatedExercises)
             })
     }, [exerciseId]);
-
-    // Handle pageState when ENTER key is pressed
     useEffect(() => {
-        if (inputs.current[0]?.ref && pageState == "answering") {
-            const input = inputs.current[0].ref
-            // input.value = ""
-            input.focus()
-            input.select()
+        if (pageState != "corrected") return;
+        const allCorrect = corrections.every(c => c?.correct)
+        if (allCorrect) playCorrect()
+        else playIncorrect()
+    }, [pageState])
+    // Focus the first incorrect input when pageState becomes "answering"
+    useEffect(() => {
+        if (pageState === 'answering') {
+            // Give React time to populate refs after render
+            const timer = setTimeout(focusFirstIncorrectInput, 10);
+            return () => clearTimeout(timer);
+        }
+    }, [pageState, exerciseIndex]); // Add exerciseIndex to dependenc
+
+    // Keyboard handler
+    useEffect(() => {
+        function handleEnter(e: KeyboardEvent) {
+            if (e.key !== "Enter") return
+            if (pageState === 'not-yet') return startExercises()
+            if (pageState === 'answering') return startCorrection()
+            if (pageState === 'corrected') {
+                const allCorrect = corrections.every(c => c?.correct)
+                if (!allCorrect) return tryAgain()
+                if (exerciseIndex < exercises.length - 1) return nextExercise()
+                return endQuiz()
+            }
         }
 
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key !== 'Enter') return;
-            if (pageState == "not-yet") setPageState('answering')
-            else if (pageState == "answering") setPageState('correcting')
-            else if (pageState == "corrected") {
-                if (exerciseIndex < exercises!.length - 1) {
-                    setExerciseIndex(prev => prev + 1)
-                    setPageState('answering')
-                } else setPageState('finished')
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [pageState, exerciseIndex, exercises]);
+        window.addEventListener('keydown', handleEnter)
+        return () => window.removeEventListener('keydown', handleEnter)
+    }, [pageState, corrections, exerciseIndex, exercises.length])
 
-    // Handle pageState == "correcting"
-    useEffect(() => {
-        if (pageState !== 'correcting') return;
-        const exercise = exercises?.[exerciseIndex]
-        if (!exercise) return;
-        const inputValues = inputs.current.map(input => input.ref?.value)
-        const answers = exercise.inputs.map((input, index) => ({ id: input.id, value: inputValues[index] }));
+    function focusFirstIncorrectInput() {
+        const firstIncorrectIndex = corrections.length > 0
+            ? corrections.findIndex(c => !c?.correct)
+            : 0;
+        if (firstIncorrectIndex === -1) return;
+        const input = inputRefs.current[firstIncorrectIndex];
+        if (!input) return;
+        input.focus();
+        input.select();
+    }
+
+    function startExercises() {
+        setPageState('answering')
+        setExerciseIndex(0)
+        setCorrections([])
+        inputRefs.current = []
+    }
+
+    function nextExercise() {
+        setPageState('answering')
+        setExerciseIndex(prev => prev + 1)
+        setCorrections([])
+        inputRefs.current = []
+    }
+
+    function handleCorrection(res: ExerciseCorrection[]) {
+        setCorrections(prev =>
+            res.map((answer, i) => {
+                const currentCorrection = prev[i]
+                return {
+                    correct: answer.is_correct,
+                    correctOnFirstTry: currentCorrection?.correctOnFirstTry ?? answer.is_correct
+                }
+            })
+        )
+        setPageState('corrected')
+    }
+
+    function startCorrection() {
+        setPageState('correcting')
+        const exercise = exercises[exerciseIndex]
+        if (!exercise) return
+
+        const answers = exercise.inputs.map((input, index) => ({
+            id: input.id,
+            value: inputRefs.current[index]?.value
+        }))
+
         fetch('/api/validate/', {
             method: 'POST',
-            body: JSON.stringify({ exercise_id: exerciseId, answers, seed: exercise.seed })
+            body: JSON.stringify({
+                exercise_id: exerciseId,
+                answers,
+                seed: exercise.seed
+            })
         })
             .then(res => res.json())
-            .then((res: { id: string, is_correct: boolean }[]) => {
-                setPageState('corrected');
-                console.log({ inputs, res })
-                inputs.current.forEach((inputObj) => {
-                    if (!inputObj.ref) return;
-                    const input = inputObj.ref;
-                    const inputId = input.id;
-                    const answer = res.find(answer => answer.id === inputId)!;
-                    inputObj.correct = answer.is_correct;
-                    if (inputObj.correct_on_first_try === null) {
-                        inputObj.correct_on_first_try = inputObj.correct;
-                    }
-                    input.classList.toggle('outline-correct', inputObj.correct);
+            .then(handleCorrection)
+    }
 
+    function tryAgain() {
+        setCorrections([])
+        setPageState('answering')
+    }
+    function getIsInputDisabled(index: number) {
+        const correction = corrections[index]
+        if (!correction) return false
+        if (pageState !== "answering") return true
+        return correction.correctOnFirstTry || correction.correct
+    }
 
-                });
-            });
-    }, [pageState, exercises, exerciseIndex, exerciseId]);
+    function endQuiz() {
+        setPageState('finished')
+    }
 
-    if (!exercises) return <span>Not yet...</span>
-    if (pageState == "finished") return <span>Finished.</span>
-    return <div className="grow flex m-4 gap-4">
-        <div className="grow-2 flex flex-col gap-5 items-center">
-            <Title {...{ exerciseData, exercises, exerciseIndex, pageState }} />
-            <div
-                className="grow w-full bg-neutral-900 rounded-3xl p-4">
-                <Context
-                    {...{ exerciseData, exercises, exerciseIndex, pageState }}
+    if (pageState === "finished") return <Bloc type="full-body">
+        <div className="flex gap-4 justify-center items-center">
+            <span className="font-bold text-5xl">Finished!</span>
+            <Image src={"/media/cat.gif"} width={200} height={200} className="h-8 w-fit aspect-square" alt={"Cat vibing"} />
+        </div>
+    </Bloc>
+
+    return (
+        <div className="grow flex m-4 gap-4">
+            <div className="grow-2 flex flex-col items-center">
+                <Title {...{ exerciseData, exercises, exerciseIndex, pageState }} />
+                <div className="grow w-full bg-neutral-900 rounded-3xl p-4">
+                    <Context {...{ exerciseData, exercises, exerciseIndex, pageState }} />
+                </div>
+            </div>
+            <div className="grow bg-neutral-900 rounded-3xl p-4">
+                <Controls
+                    {...{
+                        exerciseData,
+                        exercises,
+                        pageState,
+                        exerciseIndex,
+                        inputRefs,
+                        corrections,
+                        actions: {
+                            focusFirstIncorrectInput,
+                            startExercises,
+                            nextExercise,
+                            startCorrection,
+                            endQuiz,
+                            tryAgain,
+                            getIsInputDisabled
+                        }
+                    }}
                 />
             </div>
         </div>
-        <div className="grow bg-neutral-900 rounded-3xl p-4">
-            <Controls
-                {...{ exerciseData, exercises, setPageState, setExerciseIndex, pageState, exerciseIndex, inputs }}
-            />
-        </div>
-    </div>
+    )
 }
 
-// Inputs & Buttons to interact with the exercise (input an answer, confirm, try again, go to the next exercise)
-function Controls({ exerciseData, exercises, setPageState, setExerciseIndex, pageState, exerciseIndex, inputs }: {
-    exerciseData: ExerciseData | undefined,
-    exercises: GeneratedExercise[],
-    setPageState: Dispatch<SetStateAction<PageState>>,
-    setExerciseIndex: Dispatch<SetStateAction<number>>,
-    exerciseIndex: number,
+function Controls({ exerciseData, exercises, pageState, exerciseIndex, inputRefs, corrections, actions }: {
+    exerciseData: ExerciseData | undefined
+    exercises: GeneratedExercise[]
     pageState: PageState,
-    inputs: RefObject<{
-        ref: HTMLInputElement | null;
-        correct_on_first_try: boolean | null;
-        correct: boolean | null;
-    }[]>
+    exerciseIndex: number
+    inputRefs: React.RefObject<(HTMLInputElement | null)[]>
+    corrections: Array<{ correctOnFirstTry: boolean; correct: boolean } | null>
+    actions: {
+        focusFirstIncorrectInput: () => void
+        startExercises: () => void
+        nextExercise: () => void
+        startCorrection: () => void
+        endQuiz: () => void
+        getIsInputDisabled: (index: number) => boolean,
+        tryAgain: () => void
+    }
 }) {
-    if (!exerciseData) return <></>;
-    if (pageState === "not-yet") return <button key="Start" onClick={() => setPageState('answering')}>Start</button>;
+    if (!exerciseData) return null
 
-    const currentExercice = exercises[exerciseIndex];
-    const controls = []; // Every input & button
+    if (pageState === "not-yet") return (
+        <Button name="Start" icon="/svgs/start.svg" onClick={actions.startExercises} />
+    )
 
-    // Exercise inputs
-    currentExercice.inputs.forEach((input, index) => {
-        const currentInput = inputs.current[index];
-        controls.push(
-            <input
-                ref={(el) => {
-                    inputs.current[index] = {
-                        ref: el,
-                        correct: null,
-                        correct_on_first_try: null
-                    };
-                }}
-                disabled={currentExercice && pageState !== "answering" && currentInput?.correct !== null}
-                onLoad={(ev) => { ev.currentTarget.focus(); ev.currentTarget.select() }}
-                key={input.id + "-" + exerciseIndex}
-                id={input.id}
-                size={2}
-                className="bg-neutral-800 p-2 rounded-xl focus:outline-0 text-xl"
-            />
-        );
-    });
-
-    // Confirm button (only when currently answering)
-    if (pageState === "answering") {
-        controls.push(
-            <button key="Confirm" onClick={() => setPageState('correcting')}>Confirm</button>
-        );
-    }
-
-    // Next button (only when exercise just got corrected)
-    if (pageState === "corrected") {
-        controls.push(
-            <button key="retry" onClick={() => setPageState('answering')}>Try Again</button>
-        );
-        // Next button
-        if (exerciseIndex < exercises.length - 1) {
-            controls.push(
-                <button
-                    key="Next"
-                    onClick={() => {
-                        setExerciseIndex(prev => prev + 1);
-                        setPageState('answering');
-                    }}>
-                    Next
-                </button>
-            );
-        }
-        // Or "Finish" if it's the last question
-        else if (exerciseIndex === exercises.length - 1) {
-            controls.push(
-                <button onClick={() => setPageState('finished')}>Finish</button>
-            );
-        }
-    }
+    const currentExercise = exercises[exerciseIndex]
+    if (!currentExercise) return null
 
     return (
         <div className="flex flex-col gap-4">
-            {controls}
-        </div>
-    );
+            {currentExercise.inputs.map((input, index) => (
+                <Input
+                    key={exerciseIndex + "-" + input.id}
+                    input={input}
+                    ref={el => (inputRefs.current[index] = el)}
+                    disabled={actions.getIsInputDisabled(index)}
+                    correction={corrections[index]}
+                />
+            ))}
+
+            {pageState === "answering" && (
+                <Button name="Correct" icon="/svgs/check.svg" onClick={actions.startCorrection} />
+            )}
+
+            {pageState === "corrected" && (
+                corrections.some(c => !c?.correct) && <Button
+                    name="Try again"
+                    icon="/svgs/undo.svg"
+                    onClick={() => actions.tryAgain()}
+                />
+            )}
+
+            {pageState === "corrected" && (exerciseIndex === exercises.length - 1 ? (
+                <Button name="End" icon="/svgs/end.svg" onClick={actions.endQuiz} />
+            ) : (
+                <Button name="Next" icon="/svgs/next.svg" onClick={actions.nextExercise} />
+            ))}
+        </div >
+    )
 }
 
+function Input({
+    input,
+    ref,
+    disabled,
+    correction
+}: {
+    input: ExerciseInput
+    ref: (instance: HTMLInputElement | null) => void
+    disabled: boolean
+    correction?: { correctOnFirstTry: boolean; correct: boolean } | null
+}) {
+    return (
+        <div className="flex">
+            <input
+                ref={ref}
+                id={input.id} // Remove exerciseIndex from ID
+                disabled={disabled}
+                className="text-center field-sizing-content resize-none focus:outline-0
+                    bg-neutral-800 p-2 rounded-xl text-xl w-fit min-w-10"
+            />
+            {correction && <Image
+                src={correction.correct ? '/svgs/check.svg' : '/svgs/x.svg'}
+                alt="Incorrect"
+                width={50}
+                height={50}
+                className="w-fit aspect-square p-2"
+            />}
+        </div>
+    )
+}
+
+function Button({ name, icon, onClick }: { name: string; icon: string; onClick: () => void }) {
+    return (
+        <button className="flex gap-1" onClick={onClick}>
+            <Image src={icon} alt={name} width={50} height={50} className="w-fit aspect-square" />
+            <span>{name}</span>
+        </button>
+    )
+}
+
+// Rest of Context and Title components remain the same as original
 function Context({ exerciseData, exercises, exerciseIndex, pageState }: {
     exerciseData: ExerciseData | undefined,
     exercises: GeneratedExercise[],
     exerciseIndex: number,
     pageState: PageState
 }) {
-    if (!exercises) return <>No exercices. (Inside context)</>
-    if (!exercises[exerciseIndex]) return <>Exercice not found.</>
-    if (pageState == "not-yet") return <>Waiting to start...</>
+    if (!exercises.length) return <>Loading exercises...</>
+    if (!exercises[exerciseIndex]) return <>Exercice at position {exerciseIndex + 1} not found (?)</>
+    if (pageState == "not-yet") return <>Ready when you are!</>
     return exerciseData
         ? exercises[exerciseIndex].context
             .map((text, i) => <h1 key={i}>{text}</h1>)
