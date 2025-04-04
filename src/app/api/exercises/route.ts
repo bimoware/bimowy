@@ -3,5 +3,9 @@ import db from '../db'
 
 // To handle a GET request to /api
 export async function GET() {
-	return NextResponse.json(db, { status: 200 })
+	const cache = await db.fetchAll()
+	const values = Array.from(cache.values()).sort(
+		(a, b) => a.createdOn - b.createdOn
+	)
+	return NextResponse.json(values, { status: 200 })
 }
