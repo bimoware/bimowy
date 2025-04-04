@@ -1,17 +1,17 @@
 'use client';
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { ExerciseResource } from '../api/defs';
+import { ExerciseGenerator } from '@app/api/defs';
 import Link from 'next/link';
-import { Bloc } from '@/components/Bloc';
+import { Bloc } from '@cpn/Bloc';
 
 export default function Page() {
-  const [exercises, setExercices] = useState<ExerciseResource[]>([]);
+  const [exercises, setExercices] = useState<ExerciseGenerator[]>([]);
 
   const fetchExercises = useCallback(async () => {
     try {
       const response = await fetch('/api/exercises');
       if (!response.ok) throw new Error('Failed to fetch exercises');
-      const data: ExerciseResource[] = await response.json();
+      const data: ExerciseGenerator[] = await response.json();
       setExercices(data);
     } catch (error) {
       console.error(error);
@@ -24,14 +24,14 @@ export default function Page() {
 
   return (
     <Bloc type="full-body">
-      <div className="flex gap-5 flex-wrap">
+      <div className="flex gap-8 flex-wrap">
         {exercises.map((exercise) => <Card key={exercise.id} exercise={exercise} />)}
       </div>
     </Bloc>
   );
 }
 
-function Card({ exercise }: { exercise: ExerciseResource }) {
+function Card({ exercise }: { exercise: ExerciseGenerator }) {
   const randomFrom = useCallback((arr: string[]) => arr[Math.floor(Math.random() * arr.length)], []);
 
   const randomRotationClass = useMemo(() => {
@@ -49,11 +49,17 @@ function Card({ exercise }: { exercise: ExerciseResource }) {
     transition select-none cursor-pointer
     hover:ring-2 hover:scale-105 hover:shadow-2xl
     shadow-black/20 inset-shadow-xs inset-shadow-white/5
+    group
     ${randomRotationClass}`}>
-      <h4 className="self-center text-2xl">{exercise.name}</h4>
+      {exercise.recent
+        && <span className='absolute px-3 py-1 bg-indigo-800 rounded-full -rotate-2 -m-6 font-bold
+        transition-transform
+        group-hover:-rotate-5 group-hover:-translate-1'>NEW</span>
+      }
+      <h4 className="self-center text-2xl font-bold">{exercise.name}</h4>
       <span className="text-basic">{exercise.desc}</span>
       {/* Tags */}
-      <div className="flex gap-2 flex-wrap mt-2">
+      <div className="flex gap-2 flex-wrap mt-2 justify-center">
         {exercise.tags.map(tag => <span key={tag}
           className="bg-white/10 px-2 py-1 rounded-full leading-4">{tag}</span>)}
       </div>
