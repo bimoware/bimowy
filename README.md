@@ -20,9 +20,10 @@ A "Khan Academy"-inspired project to help everyone be able to train in any math 
 
 <div align="center">
 
-https://github.com/user-attachments/assets/b61f1f80-0e6d-4089-a054-9f2ef34c1119
+https://github.com/user-attachments/assets/1f607eff-64f9-4e59-9e8a-31a64febefdf
 
 </div>
+If you don't like using your mouse like me, just press <code>Enter</code> and the website will know what to do (Start/Next/Try again/End)
 
 ## 📁 File Structure
 
