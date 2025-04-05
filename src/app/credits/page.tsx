@@ -9,7 +9,7 @@ export default function CreditsPage() {
             <span>Made with</span>
             <Image src={"/svgs/heart.svg"} width={30} height={30} alt="Heart" className="aspect-square" />
             <span>by</span>
-            <Mention icon={"/media/pfp.jpeg"} name="bimoware" href={"https://github/bimoware/"} />
+            <Mention icon={"/media/pfp.jpeg"} name="bimoware" href={"https://github.com/bimoware"} />
         </div>
         <div className="inline-flex gap-2 items-center justify-center">
             <span>Source code on </span>
@@ -28,18 +28,19 @@ export default function CreditsPage() {
     </div>
 }
 
-function Mention({ icon, name, href, background, padding }: { icon: string, name: string, href: string, background?: boolean, padding?: boolean }) {
-    return <Link href={href} target='_blank' >
+function Mention({ icon, name, href, background, padding }: { icon: string, name: string, href?: string, background?: boolean, padding?: boolean }) {
+    return <Link {...(href ? { href, target: "_blank" } : { href: "" })} >
         <div className="inline-flex gap-2 items-center p-1 px-2 rounded-2xl
         transition-all
         bg-neutral-700/70 hover:bg-neutral-700
-        select-all cursor-pointer hover:scale-102 hover:-rotate-1">
+        shadow-black/20 shadow-lg
+        select-allcursor-pointer hover:scale-102 hover:rotate-x-1 hover:-rotate-z-1">
             <Image src={icon} width={70} height={70} alt={name}
                 className={`h-8 w-fit aspect-square rounded-full
                 ${background && "bg-black"} ${padding && "p-1"}`} />
             <span className="font-bold">{name}</span>
-            <Image src={"/svgs/open_in_view.svg"} width={50} height={50} alt="Open in new tab"
-                className="h-4 w-fit aspect-square self-baseline -ml-1" />
+            {href && <Image src={"/svgs/open_in_view.svg"} width={50} height={50} alt="Open in new tab"
+                className="h-4 w-fit aspect-square self-baseline -ml-1" />}
         </div>
     </Link>
 }
