@@ -142,7 +142,6 @@ export default function ExercisePage() {
 	}
 
 	function startCorrection() {
-		setPageState('correcting');
 		const exercise = exercises[exerciseIndex];
 		if (!exercise) return;
 
@@ -151,6 +150,9 @@ export default function ExercisePage() {
 			id: input.id,
 			value: inputRefs.current[index]?.value || '',
 		}));
+		if (answers.some(a => a.value.trim() === "")) return;
+
+		setPageState('correcting');
 
 		fetch('/api/validate/', {
 			method: 'POST',
@@ -171,8 +173,8 @@ export default function ExercisePage() {
 
 	function getIsInputDisabled(index: number) {
 		const correction = corrections[index];
-		if (!correction) return false;
 		if (pageState !== 'answering') return true;
+		if (!correction) return false;
 		return correction.correctOnFirstTry || correction.correct;
 	}
 
