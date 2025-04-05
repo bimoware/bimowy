@@ -2,6 +2,7 @@ import { ExerciseGenerator } from '../defs'
 
 const ex = new ExerciseGenerator({
 	id: 'vector-norm',
+	name: 'Vector norm',
 	tags: ['algebra'],
 	createdOn: 17437700880000,
 	recent: true,
