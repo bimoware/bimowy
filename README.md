@@ -12,7 +12,7 @@ A "Khan Academy"-inspired project to help everyone be able to train in any math 
 
 <div align="center">
 
-   [![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date)](https://www.star-history.com/#bimoware/bimowy&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=bimoware/bimowy&type=Date)](https://www.star-history.com/#bimoware/bimowy&Date)
 
 </div>
 
@@ -43,8 +43,8 @@ src/
 
 ## ⚙️ Setup
 
-1. Clone the repository using `git clone`, with Github Desktop or with the green
-   download button on top.
+1. Clone the repository using `git clone`, with Github
+   Desktop or with the green download button on top.
 2. Install dependencies with `npm install`
 3. Run the development server with `npm run dev`
 4. Open your browser and visit `http://localhost:3000`
@@ -61,13 +61,17 @@ src/
 - /api/generate
 
 ```md
-- Description: Generate (5 by default) exercises for a specific exercise.
+- Description: Generate (5 by default) exercises for a
+  specific exercise.
 - Method: `POST`
 - Body:
-  - `exercise_id`: string (ID of the exercise to generate questions for)
-  - `n`: number (Optional) The number of questions to generate (default is 5)
+  - `exercise_id`: string (ID of the exercise to generate
+    questions for)
+  - `n`: number (Optional) The number of questions to
+    generate (default is 5)
 - Response:
-  - Returns an array of generated questions for the specified exercise.
+  - Returns an array of generated questions for the
+    specified exercise.
 ```
 
 - /api/validate
@@ -76,22 +80,23 @@ src/
 - Description: Validate user input for exercises.
 - Method: `POST`
 - Body:
-  - `exercise_id`: string (ID of the exercise to validate answers for)
+  - `exercise_id`: string (ID of the exercise to validate
+    answers for)
   - `answers`: array (Answers submitted for the exercise)
-  - `seed`: string or number (Seed used to generate the exercise, may vary for
-    each user or session)
+  - `seed`: string or number (Seed used to generate the
+    exercise, may vary for each user or session)
 - Response:
-  - Returns the validation result, which could include whether the answers are
-    correct or not.
+  - Returns the validation result, which could include
+    whether the answers are correct or not.
 ```
 
 ## 🤝 Contributing
 
-Feel free to fork the repository and create pull requests. Please make sure to
-make meaningful commits. Performance or bug fixes are welcome. Random commits
-will not be accepted.
+Feel free to fork the repository and create pull requests.
+Please make sure to make meaningful commits. Performance or
+bug fixes are welcome. Random commits will not be accepted.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
-for details.
+This project is licensed under the MIT License - see the
+[LICENSE](LICENSE) file for details.

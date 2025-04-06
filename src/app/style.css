@@ -1,11 +1,11 @@
 @import 'tailwindcss';
 
 body {
-	@apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
+  @apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
 }
 
 button {
-	@apply bg-indigo-800
+  @apply bg-indigo-800
   hover:shadow-md shadow-black/50 transition-all
   w-fit px-3 py-1.5
   cursor-pointer hover:scale-105
@@ -14,22 +14,22 @@ button {
 
 button:disabled,
 input:disabled {
-	@apply opacity-50 cursor-not-allowed;
+  @apply opacity-50 cursor-not-allowed;
 }
 
 input {
-	@apply w-fit;
+  @apply w-fit;
 }
 
 h1 {
-	@apply text-3xl font-bold tracking-wider mb-5;
+  @apply text-3xl font-bold tracking-wider mb-5;
 }
 
 @layer components {
-	.outline-incorrect {
-		@apply outline-2 outline-red-800;
-	}
-	.outline-correct {
-		@apply outline-2 outline-green-800;
-	}
+  .outline-incorrect {
+    @apply outline-2 outline-red-800;
+  }
+  .outline-correct {
+    @apply outline-2 outline-green-800;
+  }
 }

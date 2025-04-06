@@ -3,5 +3,5 @@ export default function TestPage() {
     <div>
       <p>Client-side page content here.</p>
     </div>
-  );
+  )
 }
