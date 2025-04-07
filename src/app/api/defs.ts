@@ -8,6 +8,7 @@ export type ExerciseTags =
   | 'geometry'
   | 'trigonometry'
   | 'algebra'
+  | 'linear-algebra'
   | 'calculus'
   | 'statistics'
   | 'probability'
@@ -23,6 +24,10 @@ export type GeneratedExercise = {
       }
     | {
         type: 'text'
+        text: string
+      }
+    | {
+        type: 'mono'
         text: string
       }
     | {
