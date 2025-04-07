@@ -6,10 +6,4 @@ export const metadata: Metadata = {
   icons: '/svgs/exercise.svg'
 }
 
-export default function Layout({
-  children
-}: {
-  children: ReactNode
-}) {
-  return children
-}
+export default function Layout({ children }: { children: ReactNode }) { return children }
