@@ -49,7 +49,7 @@ export async function POST(req: Request) {
       { status: 404 }
     )
   } else {
-    const exercises = Array.from({ length: n || 10 }).map(
+    const exercises = Array.from({ length: n || 5 }).map(
       () => exercise.generate()
     )
     return NextResponse.json(
