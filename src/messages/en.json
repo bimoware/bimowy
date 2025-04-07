@@ -13,5 +13,19 @@
     "open_new_tab": "Open in new tab",
     "heart": "heart",
     "available_in": "Available in both English & French with"
+  },
+  "Buttons": {
+    "Start": "Start",
+    "Confirm": "Confirm",
+    "Finish": "Finish",
+    "Next": "Next",
+    "Abandon_Next": "Abandon & Next",
+    "Questions": "Questions"
+  },
+  "ExercisePage": {
+    "Finished": "Finished",
+    "Accuracy": "Accuracy",
+    "loading_ex": "Loading exercises",
+    "Questions": "Questions"
   }
 }

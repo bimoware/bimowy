@@ -1,4 +1,4 @@
-import { ExerciseGenerator } from '../defs'
+import { ExerciseGenerator, LanguageCode } from '../defs'
 
 const ex = new ExerciseGenerator({
   id: 'from-points-to-vector',
@@ -23,14 +23,20 @@ const ex = new ExerciseGenerator({
       )
     return [x1, y1, x2, y2]
   },
-  getContext: function ([x1, y1, x2, y2]: number[]) {
+  getContext: function (
+    [x1, y1, x2, y2]: number[],
+    lang: LanguageCode
+  ) {
     return [
       {
         type: 'p',
         content: [
           {
             type: 'text',
-            text: 'The vector that goes from'
+            text: {
+              en: 'The vector that goes from',
+              fr: 'Le vecteur qui commence de'
+            }[lang]
           },
           {
             type: 'mono',
@@ -38,7 +44,7 @@ const ex = new ExerciseGenerator({
           },
           {
             type: 'text',
-            text: 'to'
+            text: { en: 'to', fr: 'à' }[lang]
           },
           {
             type: 'mono',
@@ -46,7 +52,7 @@ const ex = new ExerciseGenerator({
           },
           {
             type: 'text',
-            text: 'is:'
+            text: { en: 'is:', fr: 'est:' }[lang]
           }
         ]
       },

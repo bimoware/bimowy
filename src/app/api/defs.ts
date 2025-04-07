@@ -13,7 +13,7 @@ export type ExerciseTags =
   | 'statistics'
   | 'probability'
   | 'multivariable-calculus'
-
+export type LanguageCode = 'fr' | 'en'
 export type GeneratedExercise = {
   exercise_id: string
   seed: number[]
@@ -82,7 +82,8 @@ export class ExerciseGenerator {
   ) => Correction[]
   public generateSeed: () => number[]
   public getContext: (
-    inputs: number[]
+    inputs: number[],
+    lang: LanguageCode
   ) => GeneratedExercise['context']
 
   constructor(data: {
@@ -98,7 +99,8 @@ export class ExerciseGenerator {
     ) => Correction[]
     generateSeed: () => number[]
     getContext: (
-      inputs: number[]
+      inputs: number[],
+      lang: LanguageCode
     ) => GeneratedExercise['context']
   }) {
     this.id = data.id
@@ -120,9 +122,9 @@ export class ExerciseGenerator {
     this.getContext = data.getContext
   }
 
-  generate() {
+  generate(lang: LanguageCode) {
     const seed = this.generateSeed()
-    const context = this.getContext(seed)
+    const context = this.getContext(seed, lang)
     return {
       exercise_id: this.id,
       seed,

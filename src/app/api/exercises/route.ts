@@ -1,23 +1,9 @@
 import { NextResponse } from 'next/server'
 import db from '../db'
+import { LanguageCode } from '../defs'
 
 export async function POST(req: Request) {
-  const { lang } = await req.json()
-  if (!lang)
-    return NextResponse.json(
-      { message: 'lang is required.' },
-      { status: 400 }
-    )
-  if (typeof lang !== 'string')
-    return NextResponse.json(
-      { message: 'lang must be a string.' },
-      { status: 400 }
-    )
-  if (lang !== 'en' && lang !== 'fr')
-    return NextResponse.json(
-      { message: 'lang must be either "en" or "fr".' },
-      { status: 400 }
-    )
+  const { lang }: { lang: LanguageCode } = await req.json()
 
   const cache = await db.fetchAll()
   const values = Array.from(cache.values())
@@ -30,5 +16,7 @@ export async function POST(req: Request) {
       createdOn: ex.createdOn,
       tags: ex.tags
     }))
+
+  console.log(values)
   return NextResponse.json(values, { status: 200 })
 }

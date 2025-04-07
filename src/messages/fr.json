@@ -13,5 +13,21 @@
     "open_new_tab": "Ouvrir dans un nouvel onglet",
     "heart": "amour",
     "available_in": "Disponible en Français & Anglais grâce à"
+  },
+  "Buttons": {
+    "Start": "Go",
+    "Confirm": "Confirmer",
+    "Finish": "Finir",
+    "Next": "Prochain",
+    "Abandon_Next": "Abandonner & Prochain",
+    "Questions": "Exos"
+  },
+  "Finished": "Terminé",
+  "Accuracy": "Precision",
+  "ExercisePage": {
+    "Finished": "Fin",
+    "Accuracy": "Precision",
+    "loading_ex": "Chargement des exos",
+    "Questions": "Questions"
   }
 }

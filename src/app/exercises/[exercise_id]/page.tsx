@@ -9,6 +9,7 @@ import useSound from 'use-sound'
 import { JSX } from 'react/jsx-dev-runtime'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
+import { useLocale, useTranslations } from 'next-intl'
 
 type PageState = 'not-yet' | 'answering' | 'correcting' | 'corrected' | 'finished'
 
@@ -26,7 +27,9 @@ type ExerciseCorrection = {
 type Correction = { correctOnFirstTry: boolean; correct: boolean; id: string }
 
 export default function ExercisePage() {
+  const locale = useLocale()
   const params = useParams()
+  const t = useTranslations("ExercisePage")
   const exerciseId = params['exercise_id']!
 
   const [exercises, setExercises] = useState<GeneratedExercise[]>([])
@@ -47,10 +50,11 @@ export default function ExercisePage() {
   useEffect(() => {
     fetch('/api/generate/', {
       method: 'POST',
-      body: JSON.stringify({ exercise_id: exerciseId })
+      body: JSON.stringify({ exercise_id: exerciseId, lang: locale })
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res)
         const { name, desc, id, exercises: generatedExercises } = res
         setExerciseData({ name, desc, id })
         setExercises(generatedExercises)
@@ -166,7 +170,7 @@ export default function ExercisePage() {
       id: input.id,
       value: inputRefs.current[index]?.value || ''
     }))
-    if (answers.some((a) => a.value.trim() === '')) return
+    if (answers.some((a) => !a.value.trim())) return
 
     setPageState('correcting')
 
@@ -211,14 +215,7 @@ export default function ExercisePage() {
     return (
       <Bloc type='full-body'>
         <div className='flex gap-4 justify-center items-center'>
-          <span className='font-bold text-5xl'>Finished!</span>
-          <Image
-            src={'/media/cat.gif'}
-            width={200}
-            height={200}
-            className='h-8 w-fit aspect-square'
-            alt={'Cat vibing'}
-          />
+          <span className='font-bold text-5xl'>{t('Finished')}!</span>
         </div>
         <Correction {...{ allCorrections }} />
       </Bloc>
@@ -246,11 +243,12 @@ export default function ExercisePage() {
   )
 }
 function Correction({ allCorrections }: { allCorrections: Correction[][] }) {
-  /* Calculate the accuracy knowing:
+  /*
   Correct on first try: 100%
   Correcte (not on first try): 50%
   Incorrect: 0%
   */
+  const t = useTranslations("ExercisePage")
   const total = allCorrections.reduce((acc, corrections) => {
     return acc + corrections.reduce((acc, c) => {
       if (c.correctOnFirstTry) return acc + 1
@@ -265,7 +263,7 @@ function Correction({ allCorrections }: { allCorrections: Correction[][] }) {
   const accuracyPercentage = Math.round(accuracy * 100)
   const accuracyText = `${accuracyPercentage}% (${total}/${totalCount})`
   return <div className='flex flex-col items-center gap-10'>
-    <span className='text-center text-4xl'>Accuracy: {accuracyText}</span>
+    <span className='text-center text-4xl'>{t('Accuracy')}: {accuracyText}</span>
     <ol className='list-decimal flex flex-col gap-4 text-2xl mx-5'>
       {
         allCorrections.map((corrections, i) => {
@@ -273,10 +271,13 @@ function Correction({ allCorrections }: { allCorrections: Correction[][] }) {
             <li>
               {
                 corrections.map((c, j) => {
-                  const emoji = c.correctOnFirstTry
-                    ? "🟢"
-                    : c.correct ? "🟠" : "🔴"
-                  return <span key={j}>{emoji}</span>
+                  return <span key={j}>{
+                    c.correctOnFirstTry
+                      ? "🟢"
+                      : c.correct
+                        ? "🟠"
+                        : "🔴"
+                  }</span>
                 })
               }
             </li>
@@ -301,9 +302,10 @@ function ExerciseContent({
   allCorrections: Array<Correction[]>
   getIsInputDisabled: (index: number) => boolean
 }) {
-  if (!exercises.length) return <div>Loading exercises...</div>
+  const t = useTranslations("ExercisePage")
+
+  if (!exercises.length) return <div>{t("loading_ex")}...</div>
   const exercise = exercises[exerciseIndex]
-  if (!exercise) return <div>Exercise not found</div>
   if (pageState === 'not-yet') return <></>
 
   let inputIndex = 0
@@ -384,32 +386,34 @@ function ActionButtons({
     tryAgain: () => void
   }
 }) {
+
+  const t = useTranslations('Buttons')
   if (pageState === 'not-yet') {
     return (
       <div className='flex justify-center'>
-        <Button name='Start' icon='/svgs/start.svg' onClick={actions.startExercises} />
+        <Button name={t('Start')} icon='/svgs/start.svg' onClick={actions.startExercises} />
       </div>
     )
   }
-
-  const allCorrect = allCorrections[exerciseIndex].every((c) => c.correct)
+  const allCorrect = allCorrections[exerciseIndex]?.every((c) => c.correct)
 
   return (
     <div className='flex justify-center items-center gap-4 h-full '>
       {pageState === 'answering' && (
-        <Button name='Confirm' icon='/svgs/check.svg' onClick={actions.startCorrection} />
+        <Button name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} />
       )}
 
       {pageState === 'corrected' && (
         <>
           {!allCorrect && <Button name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} />}
-          {exerciseIndex === exercises.length - 1 ? (
-            <Button name='Finish' icon='/svgs/end.svg' onClick={actions.endQuiz} />
-          ) : (
-            allCorrect
-              ? <Button name='Next' icon='/svgs/next.svg' onClick={actions.nextExercise} />
-              : <Button name='Abandon & Next' icon='/svgs/next.svg' onClick={actions.nextExercise} />
-          )
+          {
+            exerciseIndex === exercises.length - 1 ? (
+              <Button name={t('Finish')} icon='/svgs/end.svg' onClick={actions.endQuiz} />
+            ) : (
+              allCorrect
+                ? <Button name={t('Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
+                : <Button name={t('Abandon_Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
+            )
           }
         </>
       )}
@@ -439,12 +443,12 @@ function Title({
   allCorrections: Correction[][]
   pageState: PageState
 }) {
-
+  const t = useTranslations("ExercisePage")
   return exerciseData ? (
     <h1 className='mt-2 ml-4' title={exerciseData.desc}>
       {exerciseData.name}
       {pageState === 'not-yet'
-        ? ` - ${exercises.length} Questions`
+        ? ` - ${exercises.length} ${t('Questions')}`
         : ` - ${allCorrections
           .map((_, i) => getExerciseCorrectionEmoji(i))
           .join('')}`}
