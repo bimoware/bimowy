@@ -96,14 +96,14 @@ function Mention({
           className={`h-8 w-fit aspect-square rounded-full
                 ${background && 'bg-black'} ${padding && 'p-1'}`}
         />
-        <span className='font-bold'>{name}</span>
+        <span className='group-hover:font-bold transition-all'>{name}</span>
         {href && (
           <Image
             src={'/svgs/open_in_view.svg'}
             width={50}
             height={50}
             alt='Open in new tab'
-            className='w-0 group-hover:w-fit transition-all
+            className='w-0 group-hover:w-4 transition-all duration-300
                  h-4 aspect-square self-baseline -ml-1'
           />
         )}
