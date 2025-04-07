@@ -1,13 +1,14 @@
 import { ExerciseGenerator } from '../defs'
 
 const ex = new ExerciseGenerator({
-  id: 'vector-norm',
-  name: 'Vector norm',
-  tags: ['algebra'],
-  createdOn: 17437700880000,
+  id: 'from-points-to-vector',
+  name: 'Points to vector',
+  desc: 'Convert two points to a vector',
+  tags: ['linear-algebra'],
+  createdOn: 4,
   recent: true,
   generateSeed: function () {
-    const range = [-5, 5]
+    const range = [-9, 9]
     const [x1, y1, x2, y2] = Array(4)
       .fill(range)
       .map(
@@ -23,27 +24,52 @@ const ex = new ExerciseGenerator({
         content: [
           {
             type: 'text',
-            text: 'The distance between'
+            text: 'The vector that goes from'
           },
           {
-            type: 'latex',
+            type: 'mono',
             text: `A(${x1},${y1})`
           },
           {
             type: 'text',
-            text: 'and'
+            text: 'to'
           },
           {
-            type: 'latex',
+            type: 'mono',
             text: `B(${x2},${y2})`
           },
           {
             type: 'text',
-            text: 'is'
+            text: 'is:'
+          }
+        ]
+      },
+      {
+        type: 'p',
+        content: [
+          {
+            type: 'latex',
+            text: '\\overrightarrow{AB}'
+          },
+          {
+            type: 'mono',
+            text: '= <'
           },
           {
             type: 'input',
-            id: 'answer'
+            id: 'vectorx'
+          },
+          {
+            type: 'mono',
+            text: ','
+          },
+          {
+            type: 'input',
+            id: 'vectory'
+          },
+          {
+            type: 'mono',
+            text: '>'
           }
         ]
       }
@@ -51,21 +77,19 @@ const ex = new ExerciseGenerator({
   },
   validateAnswers: function (
     [x1, y1, x2, y2]: number[],
-    [answer1]: {
+    [coor1, coor2]: {
       id: string
       value: string
     }[]
   ) {
     return [
       {
-        id: answer1.id,
-        is_correct:
-          Number(String(answer1.value)).toPrecision(2) ===
-          Math.sqrt(
-            Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)
-          )
-            .toPrecision(2)
-            .toString()
+        id: coor1.id,
+        is_correct: String(x2 - x1) == coor1.value
+      },
+      {
+        id: coor2.id,
+        is_correct: String(y2 - y1) == coor2.value
       }
     ]
   }
