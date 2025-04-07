@@ -3,7 +3,7 @@ import { ExerciseGenerator } from '../defs'
 const ex = new ExerciseGenerator({
   id: 'addition',
   tags: ['basic-arithmetic'],
-  createdOn: 1740918617000,
+  createdOn: 1,
   generateSeed: function () {
     const range = [1, 10]
     const [n1, n2] = Array(2)

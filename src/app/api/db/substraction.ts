@@ -3,7 +3,7 @@ import { ExerciseGenerator } from '../defs'
 const ex = new ExerciseGenerator({
   id: 'substraction',
   tags: ['basic-arithmetic'],
-  createdOn: 1740918618000,
+  createdOn: 2,
   generateSeed: function () {
     const range = [1, 10]
     const [n1, n2] = Array(2)

@@ -4,7 +4,8 @@ const ex = new ExerciseGenerator({
   id: 'multiplication',
   desc: 'Repeated addition',
   tags: ['basic-arithmetic'],
-  createdOn: 1743769763333,
+  createdOn: 3,
+  recent: true,
   generateSeed: function () {
     const range = [1, 10]
     const [n1, n2] = Array(2)
