@@ -26,6 +26,7 @@ type ExerciseCorrection = {
 
 type Correction = { correctOnFirstTry: boolean; correct: boolean; id: string }
 
+
 export default function ExercisePage() {
   const locale = useLocale()
   const params = useParams()
