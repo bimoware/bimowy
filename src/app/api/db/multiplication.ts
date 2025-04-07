@@ -2,7 +2,7 @@ import { ExerciseGenerator } from '../defs'
 
 const ex = new ExerciseGenerator({
   id: 'multiplication',
-  desc: 'Repeated addition',
+  desc: { en: 'Repeated addition', fr: 'Addition répétée' },
   tags: ['basic-arithmetic'],
   createdOn: 3,
   recent: true,

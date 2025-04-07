@@ -5,21 +5,32 @@ import {
   useState,
   useCallback
 } from 'react'
-import { ExerciseGenerator } from '@app/api/defs'
 import Link from 'next/link'
 import { Bloc } from '@cpn/Bloc'
+import { useLocale } from 'next-intl'
 
-export default function Page() {
-  const [exercises, setExercices] = useState<
-    ExerciseGenerator[]
-  >([])
+type ExerciseJSON = {
+  id: string
+  name: string
+  desc: string | null
+  recent: boolean
+  tags: string[]
+}
+
+export default function ExercisesPage() {
+  const locale = useLocale();
+  const [exercises, setExercices] = useState<ExerciseJSON[]>([])
 
   const fetchExercises = useCallback(async () => {
     try {
-      const response = await fetch('/api/exercises')
-      if (!response.ok)
-        throw new Error('Failed to fetch exercises')
-      const data: ExerciseGenerator[] =
+      const response = await fetch('/api/exercises', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ lang: locale })
+      })
+      const data: ExerciseJSON[] =
         await response.json()
       setExercices(data)
     } catch (error) {
@@ -45,7 +56,7 @@ export default function Page() {
 function Card({
   exercise
 }: {
-  exercise: ExerciseGenerator
+  exercise: ExerciseJSON
 }) {
   const randomFrom = useCallback(
     (arr: string[]) =>
@@ -90,7 +101,7 @@ function Card({
         <span
           className='absolute px-3 py-1 -m-8 group-hover:-rotate-5 group-hover:-translate-1
         transition-transform
-        bg-indigo-800/70 rounded-full -rotate-2 font-bold
+        bg-indigo-800 rounded-full -rotate-2 font-bold
         '
         >
           NEW

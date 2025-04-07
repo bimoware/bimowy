@@ -2,8 +2,14 @@ import { ExerciseGenerator } from '../defs'
 
 const ex = new ExerciseGenerator({
   id: 'from-points-to-vector',
-  name: 'Points to vector',
-  desc: 'Convert two points to a vector',
+  name: {
+    en: 'Points to vector',
+    fr: 'Points à vecteur'
+  },
+  desc: {
+    en: 'Convert 2 points into a vector',
+    fr: 'Convertir 2 points en un vecteur'
+  },
   tags: ['linear-algebra'],
   createdOn: 4,
   recent: true,

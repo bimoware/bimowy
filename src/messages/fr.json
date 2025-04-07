@@ -1,0 +1,17 @@
+{
+  "HomePage": {
+    "subtitle": "Eh bah.. C'est vide ici.."
+  },
+  "CreditsPage": {
+    "source_code_on": "Code source sur",
+    "made_with": "Fait avec",
+    "by": "par",
+    "inspired": "Inspiré de",
+    "frameworks": "Frameworks utilisés sont",
+    "et": "et",
+    "and": "et",
+    "open_new_tab": "Ouvrir dans un nouvel onglet",
+    "heart": "amour",
+    "available_in": "Disponible en Français & Anglais grâce à"
+  }
+}

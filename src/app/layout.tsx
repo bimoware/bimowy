@@ -1,24 +1,49 @@
 import { Outfit } from 'next/font/google'
 import SideBar from '../components/SideBar'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 
 import './style.css'
+import { Metadata, Viewport } from 'next';
 
 const outfit = Outfit({
   subsets: ['latin']
 })
+export const metadata: Metadata = {
+  title: 'Bimowy - When math works',
+  icons: '/svgs/home.svg',
+  description:
+    'Bimowy is a free, open-source, exercices-focused math platform for students who feel stuck when trying to train on any math subject.' +
+    ' With interactive learning and feedback loop, math becomes free from frustration and starts being actually fun.',
+  metadataBase: new URL(
+    process.env.NODE_ENV == 'production'
+      ? `https://bimowy.vercel.app/`
+      : 'http://localhost:3000/'
+  ),
+  twitter: {
+    card: 'summary'
+  }
+}
 
-export default function RootLayout({
+export const viewport: Viewport = { themeColor: '#FFFFFE' }
+
+
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang='en' className={outfit.className}>
+    <html lang={locale} className={outfit.className}>
       <body className='flex w-screen h-screen'>
-        <SideBar />
-        {children}
-        <SpeedInsights />
+        <NextIntlClientProvider>
+          <SideBar />
+          {children}
+          <SpeedInsights />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

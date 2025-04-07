@@ -2,6 +2,7 @@ import { ExerciseGenerator } from '../defs'
 
 const ex = new ExerciseGenerator({
   id: 'substraction',
+  name: { en: 'Substraction', fr: 'Soustraction' },
   tags: ['basic-arithmetic'],
   createdOn: 2,
   generateSeed: function () {

@@ -1,0 +1,17 @@
+{
+  "HomePage": {
+    "subtitle": "Not much to see here..."
+  },
+  "CreditsPage": {
+    "source_code_on": "Source code on",
+    "made_with": "Made with",
+    "by": "by",
+    "inspired": "Inspired from",
+    "frameworks": "Frameworks used are",
+    "et": "and",
+    "and": "and",
+    "open_new_tab": "Open in new tab",
+    "heart": "heart",
+    "available_in": "Available in both English & French with"
+  }
+}

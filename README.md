@@ -33,11 +33,15 @@ If you don't like using your mouse like me, just press <code>Enter</code> and th
 
 ## 🤝 Contributing
 
-Feel free to fork the repository and create pull requests. Please make sure to make meaningful commits. Performance or bug fixes are welcome. Barely useful pull requests just for the same of making one will not be accepted.
+Feel free to fork the repository and create pull requests.
+Please make sure to make meaningful commits. Performance or
+bug fixes are welcome. Barely useful pull requests just for
+the same of making one will not be accepted.
 
 ## 📁 File Structure
 
 Only the src/ directory is important for you to know about.
+
 ```plaintext
 src/                             # Main folder
 ├─ app/                           # App router (where all the /subdomains/ are)
@@ -74,7 +78,8 @@ src/                             # Main folder
 
 ```md
 - Description: Fetch all exercises.
-- Method: `GET`
+- Method: `POST`
+- Body: `lang`: string (Language code)
 ```
 
 - /api/generate
@@ -111,4 +116,5 @@ src/                             # Main folder
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the
+[LICENSE](LICENSE) file for details.

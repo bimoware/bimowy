@@ -71,8 +71,8 @@ export class DB {
 
 export class ExerciseGenerator {
   public id: string
-  public name: string
-  public desc: string | null
+  public name: { en: string; fr: string }
+  public desc: { en: string; fr: string } | null
   public tags: ExerciseTags[]
   public recent: boolean
   public createdOn: number
@@ -88,10 +88,10 @@ export class ExerciseGenerator {
   constructor(data: {
     id: string
     tags: ExerciseTags[]
-    name?: string
-    desc?: string
-    recent?: boolean
     createdOn: number
+    name?: { en: string; fr: string } | string
+    desc?: { en: string; fr: string }
+    recent?: boolean
     validateAnswers: (
       inputs: number[],
       answers: { id: string; value: string }[]
@@ -102,9 +102,15 @@ export class ExerciseGenerator {
     ) => GeneratedExercise['context']
   }) {
     this.id = data.id
-    this.name =
-      data.name ??
-      this.id[0].toUpperCase() + this.id.slice(1)
+    if (!data.name) {
+      const name =
+        this.id[0].toUpperCase() + this.id.slice(1)
+      this.name = { en: name, fr: name }
+    } else if (typeof data.name == 'string') {
+      this.name = { en: data.name, fr: data.name }
+    } else {
+      this.name = data.name
+    }
     this.desc = data.desc ?? null
     this.tags = data.tags ?? []
     this.recent = data.recent ?? false

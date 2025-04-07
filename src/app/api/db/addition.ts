@@ -2,6 +2,7 @@ import { ExerciseGenerator } from '../defs'
 
 const ex = new ExerciseGenerator({
   id: 'addition',
+  name: { en: 'Addition', fr: 'Addition' },
   tags: ['basic-arithmetic'],
   createdOn: 1,
   generateSeed: function () {
