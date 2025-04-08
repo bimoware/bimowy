@@ -8,21 +8,15 @@ import { Bloc } from '@cpn/Bloc'
 import useSound from 'use-sound'
 import { JSX } from 'react/jsx-dev-runtime'
 import katex from 'katex'
-import 'katex/dist/katex.min.css'
 import { useLocale, useTranslations } from 'next-intl'
+
+import 'katex/dist/katex.min.css'
 
 type PageState = 'not-yet' | 'answering' | 'correcting' | 'corrected' | 'finished'
 
-type ExerciseData = {
-  name: string
-  desc: string
-  id: string
-}
+type ExerciseData = { name: string, desc: string, id: string }
 
-type ExerciseCorrection = {
-  id: string
-  is_correct: boolean
-}
+type ExerciseCorrection = { id: string, is_correct: boolean }
 
 type Correction = { correctOnFirstTry: boolean; correct: boolean; id: string }
 

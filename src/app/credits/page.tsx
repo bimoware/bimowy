@@ -1,3 +1,4 @@
+import HeartEasterEgg from '@cpn/HeartEasterEgg';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image'
 import Link from 'next/link'
@@ -6,19 +7,14 @@ import { Fragment } from 'react';
 
 export default async function CreditsPage() {
   const t = await getTranslations('CreditsPage');
+
   return (
     <div className='text-4xl w-full h-full items-center justify-center gap-4 flex flex-col'>
       {
         [
           [
             <span>{t('made_with')}</span>,
-            <Image
-              src={'/svgs/heart.svg'}
-              width={30}
-              height={30}
-              alt={t('heart')}
-              className='aspect-square'
-            />,
+            <HeartEasterEgg heartAlt={t('heart')} />,
             <span>{t('by')}</span>,
             <Mention
               icon={'/media/pfp.jpeg'}

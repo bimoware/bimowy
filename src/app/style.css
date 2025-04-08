@@ -25,11 +25,13 @@ h1 {
   @apply text-3xl font-bold tracking-wider mb-5;
 }
 
-@layer components {
-  .outline-incorrect {
-    @apply outline-2 outline-red-800;
-  }
-  .outline-correct {
-    @apply outline-2 outline-green-800;
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
