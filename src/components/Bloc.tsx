@@ -12,7 +12,7 @@ export function Bloc({
   }
   return (
     <div
-      className={`bg-neutral-900 m-4 rounded-3xl overflow-y-scroll items-center ${styles[type]}`}
+      className={`bg-neutral-900 m-4 rounded-3xl overflow-y-auto items-center ${styles[type]}`}
     >
       {children}
     </div>
