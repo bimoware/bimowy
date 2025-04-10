@@ -24,14 +24,6 @@ export default function SideBar() {
             path: 'exercises',
             label: 'Exercises'
           }
-        },
-        {
-          id: 'credits',
-          data: {
-            icon: '/svgs/crown.svg',
-            path: 'credits',
-            label: 'Credits'
-          }
         }
       ].map((btn) => (
         <SideBarIcon {...btn.data} key={btn.id} />
