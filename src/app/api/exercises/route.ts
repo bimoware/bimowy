@@ -16,7 +16,5 @@ export async function POST(req: Request) {
       createdOn: ex.createdOn,
       tags: ex.tags
     }))
-
-  console.log(values)
   return NextResponse.json(values, { status: 200 })
 }
