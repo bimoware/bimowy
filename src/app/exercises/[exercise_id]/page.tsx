@@ -49,7 +49,6 @@ export default function ExercisePage() {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res)
         const { name, desc, id, exercises: generatedExercises } = res
         setExerciseData({ name, desc, id })
         setExercises(generatedExercises)
