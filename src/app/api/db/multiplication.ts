@@ -5,7 +5,6 @@ const ex = new ExerciseGenerator({
   desc: { en: 'Repeated addition', fr: 'Addition répétée' },
   tags: ['basic-arithmetic'],
   createdOn: 3,
-  recent: true,
   generateSeed: function () {
     const range = [1, 10]
     const [n1, n2] = Array(2)
