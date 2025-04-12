@@ -4,18 +4,6 @@ body {
   @apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
 }
 
-.button-wrapper {
-  @apply bg-indigo-800 cursor-pointer
-  hover:shadow-md shadow-black/50 transition-all
-  w-fit px-3 py-2
-  hover:scale-105
-  rounded-2xl text-3xl;
-}
-
-button:disabled,
-input:disabled {
-  @apply opacity-50 cursor-not-allowed;
-}
 
 input {
   @apply w-fit;
