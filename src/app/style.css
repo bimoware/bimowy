@@ -7,9 +7,9 @@ body {
 .button-wrapper {
   @apply bg-indigo-800 cursor-pointer
   hover:shadow-md shadow-black/50 transition-all
-  w-fit px-3 py-1.5
+  w-fit px-3 py-2
   hover:scale-105
-  rounded-xl text-2xl;
+  rounded-2xl text-3xl;
 }
 
 button:disabled,
