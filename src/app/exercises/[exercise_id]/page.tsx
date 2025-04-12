@@ -10,6 +10,7 @@ import { JSX } from 'react/jsx-dev-runtime'
 import katex from 'katex'
 import { useLocale, useTranslations } from 'next-intl'
 import 'katex/dist/katex.min.css'
+import { pages } from 'next/dist/build/templates/app-page'
 
 type PageState = 'not-yet' | 'answering' | 'correcting' | 'corrected' | 'finished'
 type ExerciseData = { name: string, desc: string, id: string }
@@ -101,15 +102,15 @@ export default function ExercisePage() {
     return inputs
   }
 
+  function resetInputRefs() {
+    inputRefs.current = []
+  }
   function focusFirstIncorrectInput() {
     const currentCorrections = getCurrentCorrections()
     // If no corrections yet, focus first input.
     if (currentCorrections.length === 0) {
       const input = inputRefs.current[0]
-      if (input) {
-        input.focus()
-        input.select()
-      }
+      if (input) { input.focus(); input.select() }
       return
     }
 
@@ -126,13 +127,13 @@ export default function ExercisePage() {
     setExerciseIndex(0)
     // Reset all corrections for a new quiz
     setAllCorrections(new Array(exercises.length).fill([]))
-    inputRefs.current = []
+    resetInputRefs()
   }
 
   function nextExercise() {
     setPageState('answering')
     setExerciseIndex((prev) => prev + 1)
-    inputRefs.current = []
+    resetInputRefs()
   }
 
   function handleCorrection(res: ExerciseCorrection[]) {
@@ -349,7 +350,7 @@ function ExerciseContent({
 
   return <div className='overflow-y-scroll bg-neutral-900 rounded-3xl
    flex flex-col w-full
-   p-4 text-4xl
+   p-4 text-4xl px-7
    space-y-4'>
     {exercise.context.map((node, i) => renderNode(node, i))}
   </div>
@@ -384,31 +385,43 @@ function ActionButtons({
     )
   }
   const allCorrect = allCorrections[exerciseIndex]?.every((c) => c.correct)
+  const buttons = []
+  if (pageState == "answering") {
+    buttons.push(
+      <Button key="confirm" name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} />
+    )
+  } else if (pageState == "correcting") {
+    buttons.push(
+      <Button key="correcting" name="Correcting..." icon='/svgs/loading.svg' disabled />
+    )
+  } else if (pageState == "corrected") {
+    const isLastExercise = exerciseIndex === exercises.length - 1;
 
+    if (!allCorrect) {
+      buttons.push(
+        <Button key="redo" name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} enter />
+      )
+    }
+
+    if (isLastExercise) {
+      buttons.push(
+        <Button key="finish" name={t('Finish')} icon='/svgs/end.svg' onClick={actions.endQuiz} enter />
+      )
+    } else {
+      if (allCorrect) {
+        buttons.push(
+          <Button key="next" name={t('Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} enter />
+        )
+      } else {
+        buttons.push(
+          <Button key="abandon" name={t('Abandon')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
+        )
+      }
+    }
+  }
   return (
     <div className='flex justify-center items-center gap-4 h-full '>
-      {pageState === 'answering' && (
-        <Button name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} enter />
-      )}
-
-      {pageState == "correcting" && (
-        <Button name="Correcting..." icon='/svgs/loading.svg' disabled />
-      )}
-
-      {pageState === 'corrected' && (
-        <>
-          {!allCorrect && <Button name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} enter />}
-          {
-            exerciseIndex === exercises.length - 1 ? (
-              <Button name={t('Finish')} icon='/svgs/end.svg' onClick={actions.endQuiz} enter />
-            ) : (
-              allCorrect
-                ? <Button name={t('Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} enter />
-                : <Button name={t('Abandon')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
-            )
-          }
-        </>
-      )}
+      {buttons}
     </div>
   )
 }
@@ -421,8 +434,15 @@ function Button({ name, icon, onClick, enter, disabled }: {
   disabled?: boolean
 }) {
   return (
-    <div className={`${disabled ? "opacity-50" : ""}
-    relative flex w-fit h-fit button-wrapper **:cursor-pointer group`} {...{ onClick }}>
+    <div className={`${disabled
+      ? "**:cursor-not-allowed opacity-50 bg-neutral-500/50"
+      : "**:cursor-pointer hover:scale-105 hover:shadow-md bg-indigo-800"}
+    relative flex w-fit h-fit
+    group
+     cursor-pointer
+    shadow-black/50 transition-all
+    px-3 py-2
+    rounded-2xl text-3xl`} {...{ onClick }}>
       <button {...{ disabled }} className="flex items-center gap-1">
         <Image src={icon} alt={name} width={30} height={30} className="p-1 h-full aspect-square" />
         <span>{name}</span>
