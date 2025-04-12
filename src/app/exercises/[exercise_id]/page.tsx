@@ -385,7 +385,7 @@ function ActionButtons({
   if (pageState === 'not-yet') {
     return (
       <div className='flex justify-center'>
-        <Button name={t('Start')} icon='/svgs/start.svg' onClick={actions.startExercises} />
+        <Button name={t('Start')} icon='/svgs/start.svg' onClick={actions.startExercises} enter />
       </div>
     )
   }
@@ -394,19 +394,19 @@ function ActionButtons({
   return (
     <div className='flex justify-center items-center gap-4 h-full '>
       {pageState === 'answering' && (
-        <Button name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} />
+        <Button name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} enter />
       )}
 
       {pageState === 'corrected' && (
         <>
-          {!allCorrect && <Button name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} />}
+          {!allCorrect && <Button name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} enter />}
           {
             exerciseIndex === exercises.length - 1 ? (
-              <Button name={t('Finish')} icon='/svgs/end.svg' onClick={actions.endQuiz} />
+              <Button name={t('Finish')} icon='/svgs/end.svg' onClick={actions.endQuiz} enter />
             ) : (
               allCorrect
-                ? <Button name={t('Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
-                : <Button name={t('Abandon_Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
+                ? <Button name={t('Next')} icon='/svgs/next.svg' onClick={actions.nextExercise} enter />
+                : <Button name={t('Abandon')} icon='/svgs/next.svg' onClick={actions.nextExercise} />
             )
           }
         </>
@@ -415,13 +415,21 @@ function ActionButtons({
   )
 }
 
-function Button({ name, icon, onClick }: { name: string; icon: string; onClick: () => void }) {
+function Button({ name, icon, onClick, enter }: { name: string; icon: string; onClick: () => void; enter?: boolean }) {
   return (
-    <button className='flex gap-1' onClick={onClick}>
-      <Image src={icon} alt={name} width={50} height={50} className='w-fit aspect-square' />
-      <span>{name}</span>
-    </button>
-  )
+    <div className='relative flex w-fit h-fit button-wrapper **:cursor-pointer' onClick={onClick}>
+      <button className="flex items-center gap-1">
+        <Image src={icon} alt={name} width={50} height={50} className="w-fit aspect-square" />
+        <span>{name}</span>
+      </button>
+      {enter && (
+        <div className="absolute -top-2 -right-2">
+          {enter && <Image src={"/svgs/enter.svg"} width={24} height={24} alt="Enter"
+            className='rounded-md shadow-md shadow-black/40' />}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function Title({
