@@ -85,6 +85,10 @@ export class ExerciseGenerator {
     inputs: number[],
     lang: LanguageCode
   ) => GeneratedExercise['context']
+  public getSolution: (inputs: number[]) => number[]
+  public getDetailedSolution: (
+    seed: number[]
+  ) => GeneratedExercise['context']
 
   constructor(data: {
     id: string
@@ -101,6 +105,10 @@ export class ExerciseGenerator {
     getContext: (
       inputs: number[],
       lang: LanguageCode
+    ) => GeneratedExercise['context']
+    getSolution: (inputs: number[]) => number[]
+    getDetailedSolution: (
+      seed: number[]
     ) => GeneratedExercise['context']
   }) {
     this.id = data.id
@@ -120,6 +128,8 @@ export class ExerciseGenerator {
     this.validateAnswers = data.validateAnswers
     this.generateSeed = data.generateSeed
     this.getContext = data.getContext
+    this.getSolution = data.getSolution
+    this.getDetailedSolution = data.getDetailedSolution
   }
 
   generate(lang: LanguageCode) {
