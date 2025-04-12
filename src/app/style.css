@@ -4,11 +4,11 @@ body {
   @apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
 }
 
-button {
-  @apply bg-indigo-800
+.button-wrapper {
+  @apply bg-indigo-800 cursor-pointer
   hover:shadow-md shadow-black/50 transition-all
   w-fit px-3 py-1.5
-  cursor-pointer hover:scale-105
+  hover:scale-105
   rounded-xl text-2xl;
 }
 
