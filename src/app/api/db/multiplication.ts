@@ -43,7 +43,23 @@ const ex = new ExerciseGenerator({
       {
         id: answer1.id,
         is_correct:
-          String(answer1.value) === (n1 * n2).toString()
+          answer1.value == this.getSolution([n1,n2]).toString()
+      }
+    ]
+  },
+  getSolution: function (seed: number[]) {
+    return [seed[0] * seed[1]]
+  },
+  getDetailedSolution: function (seed: number[]) {
+    return [
+      {
+        type: 'p',
+        content: [
+          {
+            type: 'text',
+            text: '[Solution Here]'
+          }
+        ]
       }
     ]
   }

@@ -88,20 +88,37 @@ const ex = new ExerciseGenerator({
     ]
   },
   validateAnswers: function (
-    [x1, y1, x2, y2]: number[],
+    seed: number[],
     [coor1, coor2]: {
       id: string
       value: string
     }[]
   ) {
+    const [x, y] = this.getSolution(seed)
     return [
       {
         id: coor1.id,
-        is_correct: String(x2 - x1) == coor1.value
+        is_correct: x.toString() == coor1.value
       },
       {
         id: coor2.id,
-        is_correct: String(y2 - y1) == coor2.value
+        is_correct: y.toString() == coor2.value
+      }
+    ]
+  },
+  getSolution: function ([x1, y1, x2, y2]: number[]) {
+    return [x2 - x1, y2 - y1]
+  },
+  getDetailedSolution: function (seed: number[]) {
+    return [
+      {
+        type: 'p',
+        content: [
+          {
+            type: 'text',
+            text: '[Solution Here]'
+          }
+        ]
       }
     ]
   }
