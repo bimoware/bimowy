@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@cpn/*": ["./src/components/*"]
+      "@cpn/*": ["./src/components/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": [
