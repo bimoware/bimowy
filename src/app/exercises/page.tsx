@@ -46,7 +46,7 @@ export default function ExercisesPage() {
     <Bloc type='full-body'>
       <div className='flex gap-8 flex-wrap'>
         {exercises.map((exercise) => (
-          <Card key={exercise.id} exercise={exercise} />
+          <Card key={exercise.id} {...{ exercise }} />
         ))}
       </div>
     </Bloc>
@@ -56,6 +56,7 @@ export default function ExercisesPage() {
 function Card({
   exercise
 }: {
+
   exercise: ExerciseJSON
 }) {
   const randomFrom = useCallback(
