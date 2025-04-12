@@ -9,15 +9,11 @@ import useSound from 'use-sound'
 import { JSX } from 'react/jsx-dev-runtime'
 import katex from 'katex'
 import { useLocale, useTranslations } from 'next-intl'
-
 import 'katex/dist/katex.min.css'
 
 type PageState = 'not-yet' | 'answering' | 'correcting' | 'corrected' | 'finished'
-
 type ExerciseData = { name: string, desc: string, id: string }
-
 type ExerciseCorrection = { id: string, is_correct: boolean }
-
 type Correction = { correctOnFirstTry: boolean; correct: boolean; id: string }
 
 
@@ -25,7 +21,7 @@ export default function ExercisePage() {
   const locale = useLocale()
   const params = useParams()
   const t = useTranslations("ExercisePage")
-  const exerciseId = params['exercise_id']!
+  const exerciseId = params['exercise_id'] as string
 
   const [exercises, setExercises] = useState<GeneratedExercise[]>([])
   const [pageState, setPageState] = useState<PageState>('not-yet')
@@ -37,11 +33,6 @@ export default function ExercisePage() {
   const [playCorrect] = useSound('/audios/correct.mp3', { volume: 0.5 })
   const [playIncorrect] = useSound('/audios/incorrect.mp3', { volume: 0.5 })
 
-  function getCurrentCorrections(): Correction[] {
-    return allCorrections[exerciseIndex] || []
-  }
-
-  // Generate questions
   useEffect(() => {
     fetch('/api/generate/', {
       method: 'POST',
@@ -90,6 +81,10 @@ export default function ExercisePage() {
     window.addEventListener('keydown', handleEnter)
     return () => window.removeEventListener('keydown', handleEnter)
   }, [pageState, allCorrections, exerciseIndex, exercises.length])
+
+  function getCurrentCorrections(): Correction[] {
+    return allCorrections[exerciseIndex] || []
+  }
 
   function collectInputs(context: GeneratedExercise['context']) {
     const inputs: { id: string }[] = []
@@ -221,16 +216,13 @@ export default function ExercisePage() {
         <Title
           {...{ allCorrections, exerciseData, exercises, pageState, getExerciseCorrectionEmoji }}
         />
-        <div className='grow w-full bg-neutral-900 rounded-3xl p-4 flex flex-col'>
-          <ExerciseContent
-            {...{ exercises, exerciseIndex, pageState, inputRefs, allCorrections, getIsInputDisabled }}
+        <ExerciseContent
+          {...{ exercises, exerciseIndex, pageState, inputRefs, allCorrections, getIsInputDisabled }}
+        />
+        <div className='items-end mt-auto pt-4 flex grow'>
+          <ActionButtons
+            {...{ pageState, allCorrections, exerciseIndex, exercises, actions: { startCorrection, startExercises, nextExercise, endQuiz, tryAgain } }}
           />
-
-          <div className='mt-auto pt-4'>
-            <ActionButtons
-              {...{ pageState, allCorrections, exerciseIndex, exercises, actions: { startCorrection, startExercises, nextExercise, endQuiz, tryAgain } }}
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -298,7 +290,8 @@ function ExerciseContent({
 }) {
   const t = useTranslations("ExercisePage")
 
-  if (!exercises.length) return <div>{t("loading_ex")}...</div>
+  if (!exercises.length) return
+  // <div>{t("loading_ex")}...</div>
   const exercise = exercises[exerciseIndex]
   if (pageState === 'not-yet') return <></>
 
@@ -354,11 +347,12 @@ function ExerciseContent({
     }
   }
 
-  return (
-    <div className='p-4 text-4xl space-y-4'>
-      {exercise.context.map((node, i) => renderNode(node, i))}
-    </div>
-  )
+  return <div className='overflow-y-scroll bg-neutral-900 rounded-3xl
+   flex flex-col w-full
+   p-4 text-4xl
+   space-y-4'>
+    {exercise.context.map((node, i) => renderNode(node, i))}
+  </div>
 }
 
 function ActionButtons({
@@ -397,6 +391,10 @@ function ActionButtons({
         <Button name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} enter />
       )}
 
+      {pageState == "correcting" && (
+        <Button name="Correcting..." icon='/svgs/loading.svg' disabled />
+      )}
+
       {pageState === 'corrected' && (
         <>
           {!allCorrect && <Button name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} enter />}
@@ -415,17 +413,25 @@ function ActionButtons({
   )
 }
 
-function Button({ name, icon, onClick, enter }: { name: string; icon: string; onClick: () => void; enter?: boolean }) {
+function Button({ name, icon, onClick, enter, disabled }: {
+  name: string;
+  icon: string;
+  onClick?: () => void;
+  enter?: boolean;
+  disabled?: boolean
+}) {
   return (
-    <div className='relative flex w-fit h-fit button-wrapper **:cursor-pointer' onClick={onClick}>
-      <button className="flex items-center gap-1">
-        <Image src={icon} alt={name} width={50} height={50} className="w-fit aspect-square" />
+    <div className={`${disabled ? "opacity-50" : ""}
+    relative flex w-fit h-fit button-wrapper **:cursor-pointer group`} {...{ onClick }}>
+      <button {...{ disabled }} className="flex items-center gap-1">
+        <Image src={icon} alt={name} width={30} height={30} className="p-1 h-full aspect-square" />
         <span>{name}</span>
       </button>
       {enter && (
-        <div className="absolute -top-2 -right-2">
-          {enter && <Image src={"/svgs/enter.svg"} width={24} height={24} alt="Enter"
-            className='rounded-md shadow-md shadow-black/40' />}
+        <div className="absolute -top-3 -right-3
+        group-hover:rotate-3 -translate-y-1 translate-x-1
+        duration-150">
+          {enter && <Image src={"/svgs/enter.svg"} width={32} height={32} alt="Enter" />}
         </div>
       )}
     </div>
@@ -446,16 +452,15 @@ function Title({
   pageState: PageState
 }) {
   const t = useTranslations("ExercisePage")
-  return exerciseData ? (
-    <h1 className='mt-2 ml-4' title={exerciseData.desc}>
-      {exerciseData.name}
-      {pageState === 'not-yet'
-        ? ` - ${exercises.length} ${t('Questions')}`
-        : ` - ${allCorrections
-          .map((_, i) => getExerciseCorrectionEmoji(i))
-          .join('')}`}
-    </h1>
-  ) : (
-    <></>
-  )
+  return <h1 className='mt-2 ml-4'>
+    {!exerciseData
+      ? "..."
+      : (exerciseData.name
+        + " - "
+        + (pageState === 'not-yet'
+          ? exercises.length + " " + t('Questions')
+          : allCorrections
+            .map((_, i) => getExerciseCorrectionEmoji(i))
+            .join('')))}
+  </h1>
 }
