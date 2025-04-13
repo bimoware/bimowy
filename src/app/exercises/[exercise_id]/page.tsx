@@ -1,6 +1,6 @@
 'use client'
 
-import { GeneratedExercise } from '@app/api/defs'
+import { ContextElement, ContextSection, GeneratedExercise } from '@app/api/defs'
 import { useParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -10,13 +10,11 @@ import { JSX } from 'react/jsx-dev-runtime'
 import katex from 'katex'
 import { useLocale, useTranslations } from 'next-intl'
 import 'katex/dist/katex.min.css'
-import { pages } from 'next/dist/build/templates/app-page'
 
 type PageState = 'not-yet' | 'answering' | 'correcting' | 'corrected' | 'finished'
 type ExerciseData = { name: string, desc: string, id: string }
-type ExerciseCorrection = { id: string, is_correct: boolean }
-type Correction = { correctOnFirstTry: boolean; correct: boolean; id: string }
-
+// Correction is now simply a boolean for each input.
+type Correction = boolean
 
 export default function ExercisePage() {
   const locale = useLocale()
@@ -47,12 +45,12 @@ export default function ExercisePage() {
         // Initialize allCorrections with empty arrays for each exercise
         setAllCorrections(new Array(generatedExercises.length).fill([]))
       })
-  }, [exerciseId])
+  }, [exerciseId, locale])
 
   useEffect(() => {
     if (pageState !== 'corrected') return
     const currentCorrections = getCurrentCorrections()
-    const allCorrect = currentCorrections.every((c) => c?.correct)
+    const allCorrect = currentCorrections.every((c) => c === true)
     if (allCorrect) playCorrect()
     else playIncorrect()
   }, [pageState, exerciseIndex, allCorrections])
@@ -73,7 +71,7 @@ export default function ExercisePage() {
       if (pageState === 'answering') return startCorrection()
       if (pageState === 'corrected') {
         const currentCorrections = getCurrentCorrections()
-        const allCorrect = currentCorrections.every((c) => c?.correct)
+        const allCorrect = currentCorrections.every((c) => c === true)
         if (!allCorrect) return tryAgain()
         if (exerciseIndex < exercises.length - 1) return nextExercise()
         return endQuiz()
@@ -87,19 +85,22 @@ export default function ExercisePage() {
     return allCorrections[exerciseIndex] || []
   }
 
-  function collectInputs(context: GeneratedExercise['context']) {
-    const inputs: { id: string }[] = []
-    const traverse = (nodes: GeneratedExercise['context']) => {
+  // Instead of collecting inputs with IDs, just count the input elements.
+  function countInputs(context: ContextSection[]): number {
+    let count = 0
+    const traverse = (nodes: (ContextElement | ContextSection)[]) => {
       nodes.forEach((node) => {
         if (node.type === 'input') {
-          inputs.push({ id: node.id })
+          count++
         } else if (node.type === 'p') {
           traverse(node.content)
         }
       })
     }
-    traverse(context)
-    return inputs
+    context.forEach((node) => {
+      if (node.type === 'p') traverse(node.content)
+    })
+    return count
   }
 
   function resetInputRefs() {
@@ -107,14 +108,12 @@ export default function ExercisePage() {
   }
   function focusFirstIncorrectInput() {
     const currentCorrections = getCurrentCorrections()
-    // If no corrections yet, focus first input.
     if (currentCorrections.length === 0) {
       const input = inputRefs.current[0]
       if (input) { input.focus(); input.select() }
       return
     }
-
-    const firstIncorrectIndex = currentCorrections.findIndex((c) => !c || !c.correct)
+    const firstIncorrectIndex = currentCorrections.findIndex((c) => c !== true)
     if (firstIncorrectIndex === -1) return
     const input = inputRefs.current[firstIncorrectIndex]
     if (!input) return
@@ -136,13 +135,12 @@ export default function ExercisePage() {
     resetInputRefs()
   }
 
-  function handleCorrection(res: ExerciseCorrection[]) {
+  // Now the corrections are a plain boolean array.
+  function handleCorrection(corrections: Correction[]) {
     const currentCorrections = getCurrentCorrections()
-    const newCorrections = res.map((answer, i) => ({
-      id: answer.id,
-      correct: answer.is_correct,
-      correctOnFirstTry: currentCorrections[i]?.correctOnFirstTry ?? answer.is_correct
-    }))
+    const newCorrections = corrections.map((correct, i) =>
+      currentCorrections[i] === undefined ? correct : (currentCorrections[i] || correct)
+    )
     setAllCorrections((prev) => {
       const updated = [...prev]
       updated[exerciseIndex] = newCorrections
@@ -155,12 +153,10 @@ export default function ExercisePage() {
     const exercise = exercises[exerciseIndex]
     if (!exercise) return
 
-    const inputs = collectInputs(exercise.context)
-    const answers = inputs.map((input, index) => ({
-      id: input.id,
-      value: inputRefs.current[index]?.value || ''
-    }))
-    if (answers.some((a) => !a.value.trim())) return
+    // Get count of inputs from the exercise context.
+    const inputsCount = countInputs(exercise.context)
+    const answers = inputRefs.current.slice(0, inputsCount).map((el) => el?.value || '')
+    if (answers.some((a) => !a.trim())) return
 
     setPageState('correcting')
 
@@ -168,7 +164,7 @@ export default function ExercisePage() {
       method: 'POST',
       body: JSON.stringify({
         exercise_id: exerciseId,
-        answers,
+        answers, // now an array of strings by position
         seed: exercise.seed
       })
     })
@@ -180,25 +176,21 @@ export default function ExercisePage() {
     setPageState('answering')
   }
 
+  // In this new structure, if an input is correct, disable it.
   function getIsInputDisabled(index: number) {
     const currentCorrections = getCurrentCorrections()
-    const correction = currentCorrections[index]
-    if (pageState !== 'answering') return true
-    if (!correction) return false
-    return correction.correctOnFirstTry || correction.correct
+    return pageState !== 'answering' || currentCorrections[index] === true
   }
 
   function endQuiz() {
     setPageState('finished')
   }
 
+  // Display emoji based on correction boolean:
   function getExerciseCorrectionEmoji(exerciseIndex: number) {
-    const correction = allCorrections[exerciseIndex]
-    if (!correction.length) return "⚪"
-    const allCorrectOnFirstTry = correction.every((c) => c.correctOnFirstTry)
-    if (allCorrectOnFirstTry) return "🟢"
-    const allCorrect = correction.every((c) => c.correct)
-    return allCorrect ? "🟠" : "🔴"
+    const corrections = allCorrections[exerciseIndex]
+    if (!corrections || corrections.length === 0) return "⚪"
+    return corrections.every((c) => c === true) ? "🟢" : "🔴"
   }
 
   if (pageState === 'finished')
@@ -207,7 +199,7 @@ export default function ExercisePage() {
         <div className='flex gap-4 justify-center items-center'>
           <span className='font-bold text-5xl'>{t('Finished')}!</span>
         </div>
-        <Correction {...{ allCorrections }} />
+        <CorrectionDisplay allCorrections={allCorrections} />
       </Bloc>
     )
 
@@ -229,51 +221,36 @@ export default function ExercisePage() {
     </div>
   )
 }
-function Correction({ allCorrections }: { allCorrections: Correction[][] }) {
-  /*
-  Correct on first try: 100%
-  Correcte (not on first try): 50%
-  Incorrect: 0%
-  */
+
+function CorrectionDisplay({ allCorrections }: { allCorrections: Correction[][] }) {
   const t = useTranslations("ExercisePage")
   const total = allCorrections.reduce((acc, corrections) => {
-    return acc + corrections.reduce((acc, c) => {
-      if (c.correctOnFirstTry) return acc + 1
-      if (c.correct) return acc + 0.5
-      return acc
-    }, 0)
+    return acc + corrections.reduce((acc, c) => (c === true ? acc + 1 : acc), 0)
   }, 0)
-  const totalCount = allCorrections.reduce((acc, corrections) => {
-    return acc + corrections.length
-  }, 0)
-  const accuracy = total / totalCount
+  const totalCount = allCorrections.reduce((acc, corrections) => acc + corrections.length, 0)
+  const accuracy = totalCount === 0 ? 0 : total / totalCount
   const accuracyPercentage = Math.round(accuracy * 100)
   const accuracyText = `${accuracyPercentage}% (${total}/${totalCount})`
-  return <div className='flex flex-col items-center gap-10'>
-    <span className='text-center text-4xl'>{t('Accuracy')}: {accuracyText}</span>
-    <ol className='list-decimal flex flex-col gap-4 text-2xl mx-5'>
-      {
-        allCorrections.map((corrections, i) => {
-          return <div key={i} className='flex gap-2'>
+  return (
+    <div className='flex flex-col items-center gap-10'>
+      <span className='text-center text-4xl'>{t('Accuracy')}: {accuracyText}</span>
+      <ol className='list-decimal flex flex-col gap-4 text-2xl mx-5'>
+        {allCorrections.map((corrections, i) => (
+          <div key={i} className='flex gap-2'>
             <li>
-              {
-                corrections.map((c, j) => {
-                  return <span key={j}>{
-                    c.correctOnFirstTry
-                      ? "🟢"
-                      : c.correct
-                        ? "🟠"
-                        : "🔴"
-                  }</span>
-                })
-              }
+              {corrections.map((c, j) => (
+                <span key={j}>
+                  {c === true ? "🟢" : "🔴"}
+                </span>
+              ))}
             </li>
           </div>
-        })
-      }
-    </ol>
-  </div>
+        ))}
+      </ol>
+    </div>
+  )
 }
+
 function ExerciseContent({
   exercises,
   exerciseIndex,
@@ -290,15 +267,12 @@ function ExerciseContent({
   getIsInputDisabled: (index: number) => boolean
 }) {
   const t = useTranslations("ExercisePage")
-
-  if (!exercises.length) return
-  // <div>{t("loading_ex")}...</div>
+  if (!exercises.length) return null
   const exercise = exercises[exerciseIndex]
-  if (pageState === 'not-yet') return <></>
+  if (pageState === 'not-yet') return null
 
   let inputIndex = 0
-
-  const renderNode = (node: GeneratedExercise['context'][0], key: number): JSX.Element => {
+  const renderNode = (node: (ContextSection | ContextElement), key: number): JSX.Element => {
     switch (node.type) {
       case 'p':
         return (
@@ -307,36 +281,34 @@ function ExerciseContent({
           </p>
         )
       case 'text':
-        return <span key={key}>{node.text}</span>
-      case 'mono':
-        return (
-          <span key={key} className="font-mono">
+        const attributes = { className: `${node.extra?.includes('mono') && 'font-mono'}
+        ${node.extra?.includes('latex') && 'text-3xl'}` }
+        return node.extra?.includes('latex') ? (
+          <span key={key} {...attributes}
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(node.text, {
+                throwOnError: false,
+                output: 'mathml',
+              }),
+            }}
+          />
+        ) : (
+          <span key={key} {...attributes}>
             {node.text}
           </span>
-        )
-      case 'latex':
-        const html = katex.renderToString(node.text, {
-          throwOnError: false,
-          output: 'mathml'
-        })
-        return (
-          <span key={key} className='text-2xl' dangerouslySetInnerHTML={{ __html: html }} />
-        )
+        );
       case 'input': {
         const currentIndex = inputIndex++
         const currentCorrections = allCorrections[exerciseIndex] || []
-        const correction = currentCorrections[currentIndex]
         return (
           <input
             key={`${exerciseIndex}-${currentIndex}`}
-            ref={(el) => {
-              inputRefs.current[currentIndex] = el
-            }}
+            ref={(el) => { inputRefs.current[currentIndex] = el }}
             disabled={getIsInputDisabled(currentIndex)}
             className={`text-center rounded-md px-2 py-1 bg-neutral-800 w-fit max-w-24
-              ${!correction
+              ${currentCorrections[currentIndex] === undefined
                 ? 'focus:outline-2 focus:outline-white outline-1 outline-neutral-50/20'
-                : correction.correct
+                : currentCorrections[currentIndex]
                   ? 'outline-3 outline-green-500'
                   : 'outline-3 outline-red-500'
               }`}
@@ -348,12 +320,14 @@ function ExerciseContent({
     }
   }
 
-  return <div className='overflow-y-scroll bg-neutral-900 rounded-3xl
-   flex flex-col w-full
-   p-4 text-4xl px-7
-   space-y-4'>
-    {exercise.context.map((node, i) => renderNode(node, i))}
-  </div>
+  return (
+    <div className='overflow-y-scroll bg-neutral-900 rounded-3xl
+     flex flex-col w-full
+     p-4 text-4xl px-7
+     space-y-4'>
+      {exercise.context.map((node, i) => renderNode(node, i))}
+    </div>
+  )
 }
 
 function ActionButtons({
@@ -375,7 +349,6 @@ function ActionButtons({
     tryAgain: () => void
   }
 }) {
-
   const t = useTranslations('Buttons')
   if (pageState === 'not-yet') {
     return (
@@ -384,25 +357,24 @@ function ActionButtons({
       </div>
     )
   }
-  const allCorrect = allCorrections[exerciseIndex]?.every((c) => c.correct)
+  const currentCorrections = allCorrections[exerciseIndex] || []
+  const allCorrect = currentCorrections.every((c) => c === true)
   const buttons = []
-  if (pageState == "answering") {
+  if (pageState === "answering") {
     buttons.push(
       <Button key="confirm" name={t('Confirm')} icon='/svgs/check.svg' onClick={actions.startCorrection} />
     )
-  } else if (pageState == "correcting") {
+  } else if (pageState === "correcting") {
     buttons.push(
       <Button key="correcting" name="Correcting..." icon='/svgs/loading.svg' disabled />
     )
-  } else if (pageState == "corrected") {
-    const isLastExercise = exerciseIndex === exercises.length - 1;
-
+  } else if (pageState === "corrected") {
+    const isLastExercise = exerciseIndex === exercises.length - 1
     if (!allCorrect) {
       buttons.push(
         <Button key="redo" name='Try Again' icon='/svgs/undo.svg' onClick={actions.tryAgain} enter />
       )
     }
-
     if (isLastExercise) {
       buttons.push(
         <Button key="finish" name={t('Finish')} icon='/svgs/end.svg' onClick={actions.endQuiz} enter />
@@ -451,7 +423,7 @@ function Button({ name, icon, onClick, enter, disabled }: {
         <div className="absolute -top-3 -right-3
         group-hover:rotate-3 -translate-y-1 translate-x-1
         duration-150">
-          {enter && <Image src={"/svgs/enter.svg"} width={32} height={32} alt="Enter" />}
+          <Image src={"/svgs/enter.svg"} width={32} height={32} alt="Enter" />
         </div>
       )}
     </div>
@@ -472,15 +444,15 @@ function Title({
   pageState: PageState
 }) {
   const t = useTranslations("ExercisePage")
-  return <h1 className='mt-2 ml-4'>
-    {!exerciseData
-      ? "..."
-      : (exerciseData.name
-        + " - "
-        + (pageState === 'not-yet'
-          ? exercises.length + " " + t('Questions')
-          : allCorrections
-            .map((_, i) => getExerciseCorrectionEmoji(i))
-            .join('')))}
-  </h1>
+  return (
+    <h1 className='mt-2 ml-4'>
+      {!exerciseData
+        ? "..."
+        : (exerciseData.name +
+          " - " +
+          (pageState === 'not-yet'
+            ? exercises.length + " " + t('Questions')
+            : allCorrections.map((_, i) => getExerciseCorrectionEmoji(i)).join('')))}
+    </h1>
+  )
 }
