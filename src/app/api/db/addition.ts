@@ -8,6 +8,15 @@ const ex = new ExerciseGenerator<Seed, Answers>({
   nameLocales: { en: 'Addition', fr: 'Addition' },
   tags: ['basic-arithmetic'],
   createdOn: 1,
+  options: [
+    {
+      name: 'Number of questions',
+      id: 'n',
+      type: 'number',
+      min: 1,
+      max: 15
+    }
+  ],
   generateSeed: function () {
     const range = [1, 10]
     const [n1, n2] = Array(2)
