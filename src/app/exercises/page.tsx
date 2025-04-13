@@ -92,7 +92,8 @@ function Card({
       className={`w-fit h-fit bg-neutral-700/20 rounded-xl
     p-4 px-8
     flex flex-col self-center gap-0.5
-    transition select-none cursor-pointer
+    duration-150
+    select-none cursor-pointer
     hover:ring-2 hover:scale-105 hover:shadow-2xl
     shadow-black/20 inset-shadow-xs inset-shadow-white/5
     group
@@ -111,7 +112,8 @@ function Card({
       <h4 className='self-center text-2xl font-bold'>
         {exercise.name}
       </h4>
-      <span className='self-center text-basic text-[0em] group-hover:text-sm transition-all text-neutral-50/50'>
+      <span className='self-center text-basic text-[0em] group-hover:text-sm text-neutral-50/50 
+      duration-150'>
         {exercise.desc}
       </span>
       {/* Tags */}
