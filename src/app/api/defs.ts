@@ -1,9 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-export type ExerciseInput = { id: string; type: string }
-export type Correction = { id: string; is_correct: boolean }
-export type ExerciseTags =
+type ExerciseTags =
   | 'basic-arithmetic'
   | 'geometry'
   | 'trigonometry'
@@ -13,32 +11,34 @@ export type ExerciseTags =
   | 'statistics'
   | 'probability'
   | 'multivariable-calculus'
-export type LanguageCode = 'fr' | 'en'
+
+const Languages = ['fr', 'en'] as const
+export type Language = (typeof Languages)[number] // 'fr' | 'en'
+type LocaleStrings = {
+  [K in Language]: string | null
+}
+
+export type ContextElement =
+  | {
+      type: 'text'
+      text: string
+      extra?: ('mono' | 'latex')[]
+    }
+  | { type: 'input' }
+
+export type ContextSection = {
+  type: 'p'
+  content: ContextElement[]
+}
+
 export type GeneratedExercise = {
   exercise_id: string
   seed: number[]
-  context: (
-    | {
-        type: 'p'
-        content: GeneratedExercise['context']
-      }
-    | {
-        type: 'text'
-        text: string
-      }
-    | {
-        type: 'mono'
-        text: string
-      }
-    | {
-        type: 'latex'
-        text: string
-      }
-    | {
-        type: 'input'
-        id: string
-      }
-  )[]
+  context: ContextSection[]
+}
+
+type Correction<Answers> = {
+  [K in keyof Answers]: boolean
 }
 
 export class DB {
@@ -69,62 +69,73 @@ export class DB {
   }
 }
 
-export class ExerciseGenerator {
+export class ExerciseGenerator<Seed = any, Answers = any> {
   public id: string
-  public name: { en: string; fr: string }
-  public desc: { en: string; fr: string } | null
+  public nameLocales: LocaleStrings
+  public descLocales: LocaleStrings
   public tags: ExerciseTags[]
-  public recent: boolean
   public createdOn: number
+  public recent: boolean
   public validateAnswers: (
-    inputs: number[],
-    answers: { id: string; value: string }[]
-  ) => Correction[]
-  public generateSeed: () => number[]
+    seed: Seed,
+    answers: Answers
+  ) => Correction<Answers>
+  public generateSeed: () => Seed
   public getContext: (
-    inputs: number[],
-    lang: LanguageCode
-  ) => GeneratedExercise['context']
-  public getSolution: (inputs: number[]) => number[]
+    seed: Seed,
+    lang: Language
+  ) => ContextSection[]
+  public getSolution: (seed: Seed) => Answers
   public getDetailedSolution: (
-    seed: number[]
-  ) => GeneratedExercise['context']
+    seed: Seed
+  ) => ContextSection[]
 
   constructor(data: {
     id: string
+    nameLocales?: LocaleStrings | string
+    descLocales?: LocaleStrings | string
     tags: ExerciseTags[]
     createdOn: number
-    name?: { en: string; fr: string } | string
-    desc?: { en: string; fr: string }
-    recent?: boolean
     validateAnswers: (
-      inputs: number[],
-      answers: { id: string; value: string }[]
-    ) => Correction[]
-    generateSeed: () => number[]
+      seed: Seed,
+      answers: Answers
+    ) => Correction<Answers>
+    generateSeed: () => Seed
     getContext: (
-      inputs: number[],
-      lang: LanguageCode
-    ) => GeneratedExercise['context']
-    getSolution: (inputs: number[]) => number[]
+      seed: Seed,
+      lang: Language
+    ) => ContextSection[]
+    getSolution: (seed: Seed) => Answers
     getDetailedSolution: (
-      seed: number[]
-    ) => GeneratedExercise['context']
+      seed: Seed
+    ) => ContextSection[]
   }) {
     this.id = data.id
-    if (!data.name) {
+    if (!data.nameLocales) {
       const name =
         this.id[0].toUpperCase() + this.id.slice(1)
-      this.name = { en: name, fr: name }
-    } else if (typeof data.name == 'string') {
-      this.name = { en: data.name, fr: data.name }
+      this.nameLocales = { en: name, fr: name }
+    } else if (typeof data.nameLocales == 'string') {
+      this.nameLocales = {
+        en: data.nameLocales,
+        fr: data.nameLocales
+      }
     } else {
-      this.name = data.name
+      this.nameLocales = data.nameLocales
     }
-    this.desc = data.desc ?? null
+    if (!data.descLocales) {
+      this.descLocales = { en: null, fr: null }
+    } else if (typeof data.descLocales == 'string') {
+      this.descLocales = {
+        en: data.descLocales,
+        fr: data.descLocales
+      }
+    } else {
+      this.descLocales = data.descLocales
+    }
     this.tags = data.tags ?? []
-    this.recent = data.recent ?? false
     this.createdOn = data.createdOn
+    this.recent = data.createdOn >= 4
     this.validateAnswers = data.validateAnswers
     this.generateSeed = data.generateSeed
     this.getContext = data.getContext
@@ -132,7 +143,17 @@ export class ExerciseGenerator {
     this.getDetailedSolution = data.getDetailedSolution
   }
 
-  generate(lang: LanguageCode) {
+  serialize(lang: Language) {
+    return {
+      id: this.id,
+      name: this.nameLocales[lang],
+      desc: this.descLocales[lang],
+      tags: this.tags,
+      recent: this.recent
+    }
+  }
+
+  generate(lang: Language) {
     const seed = this.generateSeed()
     const context = this.getContext(seed, lang)
     return {
