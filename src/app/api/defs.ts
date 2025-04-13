@@ -41,6 +41,19 @@ type Correction<Answers> = {
   [K in keyof Answers]: boolean
 }
 
+type Option = {
+  id: string
+  name: string
+} & (
+  | {
+      type: 'number'
+      min: number
+      max: number
+    }
+  | {
+      type: 'boolean'
+    }
+)
 export class DB {
   public cache: Map<string, ExerciseGenerator>
   constructor() {
@@ -76,11 +89,12 @@ export class ExerciseGenerator<Seed = any, Answers = any> {
   public tags: ExerciseTags[]
   public createdOn: number
   public recent: boolean
+  public options: Option[]
   public validateAnswers: (
     seed: Seed,
     answers: Answers
   ) => Correction<Answers>
-  public generateSeed: () => Seed
+  public generateSeed: (options: Option[]) => Seed
   public getContext: (
     seed: Seed,
     lang: Language
@@ -96,19 +110,18 @@ export class ExerciseGenerator<Seed = any, Answers = any> {
     descLocales?: LocaleStrings | string
     tags: ExerciseTags[]
     createdOn: number
+    options?: Option[]
     validateAnswers: (
       seed: Seed,
       answers: Answers
     ) => Correction<Answers>
-    generateSeed: () => Seed
+    generateSeed: (options: Option[]) => Seed
     getContext: (
       seed: Seed,
       lang: Language
     ) => ContextSection[]
     getSolution: (seed: Seed) => Answers
-    getDetailedSolution: (
-      seed: Seed
-    ) => ContextSection[]
+    getDetailedSolution: (seed: Seed) => ContextSection[]
   }) {
     this.id = data.id
     if (!data.nameLocales) {
@@ -136,6 +149,7 @@ export class ExerciseGenerator<Seed = any, Answers = any> {
     this.tags = data.tags ?? []
     this.createdOn = data.createdOn
     this.recent = data.createdOn >= 4
+    this.options = data.options || []
     this.validateAnswers = data.validateAnswers
     this.generateSeed = data.generateSeed
     this.getContext = data.getContext
@@ -153,8 +167,8 @@ export class ExerciseGenerator<Seed = any, Answers = any> {
     }
   }
 
-  generate(lang: Language) {
-    const seed = this.generateSeed()
+  generate(lang: Language, options: Option[]) {
+    const seed = this.generateSeed(options)
     const context = this.getContext(seed, lang)
     return {
       exercise_id: this.id,
