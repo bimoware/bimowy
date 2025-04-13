@@ -1,8 +1,11 @@
 import { ExerciseGenerator } from '../defs'
 
-const ex = new ExerciseGenerator({
+type Seed = [n1: number, n2: number]
+type Answers = [n: number]
+
+const ex = new ExerciseGenerator<Seed, Answers>({
   id: 'addition',
-  name: { en: 'Addition', fr: 'Addition' },
+  nameLocales: { en: 'Addition', fr: 'Addition' },
   tags: ['basic-arithmetic'],
   createdOn: 1,
   generateSeed: function () {
@@ -15,7 +18,7 @@ const ex = new ExerciseGenerator({
       )
     return [n1, n2]
   },
-  getContext: function ([n1, n2]: number[]) {
+  getContext: function ([n1, n2]: Seed) {
     return [
       {
         type: 'p',
@@ -33,25 +36,15 @@ const ex = new ExerciseGenerator({
     ]
   },
   validateAnswers: function (
-    [n1, n2]: number[],
-    [answer1]: {
-      id: string
-      value: string
-    }[]
+    [n1, n2]: Seed,
+    [n]: Answers
   ) {
-    return [
-      {
-        id: answer1.id,
-        is_correct:
-          answer1.value ==
-          this.getSolution([n1, n2]).toString()
-      }
-    ]
+    return [ n == this.getSolution([n1, n2])[0] ]
   },
-  getSolution: function (seed: number[]) {
+  getSolution: function (seed: Seed) {
     return [seed[0] + seed[1]]
   },
-  getDetailedSolution: function (seed: number[]) {
+  getDetailedSolution: function (seed: Seed) {
     return [
       {
         type: 'p',
