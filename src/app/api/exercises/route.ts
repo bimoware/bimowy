@@ -1,20 +1,13 @@
 import { NextResponse } from 'next/server'
 import db from '../db'
-import { LanguageCode } from '../defs'
+import { Language } from '../defs'
 
 export async function POST(req: Request) {
-  const { lang }: { lang: LanguageCode } = await req.json()
+  const { lang }: { lang: Language } = await req.json()
 
   const cache = await db.fetchAll()
   const values = Array.from(cache.values())
     .sort((a, b) => a.createdOn - b.createdOn)
-    .map((ex) => ({
-      name: ex.name[lang],
-      desc: ex.desc ? ex.desc[lang] : null,
-      recent: ex.recent,
-      id: ex.id,
-      createdOn: ex.createdOn,
-      tags: ex.tags
-    }))
+    .map((ex) => ex.serialize(lang))
   return NextResponse.json(values, { status: 200 })
 }
