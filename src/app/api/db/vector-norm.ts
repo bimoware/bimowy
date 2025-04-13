@@ -1,18 +1,20 @@
-import { ExerciseGenerator, LanguageCode } from '../defs'
+import { ExerciseGenerator, Language } from '../defs'
 
-const ex = new ExerciseGenerator({
+type Seed = [x1: number, x2: number, y1: number, y2: number]
+type Answers = [x: number, y: number]
+
+const ex = new ExerciseGenerator<Seed, Answers>({
   id: 'from-points-to-vector',
-  name: {
+  nameLocales: {
     en: 'Points to vector',
     fr: 'Points à vecteur'
   },
-  desc: {
+  descLocales: {
     en: 'Convert 2 points into a vector',
     fr: 'Convertir 2 points en un vecteur'
   },
   tags: ['linear-algebra'],
   createdOn: 4,
-  recent: true,
   generateSeed: function () {
     const range = [-9, 9]
     const [x1, y1, x2, y2] = Array(4)
@@ -25,7 +27,7 @@ const ex = new ExerciseGenerator({
   },
   getContext: function (
     [x1, y1, x2, y2]: number[],
-    lang: LanguageCode
+    lang: Language
   ) {
     return [
       {
@@ -39,16 +41,18 @@ const ex = new ExerciseGenerator({
             }[lang]
           },
           {
-            type: 'mono',
-            text: `A(${x1},${y1})`
+            type: 'text',
+            text: `A(${x1},${y1})`,
+            extra: ['mono']
           },
           {
             type: 'text',
             text: { en: 'to', fr: 'à' }[lang]
           },
           {
-            type: 'mono',
-            text: `B(${x2},${y2})`
+            type: 'text',
+            text: `B(${x2},${y2})`,
+            extra: ['mono']
           },
           {
             type: 'text',
@@ -60,50 +64,43 @@ const ex = new ExerciseGenerator({
         type: 'p',
         content: [
           {
-            type: 'latex',
-            text: '\\overrightarrow{AB}'
+            type: 'text',
+            text: '\\overrightarrow{AB}',
+            extra: ['latex']
           },
           {
-            type: 'mono',
-            text: '= <'
+            type: 'text',
+            text: '= <',
+            extra: ['mono']
           },
           {
-            type: 'input',
-            id: 'vectorx'
+            type: 'input'
           },
           {
-            type: 'mono',
-            text: ','
+            type: 'text',
+            text: ',',
+            extra: ['mono']
           },
           {
-            type: 'input',
-            id: 'vectory'
+            type: 'input'
           },
           {
-            type: 'mono',
-            text: '>'
+            type: 'text',
+            text: '>',
+            extra: ['mono']
           }
         ]
       }
     ]
   },
   validateAnswers: function (
-    seed: number[],
-    [coor1, coor2]: {
-      id: string
-      value: string
-    }[]
+    [x1, x2, y1, y2]: Seed,
+    [x, y]: Answers
   ) {
-    const [x, y] = this.getSolution(seed)
+    const [correctX, correctY] = this.getSolution([x1, x2, y1, y2])
     return [
-      {
-        id: coor1.id,
-        is_correct: x.toString() == coor1.value
-      },
-      {
-        id: coor2.id,
-        is_correct: y.toString() == coor2.value
-      }
+      x == correctX,
+      y == correctY
     ]
   },
   getSolution: function ([x1, y1, x2, y2]: number[]) {
