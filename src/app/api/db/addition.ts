@@ -10,11 +10,12 @@ const ex = new ExerciseGenerator<Seed, Answers>({
   createdOn: 1,
   options: [
     {
-      name: 'Number of questions',
+      title: 'Number of questions',
       id: 'n',
       type: 'number',
       min: 1,
-      max: 15
+      max: 15,
+      default: 5
     }
   ],
   generateSeed: function () {
@@ -44,11 +45,8 @@ const ex = new ExerciseGenerator<Seed, Answers>({
       }
     ]
   },
-  validateAnswers: function (
-    [n1, n2]: Seed,
-    [n]: Answers
-  ) {
-    return [ n == this.getSolution([n1, n2])[0] ]
+  validateAnswers: function ([n1, n2]: Seed, [n]: Answers) {
+    return [n == this.getSolution([n1, n2])[0]]
   },
   getSolution: function (seed: Seed) {
     return [seed[0] + seed[1]]
