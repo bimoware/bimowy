@@ -8,21 +8,11 @@ input {
   @apply bg-neutral-950/20 rounded-lg
   outline outline-white/20
   focus:outline-2 focus:outline-white/50
-  px-2 py-1 w-24
+  px-2 py-1 max-w-48
+
   shadow-inner shadow-black/20 text-center
   disabled:opacity-50 disabled:cursor-not-allowed
 }
 h1 {
   @apply text-3xl font-bold tracking-wider p-2;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-  opacity: 0;
-  transition: opacity 0.3s;
 }
