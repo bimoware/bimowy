@@ -249,7 +249,7 @@ export default function ExercisePage() {
 	return <div className="w-full h-full flex-col p-4
 	flex items-center gap-4">
 		<Title {...{ pageStep, name, exercises }} />
-		<div className={`${blocClass} grow text-4xl`}>
+		<div className={`${blocClass} grow text-4xl overflow-y-scroll`}>
 			{pageStep == "options"
 				? <Options {...{ apiOptions, userOptions, setUserOptions }} />
 				: pageStep == "end"
