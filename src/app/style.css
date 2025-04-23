@@ -4,13 +4,16 @@ body {
   @apply bg-neutral-950 text-white w-[100vw] h-[100vh] overflow-clip flex;
 }
 
-
 input {
-  @apply w-fit;
+  @apply bg-neutral-950/20 rounded-lg
+  outline outline-white/20
+  focus:outline-2 focus:outline-white/50
+  px-2 py-1 w-24
+  shadow-inner shadow-black/20 text-center
+  disabled:opacity-50 disabled:cursor-not-allowed
 }
-
 h1 {
-  @apply text-3xl font-bold tracking-wider mb-5;
+  @apply text-3xl font-bold tracking-wider p-2;
 }
 
 @keyframes float {

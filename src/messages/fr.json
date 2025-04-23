@@ -17,14 +17,18 @@
     "Finish": "Finir",
     "Next": "Prochain",
     "Abandon": "Abandonner",
-    "Questions": "Exos"
+    "Questions": "Exos",
+    "LoadingExercises": "Generation...",
+    "LoadingOptions": "Chargement des options...",
+    "Correcting": "Correction...",
+    "TryAgain": "Réessayer"
   },
-  "Finished": "Terminé",
-  "Accuracy": "Precision",
   "ExercisePage": {
     "Finished": "Fin",
     "Accuracy": "Precision",
-    "loading_ex": "Chargement des exos",
-    "Questions": "Questions"
+    "Questions": "Questions",
+    "SelectingOptions": "Selection des options...",
+    "tries": "essais",
+    "Score": "Score"
   }
 }

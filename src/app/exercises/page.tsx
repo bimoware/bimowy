@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { Bloc } from '@cpn/Bloc'
 import { useLocale } from 'next-intl'
 
-type ExerciseJSON = {
+type ExerciseData = {
   id: string
   name: string
   desc: string | null
@@ -19,28 +19,18 @@ type ExerciseJSON = {
 
 export default function ExercisesPage() {
   const locale = useLocale();
-  const [exercises, setExercices] = useState<ExerciseJSON[]>([])
+  const [exercises, setExercices] = useState<ExerciseData[]>([])
 
   const fetchExercises = useCallback(async () => {
-    try {
-      const response = await fetch('/api/exercises', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ lang: locale })
-      })
-      const data: ExerciseJSON[] =
-        await response.json()
-      setExercices(data)
-    } catch (error) {
-      console.error(error)
-    }
+    return await fetch(`/api/exercises?lang=${locale}`)
+      .then(res => res.json())
+      .then(res => res.data)
+      .then((data: ExerciseData[]) => setExercices(data))
   }, [])
 
   useEffect(() => {
     fetchExercises()
-  }, [fetchExercises])
+  }, [])
 
   return (
     <Bloc type='full-body'>
@@ -56,8 +46,7 @@ export default function ExercisesPage() {
 function Card({
   exercise
 }: {
-
-  exercise: ExerciseJSON
+  exercise: ExerciseData
 }) {
   const randomFrom = useCallback(
     (arr: string[]) =>
@@ -73,12 +62,10 @@ function Card({
         'hover:-rotate-1'
       ],
       [
-        'hover:translate-x-0',
         'hover:translate-x-1',
         'hover:-translate-x-1'
       ],
       [
-        'hover:translate-y-0',
         'hover:translate-y-1',
         'hover:-translate-y-1'
       ]

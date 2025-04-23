@@ -17,14 +17,18 @@
     "Finish": "Finish",
     "Next": "Next",
     "Abandon": "Abandon",
-    "Questions": "Questions"
+    "Questions": "Questions",
+    "LoadingExercises": "Generating...",
+    "LoadingOptions": "Loading Options...",
+    "Correcting": "Correcting...",
+    "TryAgain": "Try Again"
   },
   "ExercisePage": {
     "Finished": "Finished",
     "Accuracy": "Accuracy",
-    "loading_ex": "Loading exercises",
-    "Questions": "Questions"
-  },
-  "Accuracy": "Accuracy",
-  "Finished": "Finished"
+    "Questions": "Questions",
+    "SelectingOptions": "Selecting options...",
+    "tries": "tries",
+    "Score": "Score"
+  }
 }

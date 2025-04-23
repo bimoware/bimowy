@@ -1,42 +1,35 @@
-import { NextResponse } from 'next/server'
-import { ExerciseGenerator } from '@app/api/defs'
-import db from '@app/api/db'
+import { NextRequest, NextResponse } from "next/server"
 
-// Handle a POST request to /api/validate-answers
-export async function POST(req: Request) {
-  try {
-    // Parse the request body (expects JSON)
-    const { exercise_id, answers, seed } = await req.json()
+import db from "@app/api/db"
 
-    // In case answers and seed are passed as strings, parse them.
-    const parsedAnswers =
-      typeof answers === 'string'
-        ? JSON.parse(answers)
-        : answers
-    const parsedSeed =
-      typeof seed === 'string' ? JSON.parse(seed) : seed
+import { Error, Success } from "../util"
 
-    const exercise = await db.fetch(exercise_id)
+export async function POST(req: NextRequest) {
+	// Params
+	const searchParams = req.nextUrl.searchParams
 
-    if (!exercise) {
-      return NextResponse.json(
-        {
-          message: `Exercise with ID '${exercise_id}' not found`
-        },
-        { status: 404 }
-      )
-    } else {
-      const correction = exercise.validateAnswers(
-        parsedSeed,
-        parsedAnswers
-      )
-      return NextResponse.json(correction)
-    }
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      { message: 'Invalid request format' },
-      { status: 400 }
-    )
-  }
+	// ID
+	const exerciseId = searchParams.get("id")
+	if (!exerciseId) return Error("No exerciseId")
+
+	// Seed
+	const paramSeed = searchParams.get("seed")
+	if (!paramSeed) return Error("No seed given")
+	const seed = paramSeed.split(",").map(Number)
+
+	// Answers
+	const answers: any = await req.json()
+	if (!answers) return Error("No answers given")
+	if (typeof answers !== "object") return Error("Answers must be an object")
+	if (Array.isArray(answers)) return Error("Answers must not be an array")
+
+	// Main
+	const exercise = await db.fetch(exerciseId)
+	if (!exercise) return Error(`Exercise with ID '${exerciseId}' not found`)
+	const correction = exercise.validateAnswers(seed, answers)
+	return Success(correction)
+}
+
+export type ValidateRouteResult = {
+	[key: string]: boolean
 }
