@@ -44,9 +44,9 @@ export type APIOption = {
 } & (
 	| {
 			type: "number"
-			min: number
-			max: number
-			defaultValue: number
+			min?: number
+			max?: number
+			defaultValue?: number
 	  }
 	| {
 			type: "boolean"
