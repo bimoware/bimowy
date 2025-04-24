@@ -111,7 +111,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		}
 		this.tags = data.tags ?? []
 		this.createdOn = data.createdOn
-		this.recent = data.createdOn >= 4
+		this.recent = data.createdOn >= 5
 		this.options = data.options || []
 		this.options.push({
 			title: "Number of questions",
