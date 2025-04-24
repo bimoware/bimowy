@@ -11,7 +11,6 @@ import "katex/dist/katex.min.css"
 import { ExerciseRouteResult } from "@app/api/exercise/route";
 import { GenerateRouteResult } from "@app/api/generate/route";
 import { ValidateRouteResult } from "@app/api/validate/route";
-import { M_PLUS_1 } from "next/font/google";
 
 export type UserOption = { id: string, value: any }
 type PageStep = 'options' | 'normal' | 'end'
@@ -245,7 +244,7 @@ export default function ExercisePage() {
 	useEffect(() => actions.fetchOptions(), [])
 
 
-	const blocClass = "flex bg-neutral-900 w-full rounded-3xl py-3 px-5"
+	const blocClass = "flex flex-col space-y-2 bg-neutral-900 w-full rounded-3xl py-3 px-5"
 	return <div className="w-full h-full flex-col p-4
 	flex items-center gap-4">
 		<Title {...{ pageStep, name, exercises }} />
