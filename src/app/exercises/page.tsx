@@ -8,11 +8,13 @@ import {
 import Link from 'next/link'
 import { Bloc } from '@cpn/Bloc'
 import { useLocale } from 'next-intl'
+import Image from 'next/image'
 
 type ExerciseData = {
   id: string
   name: string
   desc: string | null
+  beta: boolean
   recent: boolean
   tags: string[]
 }
@@ -81,26 +83,40 @@ function Card({
     flex flex-col self-center gap-0.5
     duration-150
     select-none cursor-pointer
-    hover:ring-2 hover:scale-105 hover:shadow-2xl
+    hover:scale-105 hover:shadow-2xl
     shadow-black/20 inset-shadow-xs inset-shadow-white/5
-    group
-    ${randomRotationClass}`}
+    group relative
+    ${randomRotationClass}
+    ${exercise.beta
+          ? "**:opacity-80 hover:ring-1 hover:ring-white/50"
+          : "hover:ring-2"}`}
     >
-      {exercise.recent && (
-        <span
-          className='absolute px-3 py-1 -m-8 group-hover:-rotate-5 group-hover:-translate-1
+      {
+        exercise.beta ? (
+          <Image src={"/svgs/warning.svg"} alt={"Warning icon"} width={40} height={40}
+            className="absolute -left-5 -top-5
+            !opacity-100
+          duration-150
+          -rotate-6
+          group-hover:scale-105 group-hover:rotate-2
+          " />
+        )
+          : exercise.recent && (
+            <span
+              className='absolute px-3 py-1 -m-8 group-hover:-rotate-5 group-hover:-translate-1
         transition-transform
         bg-indigo-800 rounded-full -rotate-2 font-bold
-        '
-        >
-          NEW
-        </span>
-      )}
+        shadow-2xl shadow-indigo-800'
+            >
+              NEW
+            </span>
+          )}
+
       <h4 className='self-center text-2xl font-bold'>
         {exercise.name}
       </h4>
-      <span className='self-center text-basic text-[0em] group-hover:text-sm text-neutral-50/50 
-      duration-150'>
+      <span className='self-center text-basic text-sm text-neutral-50/50
+      duration-150 text-wrap'>
         {exercise.desc}
       </span>
       {/* Tags */}

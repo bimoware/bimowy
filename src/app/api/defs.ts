@@ -127,13 +127,16 @@ export class ExerciseGenerator<Seed, Answers> {
 		this.getSolution = data.getSolution
 		this.getDetailedSolution = data.getDetailedSolution
 	}
-
+	get recent() {
+		return this.createdOn >= 5
+	}
 	serialize(lang: Language) {
 		return {
 			id: this.id,
 			name: this.nameLocales[lang],
 			desc: this.descLocales[lang],
 			tags: this.tags,
+			recent: this.recent,
 			beta: this.beta,
 			options: (this.options ?? []).map((o) => {
 				o.title = typeof o.title == "string" ? o.title : o.title[lang]!
@@ -163,7 +166,7 @@ export class DB {
 		this.cache = new Map<string, UnknownExerciseGenerator>()
 	}
 	async fetchAll({ force }: { force: boolean } = { force: false }) {
-		if (!force && this.cache.size) return this.cache
+		// if (!force && this.cache.size) return this.cache
 
 		const totalPath = path.join(process.cwd(), "/src/app/api/db")
 		const files = fs.readdirSync(totalPath)
