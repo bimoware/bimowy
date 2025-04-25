@@ -176,6 +176,12 @@ export default function ExercisePage() {
 		getInput: function (id: string) {
 			return exercises && exercises?.items[exercises.index].inputs[id]
 		},
+		getOptionValue: function (id: string) {
+			const userOption = userOptions.find(o => o.id == id)
+			if (userOption) return { value: userOption.value }
+			const apiOption = apiOptions!.find(o => o.id == id)
+			return { value: apiOption!.defaultValue }
+		},
 		renderNode: function (exercise: ExerciseData, node: ContextElement | ContextSection, key: number) {
 			switch (node.type) {
 				case 'p':
@@ -250,7 +256,7 @@ export default function ExercisePage() {
 		<Title {...{ pageStep, name, exercises }} />
 		<div className={`${blocClass} grow text-4xl overflow-y-scroll`}>
 			{pageStep == "options"
-				? <Options {...{ apiOptions, userOptions, setUserOptions }} />
+				? <Options {...{ apiOptions, userOptions, setUserOptions, getOptionValue: actions.getOptionValue }} />
 				: pageStep == "end"
 					? <End {...{ exercises }} />
 					: <ExerciseContext {...{ exercises, renderNode: actions.renderNode }} />}
@@ -322,14 +328,15 @@ function Title({ name, pageStep, exercises }: {
 			}).join('')
 	}</h1>
 }
-function Options({ apiOptions, userOptions, setUserOptions }: {
+function Options({ apiOptions, setUserOptions, getOptionValue }: {
 	apiOptions?: APIOption[],
 	userOptions: UserOption[],
 	setUserOptions: Dispatch<SetStateAction<UserOption[]>>
+	getOptionValue: (id: string) => { value: number }
 }) {
 	if (!apiOptions) return;
 	return apiOptions.map(option => {
-		const { type, id, title, defaultValue } = option
+		const { type, id, title } = option
 		switch (type) {
 			case 'number':
 				const { min, max } = option
@@ -337,7 +344,7 @@ function Options({ apiOptions, userOptions, setUserOptions }: {
 					<span>{title}: </span>
 					<input
 						{...{ type, min, max }}
-						value={userOptions.find(o => o.id == id)?.value ?? defaultValue}
+						value={getOptionValue(id).value}
 						onChange={(e) => {
 							const value = e.target.value;
 							setUserOptions(prev => {
