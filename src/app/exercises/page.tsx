@@ -88,15 +88,14 @@ function Card({
     group relative
     ${randomRotationClass}
     ${exercise.beta
-          ? "**:opacity-80 hover:ring-1 hover:ring-white/50"
+          ? `**:opacity-50 hover:ring-1 hover:ring-white/50`
           : "hover:ring-2"}`}
     >
       {
         exercise.beta ? (
           <Image src={"/svgs/warning.svg"} alt={"Warning icon"} width={40} height={40}
             className="absolute -left-5 -top-5
-            !opacity-100
-          duration-150
+            duration-150
           -rotate-6
           group-hover:scale-105 group-hover:rotate-2
           " />
