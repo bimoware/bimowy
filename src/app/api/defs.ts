@@ -16,7 +16,7 @@ export type ExerciseTags =
 export const LanguageCodes = ["fr", "en"] as const
 export type Language = (typeof LanguageCodes)[number]
 type LocaleStrings = {
-	[K in Language]: string | null
+	[K in Language]?: string
 }
 
 export type ContextElement =
@@ -38,21 +38,20 @@ export type GeneratedExercise = {
 	context: ContextSection[]
 }
 
-export type APIOption = {
-	id: string
-	title: string
-} & (
+export type _BaseOption = { id: string } & (
 	| {
 			type: "number"
 			min?: number
 			max?: number
-			defaultValue?: number
+			defaultValue: number
 	  }
 	| {
 			type: "boolean"
 			defaultValue: boolean
 	  }
 )
+export type APIOption = _BaseOption & { title: string }
+export type RawOption = _BaseOption & { title: LocaleStrings | string }
 
 type Corrections<Answers> = {
 	[K in keyof Answers]: boolean
@@ -66,7 +65,7 @@ export class ExerciseGenerator<Seed, Answers> {
 	public tags: ExerciseTags[]
 	public createdOn: number
 	public recent: boolean
-	public options: APIOption[]
+	public options: RawOption[]
 	public validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
 	public generateSeed: (options: UserOption[]) => Seed
 	public getContext: (seed: Seed, lang: Language) => ContextSection[]
@@ -79,7 +78,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		descLocales?: LocaleStrings | string
 		tags: ExerciseTags[]
 		createdOn: number
-		options?: APIOption[]
+		options?: RawOption[]
 		validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
 		generateSeed: (options: UserOption[]) => Seed
 		getContext: (seed: Seed, lang: Language) => ContextSection[]
@@ -100,7 +99,7 @@ export class ExerciseGenerator<Seed, Answers> {
 			this.nameLocales = data.nameLocales
 		}
 		if (!data.descLocales) {
-			this.descLocales = { en: null, fr: null }
+			this.descLocales = { en: undefined, fr: undefined }
 		} else if (typeof data.descLocales == "string") {
 			this.descLocales = {
 				en: data.descLocales,
@@ -114,7 +113,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		this.recent = data.createdOn >= 5
 		this.options = data.options || []
 		this.options.push({
-			title: "Number of questions",
+			title: { en : "Number of questions", fr : "Nombre de questions" },
 			id: "n",
 			type: "number",
 			min: 1,
@@ -135,7 +134,10 @@ export class ExerciseGenerator<Seed, Answers> {
 			desc: this.descLocales[lang],
 			tags: this.tags,
 			recent: this.recent,
-			options: this.options,
+			options: (this.options ?? []).map((o) => {
+				o.title = typeof o.title == "string" ? o.title : o.title[lang]!
+				return o
+			})
 		}
 	}
 
