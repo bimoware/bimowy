@@ -6,6 +6,7 @@ type Answers = { answer: number }
 const getExercise = (id: string) =>
 	new ExerciseGenerator<Seed, Answers>({
 		id,
+		beta: true,
 		nameLocales: { fr: "Norme de vecteur", en: "Vector Norm" },
 		descLocales: {
 			fr: "En d'autre termes, sa longeur.",

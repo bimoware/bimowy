@@ -58,13 +58,13 @@ type Corrections<Answers> = {
 }
 
 export class ExerciseGenerator<Seed, Answers> {
-	public rawData: any
 	public id: string
+	public rawData: any
 	public nameLocales: LocaleStrings
 	public descLocales: LocaleStrings
 	public tags: ExerciseTags[]
 	public createdOn: number
-	public recent: boolean
+	public beta: boolean
 	public options: RawOption[]
 	public validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
 	public generateSeed: (options: UserOption[]) => Seed
@@ -79,6 +79,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		tags: ExerciseTags[]
 		createdOn: number
 		options?: RawOption[]
+		beta?: boolean
 		validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
 		generateSeed: (options: UserOption[]) => Seed
 		getContext: (seed: Seed, lang: Language) => ContextSection[]
@@ -110,10 +111,10 @@ export class ExerciseGenerator<Seed, Answers> {
 		}
 		this.tags = data.tags ?? []
 		this.createdOn = data.createdOn
-		this.recent = data.createdOn >= 5
+		this.beta = data.beta ?? false
 		this.options = data.options || []
 		this.options.push({
-			title: { en : "Number of questions", fr : "Nombre de questions" },
+			title: { en: "Number of questions", fr: "Nombre de questions" },
 			id: "n",
 			type: "number",
 			min: 1,
@@ -133,11 +134,11 @@ export class ExerciseGenerator<Seed, Answers> {
 			name: this.nameLocales[lang],
 			desc: this.descLocales[lang],
 			tags: this.tags,
-			recent: this.recent,
+			beta: this.beta,
 			options: (this.options ?? []).map((o) => {
 				o.title = typeof o.title == "string" ? o.title : o.title[lang]!
 				return o
-			})
+			}),
 		}
 	}
 
@@ -152,21 +153,27 @@ export class ExerciseGenerator<Seed, Answers> {
 	}
 }
 
+type UnknownExerciseGenerator = ExerciseGenerator<unknown, unknown>
+type ExerciseGeneratorCreator = (
+	id: string
+) => ExerciseGenerator<unknown, unknown>
 export class DB {
-	public cache: Map<string, ExerciseGenerator<unknown, unknown>>
+	public cache: Map<string, UnknownExerciseGenerator>
 	constructor() {
-		this.cache = new Map<string, ExerciseGenerator<unknown, unknown>>()
+		this.cache = new Map<string, UnknownExerciseGenerator>()
 	}
-	async fetchAll() {
-		if (this.cache.size) return this.cache
+	async fetchAll({ force }: { force: boolean } = { force: false }) {
+		if (!force && this.cache.size) return this.cache
 
 		const totalPath = path.join(process.cwd(), "/src/app/api/db")
 		const files = fs.readdirSync(totalPath)
 
 		for (let file of files) {
+			const id = file.split(".")[0]
 			const module = await import("./db/" + file)
-			const exercise = module.default
-			this.cache.set(exercise.id, exercise)
+			const getExercise = module.default as ExerciseGeneratorCreator
+			this.cache.set(id, getExercise(id))
+			console.log(`✅ Fetched ${id}`)
 		}
 		return this.cache
 	}
