@@ -15,12 +15,6 @@ export default function HomePage() {
   return <>
     <div className="relative text-4xl w-full h-full flex flex-col items-center justify-center gap-4">
 
-      <div className="inline-flex items-center border border-neutral-400/50 bg-neutral-600/10 text-xl px-6 py-3 rounded-lg mb-4">
-        <span className="font-bold mr-1">Bimowy</span> is a math platform where you can
-        <span className="font-bold mx-1">train</span> on automatically generated
-        <MiniMention href="exercises">exercices</MiniMention> on many subjects.
-      </div>
-
       {[
         [
           <span key="1">{t('made_with')}</span>,
@@ -58,7 +52,7 @@ export default function HomePage() {
           <Mention key="2" icon="/svgs/globe.svg" name="Next-intl" href="https://next-intl.dev/" />
         ]
       ].map((lineGroup, i) => (
-        <div key={i} className="inline-flex gap-2 items-center justify-center">
+        <div key={i} className="inline-flex gap-2 items-center justify-center *:items-center flex-wrap">
           {lineGroup.map((elem, j) => <Fragment key={j}>{elem}</Fragment>)}
         </div>
       ))}
@@ -86,35 +80,35 @@ function HeartEasterEgg({ heartAlt, easterEggState, setEasterEggState }: {
 
   // Gestion des clics
   const handleHeartClick = () => {
-    if (easterEggState !== 'unactive') return;
+    // if (easterEggState !== 'unactive') return;
 
-    if (clickTimeout.current) clearTimeout(clickTimeout.current);
+    // if (clickTimeout.current) clearTimeout(clickTimeout.current);
 
-    setClickCount(prev => {
-      const newCount = prev + 1;
-      if (newCount >= 5) {
-        setTriggered(true); // DÉCLENCHE L'ANIMATION PLUS TARD
-      }
+    //   setClickCount(prev => {
+    //     const newCount = prev + 1;
+    //     if (newCount >= 5) {
+    //       setTriggered(true); // DÉCLENCHE L'ANIMATION PLUS TARD
+    //     }
 
-      clickTimeout.current = setTimeout(() => setClickCount(0), 2000);
-      return newCount;
-    });
+    //     clickTimeout.current = setTimeout(() => setClickCount(0), 2000);
+    //     return newCount;
+    //   });
   };
 
   // Lancer l'easter egg si triggered
-  useEffect(() => {
-    if (triggered && easterEggState === 'unactive') {
-      setEasterEggState('active');
-      playMcSound();
+  // useEffect(() => {
+  //   if (triggered && easterEggState === 'unactive') {
+  //     setEasterEggState('active');
+  //     playMcSound();
 
-      const timeout = setTimeout(() => {
-        setEasterEggState('activated');
-        setTriggered(false);
-      }, 3000);
+  //     const timeout = setTimeout(() => {
+  //       setEasterEggState('activated');
+  //       setTriggered(false);
+  //     }, 3000);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [triggered, easterEggState, setEasterEggState, playMcSound]);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [triggered, easterEggState, setEasterEggState, playMcSound]);
 
   return (
     <Image
@@ -122,7 +116,8 @@ function HeartEasterEgg({ heartAlt, easterEggState, setEasterEggState }: {
       width={30}
       height={30}
       alt={heartAlt}
-      className={`aspect-square cursor-pointer hover:scale-110 duration-150 ${easterEggState === "active" ? "animate-pulse" : ""}`}
+      className={`inline-flex aspect-square cursor-pointer hover:scale-110 duration-150
+        ${easterEggState === "active" ? "animate-pulse" : ""}`}
       onClick={handleHeartClick}
     />
   );
@@ -171,24 +166,6 @@ function AchievementAnimation() {
   );
 }
 
-function MiniMention({ children, href }: { children: ReactNode; href: string }) {
-  return (
-    <Link
-      href={href}
-      className="group inline-flex items-center mx-1 underline underline-offset-3 hover:underline-offset-1 duration-300"
-    >
-      {children}
-      <Image
-        src="/svgs/open_in_view.svg"
-        width={50}
-        height={50}
-        alt=""
-        className="w-0 group-hover:w-3 transition-all duration-300 ml-1 aspect-square self-baseline"
-      />
-    </Link>
-  );
-}
-
 function Mention({ icon, name, href, background, padding }: {
   icon: string;
   name: string;
@@ -206,7 +183,7 @@ function Mention({ icon, name, href, background, padding }: {
         width={70}
         height={70}
         alt={name}
-        className={`h-8 w-fit aspect-square rounded-full select-none group-hover:scale-125 group-hover:-translate-y-0.5 group-hover:rotate-3 duration-150 ${background ? "bg-black" : ""} ${padding ? "p-1" : ""}`}
+        className={`h-8 w-fit aspect-square rounded-full select-none group-hover:scale-105 duration-150 ${background ? "bg-black" : ""} ${padding ? "p-1" : ""}`}
       />
       <span className="group-hover:font-bold transition-all">{name}</span>
       {href && (
