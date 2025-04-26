@@ -137,7 +137,7 @@ function Card({ exercise, className }: { exercise: ExerciseData, className: stri
   )
 }
 
-export function SkeletonCard({ className, desc }: { className: string, desc: string }) {
+function SkeletonCard({ className, desc }: { className: string, desc: string }) {
   return (
     <div className={`${className} !cursor-progress animate-pulse !duration-[50ms] *:opacity-0`}>
       <h4>{".".repeat(10)}</h4>
