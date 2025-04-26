@@ -9,7 +9,7 @@ const getExercise = (id: string) =>
 		nameLocales: { en: "Decimal to binary", fr: "Decimal à Binaire" },
 		descLocales: {
 			en: "Convert a decimal number to binary (69 -> 1000101)",
-			fr: "Convertir un nombre de decimal à binary (69 -> 1000101)",
+			fr: "Convertir un nombre de decimal en binaire (69 -> 1000101)",
 		},
 		tags: [],
 		createdOn: 5,
