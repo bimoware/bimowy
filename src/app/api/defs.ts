@@ -115,7 +115,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		this.options = data.options || []
 		this.options.push({
 			title: { en: "Number of questions", fr: "Nombre de questions" },
-			id: "n",
+			id: "_n",
 			type: "number",
 			min: 1,
 			max: 15,

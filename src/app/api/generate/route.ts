@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 
 	// Main
 	const exercises = Array.from({
-		length: options.find((o) => o.id == "n")?.value || 5,
+		length: options.find((o) => o.id == "_n")?.value || 5,
 	}).map(() => exercise.generate(lang, options))
 
 	return Success(exercises)
