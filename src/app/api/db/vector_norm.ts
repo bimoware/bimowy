@@ -9,8 +9,8 @@ const getExercise = (id: string) =>
 		beta: true,
 		nameLocales: { fr: "Norme de vecteur", en: "Vector Norm" },
 		descLocales: {
-			fr: "En d'autre termes, sa longeur.",
-			en: "In other words, it's length.",
+			fr: "Ou sa 'longeur'",
+			en: "i.e it's 'length'.",
 		},
 		createdOn: 6,
 		tags: ["linear-algebra"],
