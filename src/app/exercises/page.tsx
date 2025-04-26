@@ -82,7 +82,7 @@ function Card({
     p-4 px-8
     flex flex-col self-center gap-0.5
     duration-150
-    select-none cursor-pointer
+    cursor-pointer
     hover:scale-105 hover:shadow-2xl
     shadow-black/20 inset-shadow-xs inset-shadow-white/5
     group relative
@@ -95,9 +95,10 @@ function Card({
         exercise.beta ? (
           <Image src={"/svgs/warning.svg"} alt={"Warning icon"} width={40} height={40}
             className="absolute -left-5 -top-5
-            duration-150
+          duration-150
           -rotate-6
           group-hover:scale-105 group-hover:rotate-2
+          select-none
           " />
         )
           : exercise.recent && (
