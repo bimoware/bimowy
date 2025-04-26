@@ -19,7 +19,6 @@ export async function GET(req: NextRequest) {
 	const values = Array.from(cache.values())
 		.sort((a, b) => a.createdOn - b.createdOn)
 		.map((ex) => ex.serialize(lang))
-
 	return Success(values)
 }
 

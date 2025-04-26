@@ -38,12 +38,15 @@ export default function ExercisesPage() {
   ]
 
   const skeletonDescs = [
+    '',
     '.'.repeat(50),
     '.'.repeat(70),
     '',
     '.'.repeat(30),
+    '',
     '.'.repeat(100),
-    '.'.repeat(40)
+    '.'.repeat(40),
+    ''
   ]
 
   function getClassNameFromIndex(index: number) {
@@ -136,7 +139,7 @@ function Card({ exercise, className }: { exercise: ExerciseData, className: stri
 
 export function SkeletonCard({ className, desc }: { className: string, desc: string }) {
   return (
-    <div className={`${className} !cursor-progress animate-pulse duration-[50ms] *:opacity-0`}>
+    <div className={`${className} !cursor-progress animate-pulse !duration-[50ms] *:opacity-0`}>
       <h4>{".".repeat(10)}</h4>
       <h5>{desc}</h5>
       <div className='flex justify-center'>
