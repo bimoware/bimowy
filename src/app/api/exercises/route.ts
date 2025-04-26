@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server"
 
 import db from "../db"
-import { Error, Success, isValidLang } from "../util"
 import { APIOption, ExerciseTags } from "../defs"
+import { Error, Success, isValidLang } from "../util"
 
 // Example: /api/exercises?lang=fr
 export async function GET(req: NextRequest) {
@@ -19,14 +19,15 @@ export async function GET(req: NextRequest) {
 	const values = Array.from(cache.values())
 		.sort((a, b) => a.createdOn - b.createdOn)
 		.map((ex) => ex.serialize(lang))
+
 	return Success(values)
 }
 
 export type ExercisesRouteResult = {
-	id: string;
-	name: string | null;
-	desc: string | null;
-	tags: ExerciseTags[];
-	recent: boolean;
-	options: APIOption[];
+	id: string
+	name: string | null
+	desc: string | null
+	tags: ExerciseTags[]
+	recent: boolean
+	options: APIOption[]
 }
