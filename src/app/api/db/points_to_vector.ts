@@ -2,9 +2,10 @@ import { ExerciseGenerator, Language } from "../defs"
 
 type Seed = [x1: number, x2: number, y1: number, y2: number]
 type Answers = { x: number; y: number }
+type Options = { min: number; max: number }
 
 const getExercise = (id: string) =>
-	new ExerciseGenerator<Seed, Answers>({
+	new ExerciseGenerator<Seed, Answers,Options>({
 		id,
 		nameLocales: {
 			en: "Points to vector",
@@ -15,7 +16,23 @@ const getExercise = (id: string) =>
 			fr: "Convertir 2 points en un vecteur",
 		},
 		tags: ["linear-algebra"],
-		createdOn: 4,
+		createdOn: 3,
+		options: [
+			{
+				type: "number",
+				id: "min",
+				title: "Minimum",
+				defaultValue: 0,
+				min: 0
+			},
+			{
+				type: "number",
+				id: "max",
+				title: "Maximum",
+				defaultValue: 10,
+				max: 10
+			}
+		],
 		generateSeed() {
 			const range = [-9, 9]
 			const [x1, y1, x2, y2] = Array(4)
