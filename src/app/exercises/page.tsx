@@ -38,15 +38,12 @@ export default function ExercisesPage() {
   ]
 
   const skeletonDescs = [
-    '',
+    '.'.repeat(90),
+    '.'.repeat(80),
     '.'.repeat(50),
-    '.'.repeat(70),
-    '',
-    '.'.repeat(30),
     '',
     '.'.repeat(100),
-    '.'.repeat(40),
-    ''
+    '.'.repeat(70),
   ]
 
   function getClassNameFromIndex(index: number) {
