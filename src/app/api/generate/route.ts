@@ -6,7 +6,7 @@ import db from "../db"
 import { ContextSection } from "../defs"
 import { Error, Success, isValidLang } from "../util"
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
 	// Params
 	const searchParams = req.nextUrl.searchParams
 
@@ -21,15 +21,21 @@ export async function GET(req: NextRequest) {
 	if (!isValidLang(lang)) return Error("Invalid lang")
 
 	// Options
-	let paramOptions = searchParams.get("options")!
-	let options = [] as UserOption[]
-	if (paramOptions) {
-		options = JSON.parse(decodeURIComponent(paramOptions)) as UserOption[]
+	let paramOptions: UserOption[] = await req.json().catch(console.error)
+
+	let options: Record<string, any> = {}
+
+	for (const userOption of paramOptions) {
+		options[userOption.id] = userOption.value
+	}
+
+	for (const option of exercise.options) {
+		if (!options[option.id]) options[option.id] = option.defaultValue
 	}
 
 	// Main
 	const exercises = Array.from({
-		length: options.find((o) => o.id == "_n")?.value || 5,
+		length: options["_n"] || 5
 	}).map(() => exercise.generate(lang, options))
 
 	return Success(exercises)
