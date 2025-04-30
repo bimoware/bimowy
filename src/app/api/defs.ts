@@ -1,9 +1,5 @@
-import { UserOption } from "@app/exercises/[exercise_id]/page"
-import fs from "fs"
-import path from "path"
-
 export type ExerciseTags =
-	| "basic-arithmetic"
+	| "arithmetic"
 	| "geometry"
 	| "trigonometry"
 	| "algebra"
@@ -57,7 +53,17 @@ type Corrections<Answers> = {
 	[K in keyof Answers]: boolean
 }
 
-export class ExerciseGenerator<Seed, Answers> {
+export type UserAnswers = {
+	[key: string]: any
+}
+export type UserOptions = {
+	[key: string]: any
+}
+export class ExerciseGenerator<
+	Seed extends any[],
+	Answers extends UserAnswers,
+	Options extends UserOptions
+> {
 	public id: string
 	public rawData: any
 	public nameLocales: LocaleStrings
@@ -67,7 +73,7 @@ export class ExerciseGenerator<Seed, Answers> {
 	public beta: boolean
 	public options: RawOption[]
 	public validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
-	public generateSeed: (options: UserOption[]) => Seed
+	public generateSeed: (options: Options) => Seed
 	public getContext: (seed: Seed, lang: Language) => ContextSection[]
 	public getSolution: (seed: Seed) => Answers
 	public getDetailedSolution: (seed: Seed) => ContextSection[]
@@ -76,12 +82,12 @@ export class ExerciseGenerator<Seed, Answers> {
 		id: string
 		nameLocales?: LocaleStrings | string
 		descLocales?: LocaleStrings | string
-		tags: ExerciseTags[]
+		tags?: ExerciseTags[]
 		createdOn: number
 		options?: RawOption[]
 		beta?: boolean
 		validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
-		generateSeed: (options: UserOption[]) => Seed
+		generateSeed: (options: Options) => Seed
 		getContext: (seed: Seed, lang: Language) => ContextSection[]
 		getSolution: (seed: Seed) => Answers
 		getDetailedSolution: (seed: Seed) => ContextSection[]
@@ -94,7 +100,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		} else if (typeof data.nameLocales == "string") {
 			this.nameLocales = {
 				en: data.nameLocales,
-				fr: data.nameLocales,
+				fr: data.nameLocales
 			}
 		} else {
 			this.nameLocales = data.nameLocales
@@ -104,7 +110,7 @@ export class ExerciseGenerator<Seed, Answers> {
 		} else if (typeof data.descLocales == "string") {
 			this.descLocales = {
 				en: data.descLocales,
-				fr: data.descLocales,
+				fr: data.descLocales
 			}
 		} else {
 			this.descLocales = data.descLocales
@@ -119,7 +125,7 @@ export class ExerciseGenerator<Seed, Answers> {
 			type: "number",
 			min: 1,
 			max: 15,
-			defaultValue: 5,
+			defaultValue: 5
 		})
 		this.validateAnswers = data.validateAnswers
 		this.generateSeed = data.generateSeed
@@ -141,47 +147,19 @@ export class ExerciseGenerator<Seed, Answers> {
 			options: (this.options ?? []).map((o) => {
 				o.title = typeof o.title == "string" ? o.title : o.title[lang]!
 				return o
-			}),
+			})
 		}
 	}
-
-	generate(lang: Language, options: UserOption[]) {
+	getOptionValue(id: string, options: Options) {
+		return options[id]
+	}
+	generate(lang: Language, options: Options) {
 		const seed = this.generateSeed(options)
 		const context = this.getContext(seed, lang)
 		return {
 			exercise_id: this.id,
 			seed,
-			context,
+			context
 		}
-	}
-}
-
-type UnknownExerciseGenerator = ExerciseGenerator<unknown, unknown>
-type ExerciseGeneratorCreator = (
-	id: string
-) => ExerciseGenerator<unknown, unknown>
-export class DB {
-	public cache: Map<string, UnknownExerciseGenerator>
-	constructor() {
-		this.cache = new Map<string, UnknownExerciseGenerator>()
-	}
-	async fetchAll({ force }: { force: boolean } = { force: false }) {
-		// if (!force && this.cache.size) return this.cache
-
-		const totalPath = path.join(process.cwd(), "/src/app/api/db")
-		const files = fs.readdirSync(totalPath)
-
-		for (let file of files) {
-			const id = file.split(".")[0]
-			const module = await import("./db/" + file)
-			const getExercise = module.default as ExerciseGeneratorCreator
-			this.cache.set(id, getExercise(id))
-			console.log(`✅ Fetched ${id}`)
-		}
-		return this.cache
-	}
-	async fetch(id: string) {
-		if (!this.cache.size) await this.fetchAll()
-		return this.cache.get(id)
 	}
 }
