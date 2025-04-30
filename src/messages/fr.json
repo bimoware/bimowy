@@ -1,4 +1,8 @@
 {
+  "404": {
+    "PageNotFound": "Page introuvable",
+    "PageNotFoundDesc": "Aucune idée de où tu voulait aller fréro"
+  },
   "HomePage": {
     "source_code_on": "Code source sur",
     "made_with": "Fait avec",

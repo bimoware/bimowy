@@ -5,7 +5,7 @@ export default getRequestConfig(async () => {
   let locale = 'en'
   try {
     const cookieStore = await cookies()
-    locale = cookieStore.get('NEXT_LOCALE')?.value || 'en'
+    locale = cookieStore.get('NEXT_LOCALE')?.value || locale
   } catch {}
 
   return {
