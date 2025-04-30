@@ -3,7 +3,7 @@
 import { GeneratedExercise, APIOption, ContextElement, ContextSection } from "@app/api/defs"
 import Image from "next/image";
 import { useParams } from "next/navigation"
-import { Dispatch, JSX, RefObject, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react"
 import { useLocale, useTranslations } from "use-intl"
 import useSound from "use-sound"
 import katex from "katex"
@@ -62,6 +62,20 @@ export default function ExercisePage() {
 
 	// Functions
 	const actions = {
+		handleEnter: async function () {
+			if (pageStep != "normal") return;
+			if (!exercises) return;
+			const exercise = exercises.items[exercises.index]
+			const { state } = exercise
+			switch (state) {
+				case "correcting":
+					return;
+				case "corrected":
+					return actions.retryExercise()
+				case "normal":
+					return actions.correctExercise()
+			}
+		},
 		startExercises: async function () {
 			setPageStep('normal')
 			return actions.fetchExercises()
@@ -83,9 +97,12 @@ export default function ExercisePage() {
 			const url = new URL('/api/generate', window.location.origin);
 			url.searchParams.append('id', exerciseId);
 			url.searchParams.append('lang', locale);
-			url.searchParams.append('options', encodeURI(JSON.stringify(userOptions)))
 
-			return await fetch(url)
+			return await fetch(url, {
+				method: "POST",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(userOptions)
+			})
 				.then(res => res.json())
 				.then(res => res.data)
 				.then((data: GenerateRouteResult) => {
@@ -120,12 +137,11 @@ export default function ExercisePage() {
 			)
 			const url = new URL('/api/validate', window.location.origin)
 			url.searchParams.append('id', exerciseId)
-			url.searchParams.append('seed', exercise.content.seed.join(','))
 
 			return await fetch(url, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(answers)
+				body: JSON.stringify({ answers, seed: exercise.content.seed })
 			})
 				.then(res => res.json())
 				.then(res => res.data)
@@ -248,7 +264,14 @@ export default function ExercisePage() {
 	}
 
 	useEffect(() => actions.fetchOptions(), [])
-
+	// useEffect(() => {
+	// 	const handler = (e: KeyboardEvent) => {
+	// 		e.preventDefault()
+	// 		actions.handleEnter()
+	// 	}
+	// 	window.addEventListener('keydown', handler)
+	// 	return window.removeEventListener('keydown', handler)
+	// },[])
 
 	const blocClass = "flex flex-col space-y-2 bg-neutral-900 w-full rounded-3xl py-3 px-5"
 	return <div className="w-full h-full flex-col p-4
@@ -307,25 +330,24 @@ function End({ exercises }: { exercises?: Exercise }) {
 		<p>{t('Score')}: {Math.round(allTotals / exercises.items.length)}%</p>
 	</div>
 }
+
 function Title({ name, pageStep, exercises }: {
 	name?: string
 	pageStep: PageStep
 	exercises?: Exercise
 }) {
 	const t = useTranslations('ExercisePage')
-	return <h1>{name ?? "???"} - {
-		pageStep == "options"
-			? t('SelectingOptions')
-			: exercises && exercises.items.map(e => {
-				const inputs = Object.values(e.inputs)
-				const isCorrected = inputs.every(inp => inp.corrected)
-				if (!isCorrected || !inputs.length) return "⬜"
-				const isCorrect = inputs.every(inp => inp.correct)
-				if (!isCorrect) return "🟥"
-				const isCorrectOnFirstTry = inputs.every(inp => inp.correctOnFirstTry)
-				if (!isCorrectOnFirstTry) return "🟨"
-				else return "🟩"
-			}).join('')
+	return <h1>{name ?? "..."}  {
+		pageStep != "options" && exercises && " - " + exercises.items.map(e => {
+			const inputs = Object.values(e.inputs)
+			const isCorrected = inputs.every(inp => inp.corrected)
+			if (!isCorrected || !inputs.length) return "⬜"
+			const isCorrect = inputs.every(inp => inp.correct)
+			if (!isCorrect) return "🟥"
+			const isCorrectOnFirstTry = inputs.every(inp => inp.correctOnFirstTry)
+			if (!isCorrectOnFirstTry) return "🟨"
+			else return "🟩"
+		}).join('')
 	}</h1>
 }
 function Options({ apiOptions, setUserOptions, getOptionValue }: {
@@ -397,7 +419,7 @@ function Buttons({ pageStep, exercises, apiOptions, actions }: {
 				case 'correcting':
 					return <Button alt={t('Correcting')} disabled />
 				case 'corrected':
-					const allCorrect = Object.entries(exercise.inputs).every(([id, input]) => input.corrected && input.correct)
+					const allCorrect = Object.values(exercise.inputs).every(input => input.corrected && input.correct)
 					const isLast = exercises.index < exercises.items.length - 1
 					return <>
 						{!allCorrect && (
