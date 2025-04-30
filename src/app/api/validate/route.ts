@@ -12,13 +12,9 @@ export async function POST(req: NextRequest) {
 	const exerciseId = searchParams.get("id")
 	if (!exerciseId) return Error("No exerciseId")
 
-	// Seed
-	const paramSeed = searchParams.get("seed")
-	if (!paramSeed) return Error("No seed given")
-	const seed = paramSeed.split(",").map(Number)
-
-	// Answers
-	const answers: any = await req.json()
+	// Answers & Seed
+	const { answers, seed }: { answers: { [key: string]: any }; seed: any[] } =
+		await req.json()
 	if (!answers) return Error("No answers given")
 	if (typeof answers !== "object") return Error("Answers must be an object")
 	if (Array.isArray(answers)) return Error("Answers must not be an array")
