@@ -2,9 +2,10 @@ import { ExerciseGenerator } from "../defs"
 
 type Seed = [n: number]
 type Answers = { answer: string }
+type Options = { min: number; max: number }
 
 const getExercise = (id: string) =>
-	new ExerciseGenerator<Seed, Answers>({
+	new ExerciseGenerator<Seed, Answers,Options>({
 		id,
 		nameLocales: { en: "Decimal to binary", fr: "Decimal à Binaire" },
 		descLocales: {
@@ -12,7 +13,23 @@ const getExercise = (id: string) =>
 			fr: "Convertir un nombre de decimal en binaire (69 -> 1000101)",
 		},
 		tags: [],
-		createdOn: 5,
+		createdOn: 2,
+		options: [
+			{
+				type: "number",
+				id: "min",
+				title: "Minimum",
+				defaultValue: 0,
+				min: 0
+			},
+			{
+				type: "number",
+				id: "max",
+				title: "Maximum",
+				defaultValue: 10,
+				max: 10
+			}
+		],
 		generateSeed() {
 			return [Math.floor(Math.random() * 2 ** 10)]
 		},
@@ -36,9 +53,9 @@ const getExercise = (id: string) =>
 				},
 			]
 		},
-		validateAnswers([n]: Seed, answers: Answers) {
+		validateAnswers([n]: Seed, { answer }: Answers) {
 			return {
-				answer: answers["answer"] == this.getSolution([n])["answer"],
+				answer: answer == this.getSolution([n])["answer"],
 			}
 		},
 		getSolution([n]: Seed) {
