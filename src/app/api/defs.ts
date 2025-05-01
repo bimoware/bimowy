@@ -34,20 +34,27 @@ export type GeneratedExercise = {
 	context: ContextSection[]
 }
 
-export type _BaseOption = { id: string } & (
-	| {
-			type: "number"
-			min?: number
-			max?: number
-			defaultValue: number
-	  }
-	| {
-			type: "boolean"
-			defaultValue: boolean
-	  }
-)
-export type APIOption = _BaseOption & { title: string }
-export type RawOption = _BaseOption & { title: LocaleStrings | string }
+export type _NumberOptionDef = {
+	type: "number"
+	defaultValue: number
+	min?: number
+	max?: number
+}
+
+export type _BooleanOptionDef = {
+	type: "boolean"
+	defaultValue: boolean
+}
+
+export type APIOption = {
+	id: string
+	title: string
+} & (_NumberOptionDef | _BooleanOptionDef)
+
+export type RawOption = {
+	id: string
+	title: string | LocaleStrings
+} & (_NumberOptionDef | _BooleanOptionDef)
 
 type Corrections<Answers> = {
 	[K in keyof Answers]: boolean
@@ -59,10 +66,16 @@ export type UserAnswers = {
 export type UserOptions = {
 	[key: string]: any
 }
+
+export type OptionDefs = Record<string, RawOption>
+export type OptionValuesFrom<T extends OptionDefs> = {
+	[K in keyof T]: T[K] extends { type: "number" } ? number : boolean
+}
+
 export class ExerciseGenerator<
 	Seed extends any[],
-	Answers extends UserAnswers,
-	Options extends UserOptions
+	Answers extends Record<string,any>,
+	Options extends OptionValuesFrom<OptionDefs>
 > {
 	public id: string
 	public rawData: any
@@ -72,6 +85,7 @@ export class ExerciseGenerator<
 	public createdOn: number
 	public beta: boolean
 	public options: RawOption[]
+	public optionDefs: OptionDefs
 	public validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
 	public generateSeed: (options: Options) => Seed
 	public getContext: (seed: Seed, lang: Language) => ContextSection[]
@@ -84,7 +98,7 @@ export class ExerciseGenerator<
 		descLocales?: LocaleStrings | string
 		tags?: ExerciseTags[]
 		createdOn: number
-		options?: RawOption[]
+		optionDefs: OptionDefs
 		beta?: boolean
 		validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
 		generateSeed: (options: Options) => Seed
@@ -118,7 +132,12 @@ export class ExerciseGenerator<
 		this.tags = data.tags ?? []
 		this.createdOn = data.createdOn
 		this.beta = data.beta ?? false
-		this.options = data.options || []
+		console.log(data.optionDefs)
+		this.optionDefs = data.optionDefs
+		this.options = Object.entries(data.optionDefs).map(([id, def]) => ({
+			...def,
+			id
+		}))
 		this.options.push({
 			title: { en: "Number of questions", fr: "Nombre de questions" },
 			id: "_n",
