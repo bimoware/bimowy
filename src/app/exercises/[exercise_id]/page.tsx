@@ -11,6 +11,7 @@ import "katex/dist/katex.min.css"
 import { ExerciseRouteResult } from "@app/api/exercise/route";
 import { GenerateRouteResult } from "@app/api/generate/route";
 import { ValidateRouteResult } from "@app/api/validate/route";
+import Togglable from "@cpn/Togglable";
 
 export type UserOption = { id: string, value: any }
 type PageStep = 'options' | 'normal' | 'end'
@@ -39,7 +40,6 @@ export default function ExercisePage() {
 	const { exercise_id: exerciseId } = useParams<{ exercise_id: string }>()
 
 	// Language
-	// const t = useTranslations('ExercisePage')
 	const locale = useLocale()
 
 	const [pageStep, setPageStep] = useState<PageStep>('options')
@@ -56,9 +56,6 @@ export default function ExercisePage() {
 	// Sounds
 	const [playCorrect] = useSound('/audios/correct.mp3', { volume: 0.2 }),
 		[playIncorrect] = useSound('/audios/incorrect.mp3', { volume: 0.4 })
-
-	// Inputs
-	// const inputRefs =	 useRef<Record<string, HTMLInputElement | null>>({});
 
 	// Functions
 	const actions = {
@@ -354,7 +351,7 @@ function Options({ apiOptions, setUserOptions, getOptionValue }: {
 	apiOptions?: APIOption[],
 	userOptions: UserOption[],
 	setUserOptions: Dispatch<SetStateAction<UserOption[]>>
-	getOptionValue: (id: string) => { value: number }
+	getOptionValue: (id: string) => { value: number | boolean }
 }) {
 	if (!apiOptions) return;
 	return apiOptions.map(option => {
@@ -362,11 +359,11 @@ function Options({ apiOptions, setUserOptions, getOptionValue }: {
 		switch (type) {
 			case 'number':
 				const { min, max } = option
-				return <p key={id}>
+				return <div key={id}>
 					<span>{title}: </span>
 					<input
 						{...{ type, min, max }}
-						value={getOptionValue(id).value}
+						value={getOptionValue(id).value as number}
 						onChange={(e) => {
 							const value = e.target.value;
 							setUserOptions(prev => {
@@ -379,7 +376,25 @@ function Options({ apiOptions, setUserOptions, getOptionValue }: {
 								return newUserOptions;
 							})
 						}} />
-				</p>
+				</div>
+			case 'boolean':
+				return <div key={id}>
+					<span>{title}? </span>
+					<Togglable
+						checked={getOptionValue(id).value as boolean}
+						onChange={() => {
+							setUserOptions(prev => {
+								const lastUserOption = [...prev]
+								if(lastUserOption.find(o => o.id == id)){
+									lastUserOption.find(o => o.id == id)!.value = !lastUserOption.find(o => o.id == id)
+								} else {
+									lastUserOption.push({ id, value: !getOptionValue(id).value })
+								}
+								return lastUserOption;
+							})
+						}}
+					/>
+				</div>
 		}
 	})
 }
