@@ -1,38 +1,39 @@
-import { ExerciseGenerator, Language } from "../defs"
+import { ExerciseGenerator, Language, OptionValuesFrom } from "../defs"
 
 type Seed = [x1: number, x2: number, y1: number, y2: number]
 type Answers = { x: number; y: number }
-type Options = { min: number; max: number }
+const optionDefs = {
+	min: {
+		type: "number",
+		id: "min",
+		title: "Minimum",
+		defaultValue: 1,
+		min: 1
+	},
+	max: {
+		type: "number",
+		id: "max",
+		title: "Maximum",
+		defaultValue: 10,
+		max: 10
+	}
+} as const
 
 const getExercise = (id: string) =>
-	new ExerciseGenerator<Seed, Answers,Options>({
+	new ExerciseGenerator<Seed, Answers, OptionValuesFrom<typeof optionDefs>>({
 		id,
+		beta: true,
 		nameLocales: {
 			en: "Points to vector",
-			fr: "Points à vecteur",
+			fr: "Points à vecteur"
 		},
 		descLocales: {
 			en: "Convert 2 points into a vector",
-			fr: "Convertir 2 points en un vecteur",
+			fr: "Convertir 2 points en un vecteur"
 		},
 		tags: ["linear-algebra"],
 		createdOn: 3,
-		options: [
-			{
-				type: "number",
-				id: "min",
-				title: "Minimum",
-				defaultValue: 0,
-				min: 0
-			},
-			{
-				type: "number",
-				id: "max",
-				title: "Maximum",
-				defaultValue: 10,
-				max: 10
-			}
-		],
+		optionDefs,
 		generateSeed() {
 			const range = [-9, 9]
 			const [x1, y1, x2, y2] = Array(4)
@@ -49,28 +50,28 @@ const getExercise = (id: string) =>
 							type: "text",
 							text: {
 								en: "The vector that goes from",
-								fr: "Le vecteur qui commence de",
-							}[lang],
+								fr: "Le vecteur qui commence de"
+							}[lang]
 						},
 						{
 							type: "text",
 							text: `A(${x1},${y1})`,
-							extra: ["mono"],
+							extra: ["mono"]
 						},
 						{
 							type: "text",
-							text: { en: "to", fr: "à" }[lang],
+							text: { en: "to", fr: "à" }[lang]
 						},
 						{
 							type: "text",
 							text: `B(${x2},${y2})`,
-							extra: ["mono"],
+							extra: ["mono"]
 						},
 						{
 							type: "text",
-							text: { en: "is:", fr: "est:" }[lang],
-						},
-					],
+							text: { en: "is:", fr: "est:" }[lang]
+						}
+					]
 				},
 				{
 					type: "p",
@@ -78,40 +79,40 @@ const getExercise = (id: string) =>
 						{
 							type: "text",
 							text: "\\overrightarrow{AB}",
-							extra: ["latex"],
+							extra: ["latex"]
 						},
 						{
 							type: "text",
 							text: "= <",
-							extra: ["mono"],
+							extra: ["mono"]
 						},
 						{
 							type: "input",
-							id: "x",
+							id: "x"
 						},
 						{
 							type: "text",
 							text: ",",
-							extra: ["mono"],
+							extra: ["mono"]
 						},
 						{
 							type: "input",
-							id: "y",
+							id: "y"
 						},
 						{
 							type: "text",
 							text: ">",
-							extra: ["mono"],
-						},
-					],
-				},
+							extra: ["mono"]
+						}
+					]
+				}
 			]
 		},
 		validateAnswers([x1, x2, y1, y2]: Seed, { x, y }: Answers) {
 			const solution = this.getSolution([x1, x2, y1, y2])
 			return {
 				x: x == solution.x,
-				y: y == solution.y,
+				y: y == solution.y
 			}
 		},
 		getSolution([x1, y1, x2, y2]: Seed) {
@@ -124,12 +125,12 @@ const getExercise = (id: string) =>
 					content: [
 						{
 							type: "text",
-							text: "[Solution Here]",
-						},
-					],
-				},
+							text: "[Solution Here]"
+						}
+					]
+				}
 			]
-		},
+		}
 	})
 
 export default getExercise

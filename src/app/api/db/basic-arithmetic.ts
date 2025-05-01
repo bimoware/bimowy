@@ -1,51 +1,56 @@
-import { ExerciseGenerator } from "../defs"
+import { ExerciseGenerator, OptionValuesFrom, RawOption } from "../defs"
 import { randomFrom, randomFromRange } from "../util"
 
-type Operation = "+" | "-" | "*"
-type Seed = [number, Operation, number]
+type Seed = [number, "+" | "-" | "*", number]
 type Answers = { answer: number }
-type Options = {
-	min: number
-	max: number
-	n_values: number
-}
+
+const optionDefs = {
+	min: {
+		type: "number",
+		id: "min",
+		title: "Minimum",
+		defaultValue: 1,
+		min: 1
+	},
+	max: {
+		type: "number",
+		id: "max",
+		title: "Maximum",
+		defaultValue: 10,
+		max: 10
+	},
+	n_values: {
+		type: "number",
+		id: "n_values",
+		title: {
+			en: "Number of values",
+			fr: "Nombre de valeurs"
+		},
+		defaultValue: 2,
+		min: 2
+	},
+	something: {
+		type: "boolean",
+		title: "Something",
+		id: "something",
+		defaultValue: false
+	}
+} as const
 
 const getExercise = (id: string) =>
-	new ExerciseGenerator<Seed, Answers, Options>({
+	new ExerciseGenerator<Seed, Answers, OptionValuesFrom<typeof optionDefs>>({
 		id,
-		nameLocales: { en: "Basic arithmetic", fr: "Arithmétique elementaire" },
+		nameLocales: {
+			en: "Basic arithmetic",
+			fr: "Arithmétique élémentaire"
+		},
 		descLocales: {
 			en: "Addition, Substraction, Multiplication...",
 			fr: "Addition, Soustraction, Multiplication..."
 		},
 		tags: ["arithmetic"],
 		createdOn: 1,
-		options: [
-			{
-				type: "number",
-				id: "min",
-				title: "Minimum",
-				defaultValue: 1,
-				min: 1
-			},
-			{
-				type: "number",
-				id: "max",
-				title: "Maximum",
-				defaultValue: 10,
-				max: 10
-			}
-			// {
-			// 	type: "number",
-			// 	id: "n_values",
-			// 	title: {
-			// 		en: "Number of values",
-			// 		fr: "Nombre de valeures"
-			// 	},
-			// 	min: 2,
-			// 	defaultValue: 2
-			// }
-		],
+		optionDefs,
 		validateAnswers(seed, { answer }) {
 			const solution = this.getSolution(seed)["answer"]
 			return { answer: solution == answer }
@@ -62,14 +67,8 @@ const getExercise = (id: string) =>
 				{
 					type: "p",
 					content: [
-						{
-							type: "text",
-							text: `${n1} ${operation} ${n2} = `
-						},
-						{
-							type: "input",
-							id: "answer"
-						}
+						{ type: "text", text: `${n1} ${operation} ${n2} = ` },
+						{ type: "input", id: "answer" }
 					]
 				}
 			]
@@ -88,14 +87,8 @@ const getExercise = (id: string) =>
 				{
 					type: "p",
 					content: [
-						{
-							type: "text",
-							text: `oui `
-						},
-						{
-							type: "input",
-							id: "answer"
-						}
+						{ type: "text", text: "oui " },
+						{ type: "input", id: "answer" }
 					]
 				}
 			]

@@ -1,12 +1,28 @@
-import { ExerciseGenerator, Language } from "../defs"
+import { ExerciseGenerator, Language, OptionValuesFrom } from "../defs"
 
 type Seed = [x: number, y: number]
 type Answers = { answer: number }
-type Options = { min: number; max: number }
+const optionDefs = {
+	min: {
+		type: "number",
+		id: "min",
+		title: "Minimum",
+		defaultValue: 1,
+		min: 1
+	},
+	max: {
+		type: "number",
+		id: "max",
+		title: "Maximum",
+		defaultValue: 10,
+		max: 10
+	}
+} as const
 
 const getExercise = (id: string) =>
-	new ExerciseGenerator<Seed, Answers, Options>({
+	new ExerciseGenerator<Seed, Answers, OptionValuesFrom<typeof optionDefs>>({
 		id,
+		beta: true,
 		nameLocales: { fr: "Norme de vecteur", en: "Vector Norm" },
 		descLocales: {
 			fr: "Ou sa 'longeur'",
@@ -14,22 +30,7 @@ const getExercise = (id: string) =>
 		},
 		createdOn: 4,
 		tags: ["linear-algebra"],
-		options: [
-			{
-				type: "number",
-				id: "min",
-				title: "Minimum",
-				defaultValue: 0,
-				min: 0
-			},
-			{
-				type: "number",
-				id: "max",
-				title: "Maximum",
-				defaultValue: 10,
-				max: 10
-			}
-		],
+		optionDefs,
 		generateSeed() {
 			const range = [-9, 9]
 			const [x, y] = Array(4)
