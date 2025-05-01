@@ -42,3 +42,4 @@ next-env.d.ts
 
 # vs code
 .vscode
+cache.txt
