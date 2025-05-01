@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-
 export function Error(message: string) {
 	return NextResponse.json({
 		ok: false,
