@@ -16,7 +16,7 @@ export class DB {
 		this.cache = new Map<string, UnknownExerciseGenerator>()
 	}
 	async fetchAll({ force }: { force: boolean } = { force: false }) {
-		if (!force && this.cache.size) return this.cache
+		// if (!force && this.cache.size) return this.cache 
 
 		const totalPath = path.join(process.cwd(), "/src/app/api/db")
 		const files = fs.readdirSync(totalPath)
