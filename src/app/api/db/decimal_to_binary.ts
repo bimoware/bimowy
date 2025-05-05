@@ -1,28 +1,25 @@
 import { ExerciseGenerator, OptionValuesFrom } from "../defs"
+import { randomFromRange } from "../util"
 
-type Seed = [n: number]
+type Seed = [number]
 type Answers = { answer: string }
+
 const optionDefs = {
-	min: {
-		type: "number",
-		id: "min",
-		title: "Minimum",
-		defaultValue: 0,
-		min: 0
-	},
 	max: {
 		type: "number",
 		id: "max",
-		title: "Maximum",
-		defaultValue: 2 ** 12,
-		max: 2 ** 12
+		title: {
+			en: "Maximum value to convert",
+			fr: "Valeure maximum à convert"
+		},
+		min: 0,
+		defaultValue: 2 ** 12
 	}
 } as const
 
 const getExercise = (id: string) =>
 	new ExerciseGenerator<Seed, Answers, OptionValuesFrom<typeof optionDefs>>({
 		id,
-		beta: true,
 		nameLocales: { en: "Decimal to binary", fr: "Decimal à Binaire" },
 		descLocales: {
 			en: "Convert a decimal number to binary (69 -> 1000101)",
@@ -31,8 +28,8 @@ const getExercise = (id: string) =>
 		tags: [],
 		createdOn: 2,
 		optionDefs,
-		generateSeed({ max, min }) {
-			return [Math.floor(Math.random() * (max - min)) + min]
+		generateSeed({ max }) {
+			return [randomFromRange(0, max)]
 		},
 		getContext([n]: Seed, lang) {
 			return [
@@ -59,19 +56,6 @@ const getExercise = (id: string) =>
 		},
 		getSolution([n]: Seed) {
 			return { answer: n.toString(2) }
-		},
-		getDetailedSolution([n]: Seed) {
-			return [
-				{
-					type: "p",
-					content: [
-						{
-							type: "text",
-							text: `${n} -> ${this.getSolution([n])} (yes it's that simple)`
-						}
-					]
-				}
-			]
 		}
 	})
 

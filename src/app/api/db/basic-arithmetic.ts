@@ -1,39 +1,18 @@
-import { ExerciseGenerator, OptionValuesFrom, RawOption } from "../defs"
+import { ExerciseGenerator, OptionValuesFrom } from "../defs"
 import { randomFrom, randomFromRange } from "../util"
 
 type Seed = [number, "+" | "-" | "*", number]
 type Answers = { answer: number }
 
 const optionDefs = {
-	min: {
-		type: "number",
-		id: "min",
-		title: "Minimum",
-		defaultValue: 1,
-		min: 1
-	},
-	max: {
-		type: "number",
-		id: "max",
-		title: "Maximum",
-		defaultValue: 10,
-		max: 10
-	},
-	n_values: {
-		type: "number",
-		id: "n_values",
+	range: {
+		type: "range",
+		id: "range",
 		title: {
-			en: "Number of values",
-			fr: "Nombre de valeurs"
+			en: "Range of values",
+			fr: "Plage des valeurs"
 		},
-		defaultValue: 2,
-		min: 2
-	},
-	something: {
-		type: "boolean",
-		title: "Something",
-		id: "something",
-		defaultValue: false
+		defaultValue: [0, 10] as [number, number]
 	}
 } as const
 
@@ -55,11 +34,11 @@ const getExercise = (id: string) =>
 			const solution = this.getSolution(seed)["answer"]
 			return { answer: solution == answer }
 		},
-		generateSeed: ({ min, max }) => {
+		generateSeed: ({ range }) => {
 			return [
-				randomFromRange(min, max),
+				randomFromRange(...range),
 				randomFrom(["*", "+", "-"]),
-				randomFromRange(min, max)
+				randomFromRange(...range)
 			]
 		},
 		getContext([n1, operation, n2], lang) {
@@ -81,17 +60,6 @@ const getExercise = (id: string) =>
 					"*": n1 * n2
 				}[operation]
 			}
-		},
-		getDetailedSolution(seed) {
-			return [
-				{
-					type: "p",
-					content: [
-						{ type: "text", text: "oui " },
-						{ type: "input", id: "answer" }
-					]
-				}
-			]
 		}
 	})
 
