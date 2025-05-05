@@ -128,9 +128,8 @@ function Mention({ icon, name, hoverName, href, background, padding, ultra }: {
       hover:scale-102 hover:rotate-x-1 hover:-rotate-z-1
       group
       ${ultra
-          ? `bg-purple-500/50 hover:bg-purple-500/7
+          ? `bg-rose-500 hover:bg-rose-500/80
           hover:-translate-y-2
-          bg-radial from-purple-700 to-purple-900
           hover:grayscale-[10%]`
           : "bg-neutral-700/70 hover:bg-white/10"}`}
     >
