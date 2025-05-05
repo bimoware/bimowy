@@ -1,22 +1,24 @@
 import path from "path"
 import fs from "fs"
-import { UserAnswers, UserOptions, ExerciseGenerator } from "./defs"
+import {
+	ExerciseGenerator,
+	OptionValuesFrom,
+	OptionDefs
+} from "./defs"
 
 type UnknownExerciseGenerator = ExerciseGenerator<
-	unknown[],
-	UserAnswers,
-	UserOptions
+	any[],
+	Record<string, any>,
+	OptionValuesFrom<OptionDefs>
 >
-type ExerciseGeneratorCreator = (
-	id: string
-) => ExerciseGenerator<unknown[], UserAnswers, UserOptions>
+type ExerciseGeneratorCreator = (id: string) => UnknownExerciseGenerator
 export class DB {
 	public cache: Map<string, UnknownExerciseGenerator>
 	constructor() {
 		this.cache = new Map<string, UnknownExerciseGenerator>()
 	}
 	async fetchAll({ force }: { force: boolean } = { force: false }) {
-		// if (!force && this.cache.size) return this.cache 
+		// if (!force && this.cache.size) return this.cache
 
 		const totalPath = path.join(process.cwd(), "/src/app/api/db")
 		const files = fs.readdirSync(totalPath)
