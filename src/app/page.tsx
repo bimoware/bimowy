@@ -32,7 +32,7 @@ export default function HomePage() {
         ...(easterEggState !== "active" ? [[]] : [
           [
             <span>{t('honorable_mention')}</span>,
-            <Mention icon="/media/moha.jpg" name="Moha" href="https://www.instagram.com/mohaa.ghrb/" ultra />
+            <Mention icon="/media/moha.jpg" name="Moha" hoverName="Mohammed Gharbi" href="https://www.instagram.com/mohaa.ghrb/" ultra />
           ]
         ]),
         [
@@ -101,15 +101,16 @@ function HeartEasterEgg({ heartAlt, easterEggState, setEasterEggState }: {
       alt={heartAlt}
       className={`inline-flex aspect-square hover:scale-110 duration-150
         ${easterEggState === "active" && "animate-bounce"}
-        ${easterEggState === "not-yet" && "cursor-pointer"}`}
+        ${easterEggState !== "never-again" && "cursor-pointer"}`}
       onClick={handleHeartClick}
     />
   );
 }
 
-function Mention({ icon, name, href, background, padding, ultra }: {
+function Mention({ icon, name, hoverName, href, background, padding, ultra }: {
   icon: string;
   name: string;
+  hoverName?: string;
   href?: string;
   background?: boolean;
   padding?: boolean;
@@ -147,7 +148,8 @@ function Mention({ icon, name, href, background, padding, ultra }: {
           ${padding && "p-1"}
           ${ultra && "group-hover:scale-125"}`}
       />
-      <span className="group-hover:font-bold transition-all">{name}</span>
+      <span key="main" className={`group-hover:font-bold transition-all ${hoverName && "inline group-hover:hidden"}`}>{name}</span>
+      {hoverName && <span key="notmain" className='group-hover:font-bold transition-all hidden group-hover:inline'>{hoverName}</span>}
       {href && (
         <Image
           src="/svgs/open_in_view.svg"
