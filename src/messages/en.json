@@ -13,7 +13,9 @@
     "and": "and",
     "open_new_tab": "Open in new tab",
     "heart": "heart",
-    "available_in": "Available in both English & French with"
+    "available_in": "Available in both English & French with",
+    "you_like": "You like it? Then don't forget to",
+    "star": "Add to favorites"
   },
   "Buttons": {
     "Start": "Start",
