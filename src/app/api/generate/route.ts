@@ -1,10 +1,8 @@
 import { NextRequest } from "next/server"
 
-import { UserOption } from "@app/exercises/[exercise_id]/page"
-
 import db from "../db"
 import { ContextSection } from "../defs"
-import { Error, Success, isValidLang } from "../util"
+import { DEFAULT_OPTION, Error, Success, isValidLang } from "../util"
 
 export async function POST(req: NextRequest) {
 	// Params
@@ -21,21 +19,10 @@ export async function POST(req: NextRequest) {
 	if (!isValidLang(lang)) return Error("Invalid lang")
 
 	// Options
-	let paramOptions: UserOption[] = await req.json().catch(console.error)
-
-	let options: Record<string, any> = {}
-
-	for (const userOption of paramOptions) {
-		options[userOption.id] = userOption.value
-	}
-
-	for (const option of exercise.options) {
-		if (!options[option.id]) options[option.id] = option.defaultValue
-	}
-
+	let options: Record<string, any> = await req.json()
 	// Main
 	const exercises = Array.from({
-		length: options["_n"] || 5
+		length: options[DEFAULT_OPTION.id] || DEFAULT_OPTION.defaultValue
 	}).map(() => exercise.generate(lang, options))
 
 	return Success(exercises)
