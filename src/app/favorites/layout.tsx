@@ -6,4 +6,6 @@ export const metadata: Metadata = {
 	icons: '/svgs/bookmark.svg'
 }
 
-export default function Layout({ children }: { children: ReactNode }) { return children }
+export default function Layout({ children }: { children: ReactNode }) {
+	return children
+}
