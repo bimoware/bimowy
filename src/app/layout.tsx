@@ -1,11 +1,11 @@
 import { Outfit } from 'next/font/google'
 import SideBar from '../components/SideBar'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 
 import './style.css'
 import { Metadata, Viewport } from 'next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const outfit = Outfit({
   subsets: ['latin']
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     ' With interactive learning and feedback loop, math becomes free from frustration and starts being actually fun.',
   metadataBase: new URL(
     process.env.NODE_ENV == 'production'
-      ? `https://bimowy.vercel.app/`
+      ? `https://bimowy.dev/`
       : 'http://localhost:3000/'
   ),
   twitter: {
@@ -42,7 +42,7 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <SideBar />
           {children}
-          <SpeedInsights />
+          {process.env.NODE_ENV == 'production' && <SpeedInsights />}
         </NextIntlClientProvider>
       </body>
     </html>
