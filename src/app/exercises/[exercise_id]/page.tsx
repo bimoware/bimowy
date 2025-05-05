@@ -3,7 +3,7 @@
 import { GeneratedExercise, APIOption, ContextElement, ContextSection } from "@app/api/defs"
 import Image from "next/image";
 import { useParams } from "next/navigation"
-import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, JSX, SetStateAction, useCallback, useEffect, useRef, useState } from "react"
 import { useLocale, useTranslations } from "use-intl"
 import useSound from "use-sound"
 import katex from "katex"
@@ -19,17 +19,18 @@ type ExerciseState = 'normal' | 'correcting' | 'corrected'
 type ExerciseData = {
 	content: GeneratedExercise,
 	state: ExerciseState,
-	inputs: Record<string, {
-		value: string
-	} & ({
-		corrected: false
-	} | {
-		corrected: true,
-		correct: boolean,
-		correctOnFirstTry: boolean,
-		tries: number
-	})>
+	inputs: Record<string, Input>
 }
+type Input = {
+	value: string
+} & ({
+	corrected: false
+} | {
+	corrected: true,
+	correct: boolean,
+	correctOnFirstTry: boolean,
+	tries: number
+})
 type Exercise = {
 	items: ExerciseData[];
 	index: number;
@@ -51,64 +52,79 @@ export default function ExercisePage() {
 
 	// Options
 	const [apiOptions, setAPIOptions] = useState<APIOption[]>(),
-		[userOptions, setUserOptions] = useState<UserOption[]>([])
+		[userOptionValues, setUserOptionValues] = useState<Record<string, any>>()
 
 	// Sounds
 	const [playCorrect] = useSound('/audios/correct.mp3', { volume: 0.2 }),
 		[playIncorrect] = useSound('/audios/incorrect.mp3', { volume: 0.4 })
 
+	// Input refs
+	const inputRefs = useRef<Record<string, HTMLInputElement>>({})
+
 	// Functions
 	const actions = {
-		handleEnter: async function () {
-			if (pageStep != "normal") return;
-			if (!exercises) return;
-			const exercise = exercises.items[exercises.index]
-			const { state } = exercise
-			switch (state) {
-				case "correcting":
-					return;
-				case "corrected":
-					return actions.retryExercise()
-				case "normal":
-					return actions.correctExercise()
-			}
-		},
 		startExercises: async function () {
+			if (pageStep == "normal") return console.error('Exercises already started!')
 			setPageStep('normal')
-			return actions.fetchExercises()
+			return await actions.fetchExercises()
 		},
-		fetchOptions: function () {
+		fetchOptions: async function () {
 			const url = new URL('/api/exercise', window.location.origin);
 			url.searchParams.append('id', exerciseId);
 			url.searchParams.append('lang', locale);
 
-			fetch(url)
+			return await fetch(url)
 				.then(res => res.json())
 				.then(res => res.data)
 				.then((data: ExerciseRouteResult) => {
 					setName(data.name);
 					setAPIOptions(data.options);
+
+					const userOptionValues = data.options
+						.reduce((o, key) => Object.assign(o, { [key.id]: key.defaultValue }), {})
+					setUserOptionValues(userOptionValues)
 				})
+		},
+		getAllInputIDs(section: ContextSection | ContextElement) {
+			const inputs: string[] = []
+			switch (section.type) {
+				case 'input':
+					inputs.push(section.id)
+					break
+				case 'p':
+					section.content.forEach(content => {
+						inputs.push(...actions.getAllInputIDs(content))
+					});
+					break
+			}
+			return inputs
 		},
 		fetchExercises: async function () {
 			const url = new URL('/api/generate', window.location.origin);
 			url.searchParams.append('id', exerciseId);
 			url.searchParams.append('lang', locale);
-
 			return await fetch(url, {
 				method: "POST",
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(userOptions)
+				body: JSON.stringify(userOptionValues)
 			})
 				.then(res => res.json())
 				.then(res => res.data)
 				.then((data: GenerateRouteResult) => {
 					setExercises({
-						items: data.map((ex) => ({
-							content: ex,
-							state: 'normal',
-							inputs: {}
-						})),
+						items: data.map((ex) => {
+							const inputs: Record<string, { value: string; corrected: false }> = {};
+							for (const section of ex.context) {
+								actions.getAllInputIDs(section).forEach(id => {
+									inputs[id] = { value: '', corrected: false };
+								});
+							}
+							return {
+								content: ex,
+								state: 'normal',
+								inputs
+							};
+						}),
 						index: 0
 					})
 				})
@@ -121,14 +137,14 @@ export default function ExercisePage() {
 				const current = { ...newItems[prev.index] };
 				current.state = state
 				newItems[prev.index] = current
-				return { ...prev, items: newItems, index: prev.index };
+				return { items: newItems, index: prev.index };
 			})
 		},
 		correctExercise: async function () {
 			if (!exercises) throw new Error('No exercises to start correcting')
 			const exercise = exercises.items[exercises.index]
 			actions.setCurrentExerciseState('correcting')
-			// Put into a variable answers, an object with as properties "ID"s and as values "value"
+
 			const answers = Object.fromEntries(
 				Object.entries(exercise.inputs).map(([id, input]) => [id, input.value])
 			)
@@ -171,7 +187,7 @@ export default function ExercisePage() {
 
 						newItems[prev.index] = current;
 
-						return { ...prev, items: newItems, index: prev.index };
+						return { items: newItems, index: prev.index };
 					});
 				})
 		},
@@ -179,8 +195,11 @@ export default function ExercisePage() {
 			actions.setCurrentExerciseState('normal')
 		},
 		nextExercise: function () {
-			if (!exercises) throw new Error('No exercises to retry')
-			exercises.index += 1
+			setExercises(prev => {
+				if (!prev) throw new Error('No exercises to retry')
+				const next = prev.index + 1
+				return { ...prev, index: next }
+			})
 			actions.setCurrentExerciseState('normal')
 		},
 		end: function () {
@@ -188,12 +207,6 @@ export default function ExercisePage() {
 		},
 		getInput: function (id: string) {
 			return exercises && exercises?.items[exercises.index].inputs[id]
-		},
-		getOptionValue: function (id: string) {
-			const userOption = userOptions.find(o => o.id == id)
-			if (userOption) return { value: userOption.value }
-			const apiOption = apiOptions!.find(o => o.id == id)
-			return { value: apiOption!.defaultValue }
 		},
 		renderNode: function (exercise: ExerciseData, node: ContextElement | ContextSection, key: number) {
 			switch (node.type) {
@@ -209,12 +222,19 @@ export default function ExercisePage() {
 					return html ? (
 						<span key={key} dangerouslySetInnerHTML={{ __html: html }} />
 					) : (
-						<span key={key}>{node.text}</span>
+						<span key={key}
+							className={`${node.extra?.includes('mono') && "font-mono"}`}>{node.text}</span>
 					)
 
 				case 'input':
+					const input = actions.getInput(node.id)
 					return (
 						<input
+							ref={(ref) => {
+								if (ref && !inputRefs.current[node.id]) {
+									inputRefs.current[node.id] = ref
+								}
+							}}
 							key={node.id}
 							disabled={exercise.state !== 'normal'}
 							onChange={e => {
@@ -224,11 +244,10 @@ export default function ExercisePage() {
 
 									const items = [...prev.items]
 									const idx = prev.index
-
 									const ex = { ...items[idx] }
 									const inputs = { ...ex.inputs }
 
-									const old = inputs[node.id] ?? { value: '', corrected: false }
+									const old = inputs[node.id]
 
 									inputs[node.id] = {
 										...old,
@@ -243,32 +262,82 @@ export default function ExercisePage() {
 							}}
 							value={actions.getInput(node.id)?.value || ''}
 							className={
-								(() => {
-									const input = actions.getInput(node.id)
-									return input && input.corrected ? (
-										input.correct!
-											? "!outline-green-500/50 !bg-green-500/10"
-											: "!outline-red-500/50"
-									) : ""
-								})()
+								input && input.corrected && (input.correct
+									? "!outline-green-500/50 !bg-green-500/10"
+									: "!outline-red-500/50") || ""
 							}
 						/>
 					)
 				default:
 					return <>wtf</>
 			}
+		},
+		focusEmptyOrIncorrectInput() {
+			if (!exercises) return;
+			const exercise = exercises.items[exercises.index]
+			if (exercise.state != "normal") return;
+			const inputs = Object.entries(exercise.inputs)
+			const [inputId /*, inputData */] = inputs.find(([id, input]) => !input.value)
+				|| inputs.find(([id, input]) => input.corrected && !input.correct)
+				|| []
+			if (!inputId) return;
+			inputRefs.current[inputId].focus()
+		},
+		// handleEnter
+		// If selecting a button, will trigger it
+		// If not, will
+		// - If exercise state is normal
+		// - - If not all inputs are filled, will select the first empty one
+		// - - If all inputs are filled, will correct it
+		// - If exercise state is correcting, will do nothing
+		// - If exercise state is corrected
+		// - - If exercise is fully correct, will go to the next exercise
+		// - - If exercise is not fully correct, will retry it
+		handleEnter: function () {
+			if (pageStep == "options") return actions.startExercises()
+			if (pageStep == "end") return;
+			// PageStep == "normal":
+			if (!exercises) return;
+			const exercise = exercises.items[exercises.index]
+			if (exercise.state == "normal") {
+				const inputs = Object.entries(exercise.inputs)
+				const firstEmptyInput = inputs.find(([id, input]) => !input.value)
+				if (!firstEmptyInput) return actions.correctExercise()
+				actions.focusEmptyOrIncorrectInput()
+			} else if (exercise.state == "corrected") {
+				const allCorrect = Object.values(exercise.inputs).every(input => input.corrected && input.correct)
+				if (!allCorrect) return actions.retryExercise()
+				if (exercises.index == exercises.items.length - 1) return actions.end()
+				return actions.nextExercise()
+			}
 		}
 	}
 
-	useEffect(() => actions.fetchOptions(), [])
-	// useEffect(() => {
-	// 	const handler = (e: KeyboardEvent) => {
-	// 		e.preventDefault()
-	// 		actions.handleEnter()
-	// 	}
-	// 	window.addEventListener('keydown', handler)
-	// 	return window.removeEventListener('keydown', handler)
-	// },[])
+	// Fetch options on page load
+	useEffect(() => { actions.fetchOptions() }, [])
+
+	// Handle Enter
+	useEffect(() => {
+		function handleEnter(e: KeyboardEvent) {
+			if (e.key !== "Enter") return;
+			actions.handleEnter()
+		}
+		window.addEventListener("keydown", handleEnter)
+		return () => window.removeEventListener("keydown", handleEnter)
+	}, [actions])
+
+
+	// Focus first empty element
+	useEffect(() => {
+		if (pageStep != "normal" || !exercises) return;
+		actions.focusEmptyOrIncorrectInput()
+	}, [exercises?.items[exercises.index].state])
+
+	// Clear input refs when changing exercise
+	useEffect(() => {
+		inputRefs.current = {}
+	}, [pageStep, exercises?.index])
+
 
 	const blocClass = "flex flex-col space-y-2 bg-neutral-900 w-full rounded-3xl py-3 px-5"
 	return <div className="w-full h-full flex-col p-4
@@ -276,10 +345,10 @@ export default function ExercisePage() {
 		<Title {...{ pageStep, name, exercises }} />
 		<div className={`${blocClass} grow text-4xl overflow-y-scroll`}>
 			{pageStep == "options"
-				? <Options {...{ apiOptions, userOptions, setUserOptions, getOptionValue: actions.getOptionValue }} />
+				? <Options {...{ apiOptions, userOptionValues, setUserOptionValues }} />
 				: pageStep == "end"
 					? <End {...{ exercises }} />
-					: <ExerciseContext {...{ exercises, renderNode: actions.renderNode }} />}
+					: <ExerciseContext {...{ inputRefs, exercises, renderNode: actions.renderNode }} />}
 		</div>
 		<div className="w-full flex gap-4 items-center justify-center">
 			<Buttons {...{ pageStep, exercises, apiOptions, actions }} />
@@ -333,67 +402,101 @@ function Title({ name, pageStep, exercises }: {
 	pageStep: PageStep
 	exercises?: Exercise
 }) {
-	const t = useTranslations('ExercisePage')
 	return <h1>{name ?? "..."}  {
-		pageStep != "options" && exercises && " - " + exercises.items.map(e => {
-			const inputs = Object.values(e.inputs)
-			const isCorrected = inputs.every(inp => inp.corrected)
-			if (!isCorrected || !inputs.length) return "⬜"
-			const isCorrect = inputs.every(inp => inp.correct)
-			if (!isCorrect) return "🟥"
-			const isCorrectOnFirstTry = inputs.every(inp => inp.correctOnFirstTry)
-			if (!isCorrectOnFirstTry) return "🟨"
-			else return "🟩"
-		}).join('')
+		pageStep != "options" && exercises && (
+			<>
+				<span> - </span>
+				<ExerciseCorrections {...{ exercises }} />
+			</>)
 	}</h1>
 }
-function Options({ apiOptions, setUserOptions, getOptionValue }: {
+
+function ExerciseCorrections({ exercises, }: { exercises: Exercise }) {
+
+	return exercises.items.map(e => {
+		const inputs = Object.values(e.inputs)
+		const isCorrected = inputs.every(inp => inp.corrected)
+		if (!isCorrected || !inputs.length) return "⬜"
+		const isCorrect = inputs.every(inp => inp.correct)
+		if (!isCorrect) return "🟥"
+		const isCorrectOnFirstTry = inputs.every(inp => inp.correctOnFirstTry)
+		if (!isCorrectOnFirstTry) return "🟨"
+		else return "🟩"
+	})
+}
+
+
+function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 	apiOptions?: APIOption[],
-	userOptions: UserOption[],
-	setUserOptions: Dispatch<SetStateAction<UserOption[]>>
-	getOptionValue: (id: string) => { value: number | boolean }
+	userOptionValues?: Record<string, any>,
+	setUserOptionValues: Dispatch<SetStateAction<Record<string, any>>>
 }) {
-	if (!apiOptions) return;
+	if (!apiOptions || !userOptionValues) return;
 	return apiOptions.map(option => {
 		const { type, id, title } = option
 		switch (type) {
 			case 'number':
-				const { min, max } = option
+				const numberMin = option.min
+				const numberMax = option.max
+				const numberValue = userOptionValues[id] as number
 				return <div key={id}>
 					<span>{title}: </span>
 					<input
-						{...{ type, min, max }}
-						value={getOptionValue(id).value as number}
+						{...{ type }}
+						min={numberMin}
+						max={numberMax}
+						value={numberValue}
 						onChange={(e) => {
 							const value = e.target.value;
-							setUserOptions(prev => {
-								const newUserOptions = [...prev]
-								if (newUserOptions.some(o => o.id == id)) {
-									newUserOptions.find(o => o.id == id)!.value = value
-								} else {
-									newUserOptions.push({ id, value })
-								}
+							setUserOptionValues(prev => {
+								const newUserOptions = { ...prev }
+								newUserOptions[id] = value
 								return newUserOptions;
 							})
 						}} />
 				</div>
 			case 'boolean':
+				const booleanValue = userOptionValues[id] as boolean
 				return <div key={id}>
 					<span>{title}? </span>
 					<Togglable
-						checked={getOptionValue(id).value as boolean}
+						checked={booleanValue}
 						onChange={() => {
-							setUserOptions(prev => {
-								const lastUserOption = [...prev]
-								if(lastUserOption.find(o => o.id == id)){
-									lastUserOption.find(o => o.id == id)!.value = !lastUserOption.find(o => o.id == id)
-								} else {
-									lastUserOption.push({ id, value: !getOptionValue(id).value })
-								}
-								return lastUserOption;
+							setUserOptionValues(prev => {
+								const newUserOptions = { ...prev }
+								newUserOptions[id] = !prev[id]
+								return newUserOptions;
 							})
 						}}
 					/>
+				</div>
+			case 'range':
+				const rangeValue = userOptionValues[id] as [number, number]
+				return <div key={id}>
+					<span>{title}: </span>
+					<input
+						type="number"
+						value={rangeValue[0]}
+						onChange={(e) => {
+							let value = Number(e.target.value);
+							if (value < rangeValue[1]) setUserOptionValues(prev => {
+								const newUserOptions = { ...prev }
+								newUserOptions[id] = [value, prev[id][1]]
+								return newUserOptions;
+							})
+						}} />
+					<span> - </span>
+					<input
+						type="number"
+						value={rangeValue[1]}
+						onChange={(e) => {
+							const value = Number(e.target.value);
+							if (value > rangeValue[0]) setUserOptionValues(prev => {
+								const newUserOptions = { ...prev }
+								newUserOptions[id] = [prev[id][0], value]
+								return newUserOptions;
+							})
+						}} />
 				</div>
 		}
 	})
@@ -430,7 +533,8 @@ function Buttons({ pageStep, exercises, apiOptions, actions }: {
 			const exercise = exercises.items[exercises.index]
 			switch (exercise.state) {
 				case 'normal':
-					return <Button alt={t('Confirm')} src='/svgs/check.svg' onClick={actions.correctExercise} enter />
+					if (Object.values(exercise.inputs).every(inp => inp.value)) return <Button alt={t('Confirm')} src='/svgs/check.svg' onClick={actions.correctExercise} enter />
+					else return <Button alt={t('Confirm')} src='/svgs/check.svg' disabled />
 				case 'correcting':
 					return <Button alt={t('Correcting')} disabled />
 				case 'corrected':

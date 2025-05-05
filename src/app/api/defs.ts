@@ -1,3 +1,6 @@
+import { DEFAULT_OPTION } from "./util"
+
+// Exercise Tags
 export type ExerciseTags =
 	| "arithmetic"
 	| "geometry"
@@ -9,12 +12,14 @@ export type ExerciseTags =
 	| "probability"
 	| "multivariable-calculus"
 
+// Language
 export const LanguageCodes = ["fr", "en"] as const
 export type Language = (typeof LanguageCodes)[number]
 type LocaleStrings = {
 	[K in Language]?: string
 }
 
+// Context
 export type ContextElement =
 	| {
 			type: "text"
@@ -28,54 +33,67 @@ export type ContextSection = {
 	content: ContextElement[]
 }
 
+// General
 export type GeneratedExercise = {
 	exercise_id: string
 	seed: number[]
 	context: ContextSection[]
 }
 
-export type _NumberOptionDef = {
+// Options
+export type _NumberOptionRawData = {
 	type: "number"
 	defaultValue: number
 	min?: number
 	max?: number
 }
 
-export type _BooleanOptionDef = {
+export type _BooleanOptionRawData = {
 	type: "boolean"
 	defaultValue: boolean
 }
 
+export type _RangeOptionRawData = {
+	type: "range"
+	defaultValue: [number, number]
+	min?: number
+	max?: number
+}
+
+export type _OptionRawData =
+	| _NumberOptionRawData
+	| _BooleanOptionRawData
+	| _RangeOptionRawData
 export type APIOption = {
 	id: string
 	title: string
-} & (_NumberOptionDef | _BooleanOptionDef)
-
+} & _OptionRawData
 export type RawOption = {
 	id: string
 	title: string | LocaleStrings
-} & (_NumberOptionDef | _BooleanOptionDef)
-
-type Corrections<Answers> = {
-	[K in keyof Answers]: boolean
-}
-
-export type UserAnswers = {
-	[key: string]: any
-}
-export type UserOptions = {
-	[key: string]: any
-}
+} & _OptionRawData
 
 export type OptionDefs = Record<string, RawOption>
 export type OptionValuesFrom<T extends OptionDefs> = {
-	[K in keyof T]: T[K] extends { type: "number" } ? number : boolean
+	[K in keyof T]: T[K] extends { type: "number" }
+		? number
+		: T[K] extends { type: "range" }
+			? [number, number]
+			: boolean
+}
+
+// Correction
+type Corrections<Answers> = {
+	[K in keyof Answers]: boolean
+}
+export type UserAnswers = {
+	[key: string]: any
 }
 
 export class ExerciseGenerator<
 	Seed extends any[],
-	Answers extends Record<string,any>,
-	Options extends OptionValuesFrom<OptionDefs>
+	Answers extends Record<string, any>,
+	UserOptions extends OptionValuesFrom<OptionDefs>
 > {
 	public id: string
 	public rawData: any
@@ -87,7 +105,7 @@ export class ExerciseGenerator<
 	public options: RawOption[]
 	public optionDefs: OptionDefs
 	public validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
-	public generateSeed: (options: Options) => Seed
+	public generateSeed: (options: UserOptions) => Seed
 	public getContext: (seed: Seed, lang: Language) => ContextSection[]
 	public getSolution: (seed: Seed) => Answers
 	public getDetailedSolution: (seed: Seed) => ContextSection[]
@@ -101,10 +119,10 @@ export class ExerciseGenerator<
 		optionDefs: OptionDefs
 		beta?: boolean
 		validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
-		generateSeed: (options: Options) => Seed
+		generateSeed: (options: UserOptions) => Seed
 		getContext: (seed: Seed, lang: Language) => ContextSection[]
 		getSolution: (seed: Seed) => Answers
-		getDetailedSolution: (seed: Seed) => ContextSection[]
+		getDetailedSolution?: (seed: Seed) => ContextSection[]
 	}) {
 		this.rawData = data
 		this.id = data.id
@@ -132,25 +150,21 @@ export class ExerciseGenerator<
 		this.tags = data.tags ?? []
 		this.createdOn = data.createdOn
 		this.beta = data.beta ?? false
-		console.log(data.optionDefs)
+
+		// Options
 		this.optionDefs = data.optionDefs
 		this.options = Object.entries(data.optionDefs).map(([id, def]) => ({
 			...def,
 			id
 		}))
-		this.options.push({
-			title: { en: "Number of questions", fr: "Nombre de questions" },
-			id: "_n",
-			type: "number",
-			min: 1,
-			max: 15,
-			defaultValue: 5
-		})
+		this.options.push(DEFAULT_OPTION)
+
+		// Methods
 		this.validateAnswers = data.validateAnswers
 		this.generateSeed = data.generateSeed
 		this.getContext = data.getContext
 		this.getSolution = data.getSolution
-		this.getDetailedSolution = data.getDetailedSolution
+		this.getDetailedSolution = data.getDetailedSolution || (() => [])
 	}
 	get recent() {
 		return this.createdOn >= 5
@@ -169,10 +183,10 @@ export class ExerciseGenerator<
 			})
 		}
 	}
-	getOptionValue(id: string, options: Options) {
+	getOptionValue(id: string, options: UserOptions) {
 		return options[id]
 	}
-	generate(lang: Language, options: Options) {
+	generate(lang: Language, options: UserOptions) {
 		const seed = this.generateSeed(options)
 		const context = this.getContext(seed, lang)
 		return {
