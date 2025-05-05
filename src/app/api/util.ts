@@ -22,3 +22,12 @@ export function randomFromRange(min: number, max: number) {
 export function randomFrom(arr: any[]) {
 	return arr[Math.floor(Math.random() * arr.length)]
 }
+
+export const DEFAULT_OPTION = {
+	title: { en: "Number of questions", fr: "Nombre de questions" },
+	id: "_n",
+	type: "number",
+	min: 1,
+	max: 15,
+	defaultValue: 5
+} as const
