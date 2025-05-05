@@ -2,11 +2,7 @@ import { Metadata } from 'next'
 import { ReactNode } from 'react'
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Test',
-    template: '%s | Bimowy'
-  },
-  description: 'Test Page',
+  title: 'Test',
   icons: '/svgs/test.svg'
 }
 

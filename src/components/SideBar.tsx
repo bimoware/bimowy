@@ -6,11 +6,8 @@ import { usePathname } from 'next/navigation'
 
 export default function SideBar() {
   return (
-    <div className='w-24 h-full p-4 flex flex-col justify-between shrink-0 gap-4'>
-      <div className='bg-neutral-900 p-1 w-full h-fit
-    rounded-3xl
-    overflow-y-auto
-    flex flex-col items-center'>
+    <div className='w-24 h-full p-3 flex flex-col justify-between shrink-0 gap-4'>
+      <section className='!h-fit flex flex-col items-center'>
         {[
           {
             id: 'home',
@@ -59,8 +56,8 @@ export default function SideBar() {
         ].map((btn) => (
           <SideBarIcon {...btn.data} key={btn.id} />
         ))}
-      </div>
-      <div className='bg-neutral-900 p-2 w-full h-fit
+      </section>
+      <section className='!h-fit
       rounded-3xl
       overflow-y-auto
       flex flex-col items-center'>
@@ -104,8 +101,8 @@ export default function SideBar() {
         ].map((btn) => (
           <SideBarIcon {...btn.data} key={btn.id} />
         ))}
-      </div>
-    </div>
+      </section>
+    </div >
   )
 }
 
