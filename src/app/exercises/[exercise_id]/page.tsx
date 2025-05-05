@@ -320,6 +320,7 @@ export default function ExercisePage() {
 	useEffect(() => {
 		function handleEnter(e: KeyboardEvent) {
 			if (e.key !== "Enter") return;
+			if ((e.target as HTMLElement).tagName.toLowerCase() === "button") return;
 			actions.handleEnter()
 		}
 		window.addEventListener("keydown", handleEnter)
@@ -346,7 +347,7 @@ export default function ExercisePage() {
 		<div className={`${blocClass} grow text-4xl overflow-y-scroll`}>
 			{pageStep == "options"
 				? <Options {...{ apiOptions, userOptionValues, setUserOptionValues }} />
-				: pageStep == "end"
+				: pageStep == "end" && exercises
 					? <End {...{ exercises }} />
 					: <ExerciseContext {...{ inputRefs, exercises, renderNode: actions.renderNode }} />}
 		</div>
@@ -357,44 +358,33 @@ export default function ExercisePage() {
 
 }
 
-function End({ exercises }: { exercises?: Exercise }) {
-	if (!exercises) return;
-	const t = useTranslations('ExercisePage')
-	let allTotals = 0
-	return <div className="w-full flex flex-col gap-10">
-		<h1 className="text-center w-full">{t('Finished')}</h1>
-		<div className="bg-neutral-950/50 w-fit p-3 rounded-xl outline outline-white/10 flex flex-col gap-4 font-mono">
+function End({ exercises }: { exercises: Exercise }) {
+	const corrections = getExerciseCorrections(exercises)
+	console.log(corrections)
+	return <>
+		<div className="my-4 w-full h-full flex items-center justify-center">
+			<h1 className="!text-6xl">Score: {corrections.exactScore} ({corrections.subtotal}/{corrections.total})</h1>
+		</div>
+		<div className="w-full flex flex-wrap gap-2">
 			{
-				exercises.items.map((exercise, i) => {
-					// Calculate score
-					// All correct on first try = 100%
-					// All correct but not on first try = 50%
-					// Else = 0%
-					// We should write ⬜ for not corrected, 🟩 for correct on first try, 🟨 for correct but not on first try, 🟥 for incorrect
-					// For all individual exercise inputs
-					let total = 0
-					let subtotal = 0
-					const emojis = Object.values(exercise.inputs).map(input => {
-						total += 1
-						if (!input.corrected) return "⬜"
-						if (input.correctOnFirstTry) {
-							subtotal += 1
-							return "🟩"
-						}
-						if (input.correct) {
-							subtotal += 0.5;
-							return `🟨 (${input.tries} ${t('tries')})`;
-						}
-						return "🟥"
-					}).join('');
-					const percentage = Math.round(subtotal / total * 100)
-					allTotals += percentage
-					return <p key={i}>{i + 1}. {emojis} {percentage}% ({subtotal}/{total})</p>;
+				corrections.texts.map((exerciseCorrection, i) => {
+					return <div
+						key={i}
+						className="bg-neutral-950/50
+				w-fit p-3 rounded-xl
+				outline outline-white/10
+				">
+
+						{exerciseCorrection.map((inputCorrection, i) => {
+							return <p key={i}>
+								{inputCorrection.emoji} {inputCorrection.extra} (+ {inputCorrection.score}pts)
+							</p>
+						})}
+					</div>
 				})
 			}
 		</div>
-		<p>{t('Score')}: {Math.round(allTotals / exercises.items.length)}%</p>
-	</div>
+	</>
 }
 
 function Title({ name, pageStep, exercises }: {
@@ -402,29 +392,73 @@ function Title({ name, pageStep, exercises }: {
 	pageStep: PageStep
 	exercises?: Exercise
 }) {
+	const t = useTranslations('ExercisePage')
 	return <h1>{name ?? "..."}  {
-		pageStep != "options" && exercises && (
-			<>
-				<span> - </span>
-				<ExerciseCorrections {...{ exercises }} />
-			</>)
+		pageStep == "end" ? `- ${t('Finished')}`
+			: pageStep == "normal" && exercises && (
+				<>
+					<span> - </span>
+					<div className="inline-flex gap-1">{
+						getExerciseCorrections(exercises)
+							.texts
+							.map((correction, i) => <div key={i}
+								data-current={exercises.index == i}
+								className="
+							p-0.5
+							inline-flex items-center justify-center
+							bg-black/50
+							outline-1 outline-white/5
+							rounded-sm
+							data-[current=true]:outline-white/50
+							data-[current=true]:outline-dashed
+							data-[current=true]:outline-2">
+								{correction.map(c => c.emoji)}
+							</div>)
+					}</div>
+				</>)
 	}</h1>
 }
+type ExerciseInputCorrection = { emoji: string, score: number, extra?: string }
+function getExerciseCorrections(exercises: Exercise) {
+	const data = {
+		total: 0,
+		subtotal: 0,
+		exactScore: "",
+		score: 0,
+		texts: [] as ExerciseInputCorrection[][]
+	}
 
-function ExerciseCorrections({ exercises, }: { exercises: Exercise }) {
+	const items = exercises.items.map(item => {
+		data.total += 1
 
-	return exercises.items.map(e => {
-		const inputs = Object.values(e.inputs)
-		const isCorrected = inputs.every(inp => inp.corrected)
-		if (!isCorrected || !inputs.length) return "⬜"
-		const isCorrect = inputs.every(inp => inp.correct)
-		if (!isCorrect) return "🟥"
-		const isCorrectOnFirstTry = inputs.every(inp => inp.correctOnFirstTry)
-		if (!isCorrectOnFirstTry) return "🟨"
-		else return "🟩"
+		const inputs = Object.values(item.inputs)
+		let exerciseSubTotal = 0
+		const exerciseTexts = inputs.map(input => {
+			const exerciseText: ExerciseInputCorrection = input.corrected
+				? (
+					input.correct
+						? (
+							input.correctOnFirstTry
+								? { emoji: "🟩", score: 1 }
+								: { emoji: "🟨", score: 0.5, extra: `(${input.tries} tries)` }
+						)
+						: { emoji: "🟥", score: 0 }
+				)
+				: { emoji: "⬜", score: 0, extra: `Not corrected once yet.` }
+
+			exerciseSubTotal += exerciseText.score
+			return exerciseText
+		})
+
+		data.subtotal += exerciseSubTotal / inputs.length
+		return exerciseTexts
 	})
-}
 
+	data.texts = items
+	data.score = data.subtotal / data.total
+	data.exactScore = (Math.round(data.score * 10000) / 100).toFixed(2) + "%"
+	return data
+}
 
 function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 	apiOptions?: APIOption[],
@@ -501,6 +535,7 @@ function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 		}
 	})
 }
+
 function ExerciseContext({ exercises, renderNode }: {
 	exercises?: Exercise,
 	renderNode: (exercise: ExerciseData, node: ContextElement | ContextSection, key: number) => JSX.Element
