@@ -17,29 +17,28 @@ export default function HomePage() {
 
       {[
         [
-          <span key="1">{t('made_with')}</span>,
+          <span>{t('made_with')}</span>,
           <HeartEasterEgg
-            key="2"
             heartAlt={t('heart')}
             easterEggState={easterEggState}
             setEasterEggState={setEasterEggState}
           />,
-          <span key="3">{t('by')}</span>,
-          <Mention key="4" icon="/media/pfp.jpeg" name="bimoware" href="https://github.com/bimoware" />
+          <span>{t('by')}</span>,
+          <Mention icon="/media/pfp.jpeg" name="bimoware" href="https://github.com/bimoware" />
         ],
         [
-          <span key="1">{t('source_code_on')}</span>,
-          <Mention key="2" icon="/svgs/github.svg" background name="bimoware/bimowy" href="https://github.com/bimoware/bimowy/" />
+          <span >{t('source_code_on')}</span>,
+          <Mention icon="/svgs/github.svg" background name="bimoware/bimowy" href="https://github.com/bimoware/bimowy/" />
         ],
         [
-          <span key="1">{t('inspired')}</span>,
-          <Mention key="2" icon="/svgs/khan-academy.svg" name="Khan Academy" href="https://www.khanacademy.org/" />
+          <span>{t('inspired')}</span>,
+          <Mention icon="/svgs/khan-academy.svg" name="Khan Academy" href="https://www.khanacademy.org/" />
         ],
         [
-          <span key="1">{t('frameworks')}</span>,
-          <Mention key="2" icon="/svgs/nextjs.svg" name="Next.Js" href="https://nextjs.org/" />,
-          <span key="3">&</span>,
-          <Mention key="4"
+          <span>{t('frameworks')}</span>,
+          <Mention icon="/svgs/nextjs.svg" name="Next.Js" href="https://nextjs.org/" />,
+          <span>&</span>,
+          <Mention
             icon="/svgs/tailwind.svg"
             background
             padding
@@ -48,8 +47,12 @@ export default function HomePage() {
           />
         ],
         [
-          <span key="1">{t('available_in')}</span>,
-          <Mention key="2" icon="/svgs/globe.svg" name="Next-intl" href="https://next-intl.dev/" />
+          <span>{t('available_in')}</span>,
+          <Mention icon="/svgs/globe.svg" name="Next-intl" href="https://next-intl.dev/" />
+        ],
+        [
+          <span>{t('you_like')}</span>,
+          <Mention icon='/svgs/star.svg' name={t('star')} />
         ]
       ].map((lineGroup, i) => (
         <div key={i} className="inline-flex gap-2 items-center justify-center *:items-center flex-wrap">
