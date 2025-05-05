@@ -374,10 +374,9 @@ function End({ exercises }: { exercises: Exercise }) {
 				w-fit p-3 rounded-xl
 				outline outline-white/10
 				">
-
 						{exerciseCorrection.map((inputCorrection, i) => {
 							return <p key={i}>
-								{inputCorrection.emoji} {inputCorrection.extra} (+ {inputCorrection.score}pts)
+								{inputCorrection.emoji} {inputCorrection.extra} +{inputCorrection.score}
 							</p>
 						})}
 					</div>
@@ -561,14 +560,14 @@ function Buttons({ pageStep, exercises, apiOptions, actions }: {
 	const t = useTranslations('Buttons')
 	switch (pageStep) {
 		case 'options':
-			if (apiOptions?.length) return <Button alt={t('Start')} src='/svgs/start.svg' onClick={actions.startExercises} enter />
+			if (apiOptions?.length) return <Button alt={t('Start')} src='/svgs/start.svg' onClick={actions.startExercises} primary />
 			else return <Button alt={t('LoadingOptions')} disabled />
 		case 'normal':
 			if (!exercises) return <Button alt={t('LoadingExercises')} disabled />
 			const exercise = exercises.items[exercises.index]
 			switch (exercise.state) {
 				case 'normal':
-					if (Object.values(exercise.inputs).every(inp => inp.value)) return <Button alt={t('Confirm')} src='/svgs/check.svg' onClick={actions.correctExercise} enter />
+					if (Object.values(exercise.inputs).every(inp => inp.value)) return <Button alt={t('Confirm')} src='/svgs/check.svg' onClick={actions.correctExercise} primary />
 					else return <Button alt={t('Confirm')} src='/svgs/check.svg' disabled />
 				case 'correcting':
 					return <Button alt={t('Correcting')} disabled />
@@ -577,7 +576,7 @@ function Buttons({ pageStep, exercises, apiOptions, actions }: {
 					const isLast = exercises.index < exercises.items.length - 1
 					return <>
 						{!allCorrect && (
-							<Button alt={t('TryAgain')} src='/svgs/undo.svg' onClick={actions.retryExercise} enter />
+							<Button alt={t('TryAgain')} src='/svgs/undo.svg' onClick={actions.retryExercise} primary />
 						)}
 
 						<Button
@@ -594,12 +593,12 @@ function Buttons({ pageStep, exercises, apiOptions, actions }: {
 			}
 	}
 }
-function Button({ alt, src, onClick, disabled, enter }: {
+function Button({ alt, src, onClick, disabled, primary }: {
 	alt: string;
 	onClick?: () => void;
 	src?: string,
 	disabled?: boolean,
-	enter?: boolean
+	primary?: boolean
 }) {
 	return (
 		<button
@@ -609,14 +608,11 @@ function Button({ alt, src, onClick, disabled, enter }: {
 				hover:scale-105 bg-indigo-800 cursor-pointer
 				duration-150
 				flex items-center gap-2 px-3 py-2 rounded-2xl text-3xl
-				relative group`}
+				relative group
+				${!primary && "grayscale-[50%]"}`}
 		>
 			<Image {...{ alt, src: src || "/svgs/loading.svg" }} width={30} height={30} />
 			<span>{alt}</span>
-			{enter && <Image alt="enter" width={30} height={30} src="/svgs/enter.svg"
-				className="absolute
-			right-0 top-0 -mt-2 -mr-2
-			shadow-lg group-hover:rotate-5 duration-150"/>}
 		</button>
 	)
 }
