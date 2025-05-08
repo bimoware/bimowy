@@ -1,27 +1,18 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { Bloc } from '@cpn/Bloc'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
-
-type ExerciseData = {
-  id: string
-  name: string
-  desc: string | null
-  beta: boolean
-  recent: boolean
-  tags: string[]
-}
+import { ExercisesRouteResult } from '@app/api/exercises/route'
 
 export default function ExercisesPage() {
   const locale = useLocale()
-  const [exercises, setExercises] = useState<ExerciseData[]>()
+  const [exercises, setExercises] = useState<ExercisesRouteResult>()
 
   const fetchExercises = useCallback(async () => {
     const res = await fetch(`/api/exercises?lang=${locale}`)
     const json = await res.json()
-    setExercises(json.data)
+    setExercises(json.data as ExercisesRouteResult)
   }, [locale])
 
   useEffect(() => {
@@ -52,7 +43,7 @@ export default function ExercisesPage() {
     w-fit h-fit p-4 px-8
     bg-neutral-700/20
     rounded-xl
-    flex flex-col flex-wrap self-center gap-1.5
+    flex flex-col flex-wrap gap-1.5
     duration-150
     cursor-pointer
     hover:scale-105 hover:shadow-2xl hover:ring-2
@@ -65,25 +56,24 @@ export default function ExercisesPage() {
     return skeletonDescs[index % skeletonDescs.length]
   }
 
-  return (
-    <Bloc type='full-body'>
-      <div className='flex gap-8 flex-wrap'>
-        {
-          exercises
-            ? exercises.map((exercise, index) => (
-              <Card key={exercise.id} exercise={exercise} className={getClassNameFromIndex(index)} />
-            ))
-            :
-            Array.from({ length: 10 }).map((_, i) => (
-              <SkeletonCard key={i} desc={getDescFromIndex(i)} className={getClassNameFromIndex(i)} />
-            ))
-        }
-      </div>
-    </Bloc>
-  )
+  return <section>
+    <h1 className='text-center my-4 !text-5xl'>Sandbox</h1>
+    <div className='!p-4 !h-fit flex gap-8 flex-wrap justify-center'>
+      {
+        exercises
+          ? exercises.map((exercise, index) => (
+            <Card key={exercise.id} exercise={exercise} className={getClassNameFromIndex(index)} />
+          ))
+          :
+          Array.from({ length: 12 }).map((_, i) => (
+            <SkeletonCard key={i} desc={getDescFromIndex(i)} className={getClassNameFromIndex(i)} />
+          ))
+      }
+    </div>
+  </section>
 }
 
-function Card({ exercise, className }: { exercise: ExerciseData, className: string }) {
+function Card({ exercise, className }: { exercise: ExercisesRouteResult[number], className: string }) {
   return (
     <Link
       href={`/sandbox/${exercise.id}`}
@@ -107,7 +97,7 @@ function Card({ exercise, className }: { exercise: ExerciseData, className: stri
         />
       )}
 
-      {!exercise.beta && exercise.recent && (
+      {/* {!exercise.beta && (
         <span className={`absolute
           px-3 py-1 -m-8
           -rotate-2 group-hover:-rotate-5 group-hover:-translate-1
@@ -118,7 +108,7 @@ function Card({ exercise, className }: { exercise: ExerciseData, className: stri
           group-hover:shadow-2xl group-hover:shadow-indigo-800`}>
           NEW
         </span>
-      )}
+      )} */}
 
       <h4>{exercise.name}</h4>
       <h5>{exercise.desc}</h5>

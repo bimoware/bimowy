@@ -1,21 +1,25 @@
-import { ExerciseGenerator, Language, OptionValuesFrom } from "../defs"
-import { randomFromRange } from "../util"
+import { ExerciseBuilder, IntervalOption } from "../../defs"
 
 type Seed = [x: number, y: number]
 type Answers = { answer: number }
 
-const optionDefs = {
-	range: {
-		type: "range",
-		id: "range",
-		title: {
-			en: "Range of values",
-			fr: "Plage des valeurs"
-		},
-		defaultValue: [-10, 10] as [number, number]
-	}
-} as const
-
+export default new ExerciseBuilder("vector-norm")
+	.setName({ fr: "Norme de vecteur", en: "Vector Norm" })
+	.setDescription({
+		fr: "Sa 'longeur'",
+		en: "It's 'length'."
+	})
+	.addOption('interval',
+		new IntervalOption({
+			title: {
+				en: "Range of values",
+				fr: "Plage des valeurs"
+			},
+			defaultValue: [-10,10]
+		})
+	)
+	
+/*
 const getExercise = (id: string) =>
 	new ExerciseGenerator<Seed, Answers, OptionValuesFrom<typeof optionDefs>>({
 		id,
@@ -70,3 +74,4 @@ const getExercise = (id: string) =>
 	})
 
 export default getExercise
+*/

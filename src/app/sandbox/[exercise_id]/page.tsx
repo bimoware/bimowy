@@ -1,23 +1,22 @@
 'use client';
 
-import { GeneratedExercise, APIOption, ContextElement, ContextSection } from "@app/api/defs"
+import { APIOption, ContextElement, ContextSection, OptionBase, UserOptions } from "@app/api/defs"
 import Image from "next/image";
 import { useParams } from "next/navigation"
-import { Dispatch, JSX, SetStateAction, useCallback, useEffect, useRef, useState } from "react"
+import { Dispatch, JSX, SetStateAction, useEffect, useRef, useState } from "react"
 import { useLocale, useTranslations } from "use-intl"
 import useSound from "use-sound"
 import katex from "katex"
 import "katex/dist/katex.min.css"
-import { ExerciseRouteResult } from "@app/api/exercise/route";
+import { OptionsRouteResult } from "@app/api/options/route";
 import { GenerateRouteResult } from "@app/api/generate/route";
 import { ValidateRouteResult } from "@app/api/validate/route";
 import Togglable from "@cpn/Togglable";
 
-export type UserOption = { id: string, value: any }
 type PageStep = 'options' | 'normal' | 'end'
 type ExerciseState = 'normal' | 'correcting' | 'corrected'
 type ExerciseData = {
-	content: GeneratedExercise,
+	content: GenerateRouteResult[number],
 	state: ExerciseState,
 	inputs: Record<string, Input>
 }
@@ -51,7 +50,7 @@ export default function ExercisePage() {
 	const [name, setName] = useState<string>()
 
 	// Options
-	const [apiOptions, setAPIOptions] = useState<APIOption[]>(),
+	const [apiOptions, setAPIOptions] = useState<OptionsRouteResult["options"]>(),
 		[userOptionValues, setUserOptionValues] = useState<Record<string, any>>()
 
 	// Sounds
@@ -69,19 +68,19 @@ export default function ExercisePage() {
 			return await actions.fetchExercises()
 		},
 		fetchOptions: async function () {
-			const url = new URL('/api/exercise', window.location.origin);
+			const url = new URL('/api/options', window.location.origin);
 			url.searchParams.append('id', exerciseId);
 			url.searchParams.append('lang', locale);
 
 			return await fetch(url)
 				.then(res => res.json())
 				.then(res => res.data)
-				.then((data: ExerciseRouteResult) => {
+				.then((data: OptionsRouteResult) => {
 					setName(data.name);
 					setAPIOptions(data.options);
 
-					const userOptionValues = data.options
-						.reduce((o, key) => Object.assign(o, { [key.id]: key.defaultValue }), {})
+					const userOptionValues = Object.entries(data.options)
+						.reduce((o, [id, option]) => ({ ...o, [id]: option.defaultValue }), {})
 					setUserOptionValues(userOptionValues)
 				})
 		},
@@ -103,31 +102,35 @@ export default function ExercisePage() {
 			const url = new URL('/api/generate', window.location.origin);
 			url.searchParams.append('id', exerciseId);
 			url.searchParams.append('lang', locale);
-			return await fetch(url, {
+			const res = await fetch(url, {
 				method: "POST",
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(userOptionValues)
 			})
-				.then(res => res.json())
-				.then(res => res.data)
-				.then((data: GenerateRouteResult) => {
-					setExercises({
-						items: data.map((ex) => {
-							const inputs: Record<string, { value: string; corrected: false }> = {};
-							for (const section of ex.context) {
-								actions.getAllInputIDs(section).forEach(id => {
-									inputs[id] = { value: '', corrected: false };
-								});
-							}
-							return {
-								content: ex,
-								state: 'normal',
-								inputs
-							};
-						}),
-						index: 0
-					})
-				})
+			const result = await res.json()
+			if (!result.ok) {
+				setPageStep('options')
+				return alert(result.message)
+			}
+			const { data }: { data: GenerateRouteResult } = result
+			setExercises({
+				items: data.map((ex) => {
+					// Collect inputs
+					const inputs: Record<string, { value: string; corrected: false }> = {};
+					for (const section of ex.context) {
+						for (const id of actions.getAllInputIDs(section)) {
+							inputs[id] = { value: '', corrected: false };
+						}
+					}
+
+					return {
+						content: ex,
+						state: 'normal',
+						inputs
+					};
+				}),
+				index: 0
+			})
 		},
 		setCurrentExerciseState: function (state: ExerciseState) {
 			if (!exercises) throw new Error('No exercises to set state')
@@ -503,16 +506,16 @@ function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 						}}
 					/>
 				</div>
-			case 'range':
-				const rangeValue = userOptionValues[id] as [number, number]
+			case 'interval':
+				const intervalValue = userOptionValues[id] as [number, number]
 				return <div key={id}>
 					<span>{title}: </span>
 					<input
 						type="number"
-						value={rangeValue[0]}
+						value={intervalValue[0]}
 						onChange={(e) => {
 							let value = Number(e.target.value);
-							if (value < rangeValue[1]) setUserOptionValues(prev => {
+							if (value < intervalValue[1]) setUserOptionValues(prev => {
 								const newUserOptions = { ...prev }
 								newUserOptions[id] = [value, prev[id][1]]
 								return newUserOptions;
@@ -521,16 +524,75 @@ function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 					<span> - </span>
 					<input
 						type="number"
-						value={rangeValue[1]}
+						value={intervalValue[1]}
 						onChange={(e) => {
 							const value = Number(e.target.value);
-							if (value > rangeValue[0]) setUserOptionValues(prev => {
+							if (value > intervalValue[0]) setUserOptionValues(prev => {
 								const newUserOptions = { ...prev }
 								newUserOptions[id] = [prev[id][0], value]
 								return newUserOptions;
 							})
 						}} />
 				</div>
+			case 'checkboxes':
+				const checkboxesOptions = option.options
+				const checkboxesValues = userOptionValues[id] as string[]
+				return <div key={id}>
+					<span>{title}: </span>
+					<div className="inline-flex gap-2">
+						{checkboxesOptions.map(o => <div
+							key={o}
+							data-included={checkboxesValues.includes(o)}
+							className="p-1 px-2
+									rounded-xl
+									cursor-pointer duration-150
+									bg-white/5 hover:scale-105
+									data-[included=true]:!bg-indigo-500/50 data-[included=true]:!font-bold
+									"
+							onClick={() => {
+								setUserOptionValues(prev => {
+									const newUserOptions = { ...prev }
+									const currentValues = [...newUserOptions[id]]
+
+									if (currentValues.includes(o)) {
+										newUserOptions[id] = currentValues.filter(option => option !== o)
+									} else {
+										newUserOptions[id] = [...currentValues, o]
+									}
+
+									return newUserOptions
+								})
+
+							}}>{o}</div>
+						)}
+					</div>
+				</div>
+			case 'radio':
+				const radioOptions = option.options
+				const radioValue = userOptionValues[id] as string
+				return <div key={id}>
+					<span>{title}: </span>
+					<div className="inline-flex gap-2">
+						{radioOptions.map(o => <div
+							key={o}
+							className={`p-1 px-2
+								rounded-xl
+								cursor-pointer duration-150
+								hover:scale-105
+								${radioValue == o ? "!bg-indigo-600/50 px-4 font-bold" : "bg-white/5 "}
+								`}
+							onClick={() => {
+								setUserOptionValues(prev => {
+									const newUserOptions = { ...prev }
+									newUserOptions[id] = o
+									return newUserOptions
+								})
+							}}>{o}</div>
+						)}
+					</div>
+				</div>
+
+
 		}
 	})
 }

@@ -1,8 +1,7 @@
 import { NextRequest } from "next/server"
-
 import db from "../db"
-import { ContextSection } from "../defs"
-import { DEFAULT_OPTION, Error, Success, isValidLang } from "../util"
+import { DEFAULT_N_QUESTIONS_ID, DEFAULT_N_QUESTIONS_OPTION, ExerciseBuilder, UserOptions } from "../defs"
+import { Error, Success, isValidLang } from "../util"
 
 export async function POST(req: NextRequest) {
 	// Params
@@ -10,26 +9,28 @@ export async function POST(req: NextRequest) {
 
 	// ExerciseId
 	const exerciseId = searchParams.get("id")
-	if (!exerciseId) return Error("No ID provided.")
+	if (!exerciseId) throw Error("No ID provided.")
 	const exercise = (await db.fetch(exerciseId))!
 
 	// language
 	const lang = searchParams.get("lang")
-	if (!lang) return Error("No lang provided")
-	if (!isValidLang(lang)) return Error("Invalid lang")
+	if (!lang) throw Error("No lang provided")
+	if (!isValidLang(lang)) throw Error("Invalid lang")
 
 	// Options
-	let options: Record<string, any> = await req.json()
+	let options: UserOptions = await req.json()
+
+	// Problems
+	// if (exercise.extraValidateOptions) {
+	// 	const problems = exercise.extraValidateOptions(options)
+	// 	if (problems) return Error(problems)
+	// }
 	// Main
 	const exercises = Array.from({
-		length: options[DEFAULT_OPTION.id] || DEFAULT_OPTION.defaultValue
-	}).map(() => exercise.generate(lang, options))
+		length: options[DEFAULT_N_QUESTIONS_ID] || DEFAULT_N_QUESTIONS_OPTION.config.defaultValue
+	}).map(() => exercise.generate(options, lang))
 
 	return Success(exercises)
 }
 
-export type GenerateRouteResult = {
-	exercise_id: string
-	seed: number[]
-	context: ContextSection[]
-}[]
+export type GenerateRouteResult = ReturnType<ExerciseBuilder["generate"]>[]

@@ -1,25 +1,6 @@
-import { DEFAULT_OPTION } from "./util"
+import { ExportRouteResult } from "next/dist/export/types"
 
-// Exercise Tags
-export type ExerciseTags =
-	| "arithmetic"
-	| "geometry"
-	| "trigonometry"
-	| "algebra"
-	| "linear-algebra"
-	| "calculus"
-	| "statistics"
-	| "probability"
-	| "multivariable-calculus"
-
-// Language
-export const LanguageCodes = ["fr", "en"] as const
-export type Language = (typeof LanguageCodes)[number]
-type LocaleStrings = {
-	[K in Language]?: string
-}
-
-// Context
+// Contexts
 export type ContextElement =
 	| {
 			type: "text"
@@ -32,163 +13,266 @@ export type ContextSection = {
 	type: "p"
 	content: ContextElement[]
 }
-
-// General
-export type GeneratedExercise = {
-	exercise_id: string
-	seed: number[]
-	context: ContextSection[]
+// Language
+export const LanguageCodes = ["fr", "en"] as const
+export type Language = (typeof LanguageCodes)[number]
+type LocaleStringRecord = {
+	[K in Language]: string
 }
 
-// Options
-export type _NumberOptionRawData = {
-	type: "number"
+type LocaleString =
+	| string
+	| {
+			[K in Language]: string
+	  }
+
+// Base Option
+type BaseOptionConfig = {
+	title: LocaleStringRecord
+	defaultValue: unknown
+}
+
+export abstract class OptionBase<
+	C extends BaseOptionConfig = BaseOptionConfig
+> {
+	constructor(public config: C) {}
+}
+
+// User
+type ExtractDefaults<O extends Record<string, OptionBase>> = {
+	[K in keyof O]: O[K]["config"]["defaultValue"]
+}
+type ExtractConfig<O extends Record<string, OptionBase>> = {
+	[K in keyof O]: O[K]["config"]
+}
+
+export type UserOptions = Record<string, unknown> & { _n: number }
+export type UserAnswers = Record<string, unknown>
+
+enum OptionType {
+	Number = 1,
+	Radio = 2,
+	Interval = 3
+}
+// Number
+type NumberConfig = BaseOptionConfig & {
 	defaultValue: number
 	min?: number
 	max?: number
 }
-
-export type _BooleanOptionRawData = {
-	type: "boolean"
-	defaultValue: boolean
-}
-
-export type _RangeOptionRawData = {
-	type: "range"
-	defaultValue: [number, number]
-	min?: number
-	max?: number
-}
-
-export type _OptionRawData =
-	| _NumberOptionRawData
-	| _BooleanOptionRawData
-	| _RangeOptionRawData
-export type APIOption = {
-	id: string
-	title: string
-} & _OptionRawData
-export type RawOption = {
-	id: string
-	title: string | LocaleStrings
-} & _OptionRawData
-
-export type OptionDefs = Record<string, RawOption>
-export type OptionValuesFrom<T extends OptionDefs> = {
-	[K in keyof T]: T[K] extends { type: "number" }
-		? number
-		: T[K] extends { type: "range" }
-			? [number, number]
-			: boolean
-}
-
-// Correction
-type Corrections<Answers> = {
-	[K in keyof Answers]: boolean
-}
-export type UserAnswers = {
-	[key: string]: any
-}
-
-export class ExerciseGenerator<
-	Seed extends any[],
-	Answers extends Record<string, any>,
-	UserOptions extends OptionValuesFrom<OptionDefs>
-> {
-	public id: string
-	public rawData: any
-	public nameLocales: LocaleStrings
-	public descLocales: LocaleStrings
-	public tags: ExerciseTags[]
-	public createdOn: number
-	public beta: boolean
-	public options: RawOption[]
-	public optionDefs: OptionDefs
-	public validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
-	public generateSeed: (options: UserOptions) => Seed
-	public getContext: (seed: Seed, lang: Language) => ContextSection[]
-	public getSolution: (seed: Seed) => Answers
-	public getDetailedSolution: (seed: Seed) => ContextSection[]
-
-	constructor(data: {
-		id: string
-		nameLocales?: LocaleStrings | string
-		descLocales?: LocaleStrings | string
-		tags?: ExerciseTags[]
-		createdOn: number
-		optionDefs: OptionDefs
-		beta?: boolean
-		validateAnswers: (seed: Seed, answers: Answers) => Corrections<Answers>
-		generateSeed: (options: UserOptions) => Seed
-		getContext: (seed: Seed, lang: Language) => ContextSection[]
-		getSolution: (seed: Seed) => Answers
-		getDetailedSolution?: (seed: Seed) => ContextSection[]
-	}) {
-		this.rawData = data
-		this.id = data.id
-		if (!data.nameLocales) {
-			const name = this.id[0].toUpperCase() + this.id.slice(1)
-			this.nameLocales = { en: name, fr: name }
-		} else if (typeof data.nameLocales == "string") {
-			this.nameLocales = {
-				en: data.nameLocales,
-				fr: data.nameLocales
-			}
-		} else {
-			this.nameLocales = data.nameLocales
-		}
-		if (!data.descLocales) {
-			this.descLocales = { en: undefined, fr: undefined }
-		} else if (typeof data.descLocales == "string") {
-			this.descLocales = {
-				en: data.descLocales,
-				fr: data.descLocales
-			}
-		} else {
-			this.descLocales = data.descLocales
-		}
-		this.tags = data.tags ?? []
-		this.createdOn = data.createdOn
-		this.beta = data.beta ?? false
-
-		// Options
-		this.optionDefs = data.optionDefs
-		this.options = Object.entries(data.optionDefs).map(([id, def]) => ({
-			...def,
-			id
-		}))
-		this.options.push(DEFAULT_OPTION)
-
-		// Methods
-		this.validateAnswers = data.validateAnswers
-		this.generateSeed = data.generateSeed
-		this.getContext = data.getContext
-		this.getSolution = data.getSolution
-		this.getDetailedSolution = data.getDetailedSolution || (() => [])
+export class NumberOption extends OptionBase<NumberConfig> {
+	type = OptionType.Number
+	constructor(public config: NumberConfig) {
+		super(config)
 	}
-	get recent() {
-		return this.createdOn >= 5
+}
+
+// Radio
+type AllowedRadioOptionType = number | string
+type RadioConfig<T> = BaseOptionConfig & {
+	options: T[]
+	defaultValue: T
+}
+
+export class RadioOption<T extends AllowedRadioOptionType> extends OptionBase<
+	RadioConfig<T>
+> {
+	type = OptionType.Radio
+	constructor(public config: RadioConfig<T>) {
+		super(config)
+	}
+}
+
+// Radio
+type IntervalConfig = BaseOptionConfig & {
+	defaultValue: [number, number]
+}
+
+export class IntervalOption extends OptionBase<IntervalConfig> {
+	type = OptionType.Interval
+	constructor(public config: IntervalConfig) {
+		super(config)
+	}
+}
+
+// ..
+
+export type APIOption = (NumberOption | RadioOption<any> | IntervalOption)["config"]
+
+// ExerciseBuilder
+type ExerciseData = {
+	id: string
+	beta: boolean
+	nameLocalizations: LocaleStringRecord | null
+	descLocalizations: LocaleStringRecord | null
+	tags: string[]
+	creationDate: number
+}
+
+export const DEFAULT_N_QUESTIONS_ID = "_n"
+export const DEFAULT_N_QUESTIONS_OPTION = new NumberOption({
+	defaultValue: 5,
+	max: 10,
+	min: 1,
+	title: {
+		en: "Number of questions",
+		fr: "Nombre de questions"
+	}
+})
+export class ExerciseBuilder<
+	const Seed extends any[] = [],
+	const Answers extends Record<string, any> = {},
+	const Opts extends Record<string, OptionBase> = {}
+> {
+	// Properties
+	public options: Record<string, OptionBase> = {}
+	public rawData: ExerciseData = {
+		id: "",
+		beta: false,
+		nameLocalizations: null,
+		descLocalizations: null,
+		tags: [],
+		creationDate: 0
+	}
+
+	// Constructor
+	constructor(id: string) {
+		this.rawData.id = id
+		return this
+	}
+	// Methods
+	generateSeed!: (userOptions: ExtractDefaults<Opts>) => Seed
+	generateContext!: (seed: Seed, lang: Language) => ContextSection[]
+	validateAnswers!: (
+		seed: Seed,
+		answers: Answers
+	) => { [K in keyof Answers]: boolean }
+	generateSolution!: (seed: Seed) => Answers
+
+	// Getters
+	get id() {
+		return this.rawData.id
+	}
+
+	// Builders
+	setName(names: LocaleString) {
+		if (typeof names == "string") {
+			this.rawData.nameLocalizations = {
+				fr: names,
+				en: names
+			}
+		} else {
+			this.rawData.nameLocalizations = names
+		}
+		return this
+	}
+	setDescription(desc: LocaleString) {
+		if (typeof desc == "string") {
+			this.rawData.descLocalizations = {
+				fr: desc,
+				en: desc
+			}
+		} else {
+			this.rawData.descLocalizations = desc
+		}
+		return this
+	}
+	setIsBeta(isBeta: boolean) {
+		this.rawData.beta = isBeta
+		return this
+	}
+	setTags(tags: string[]) {
+		this.rawData.tags = tags
+		return this
+	}
+	setCreationDate(creationDate: number) {
+		this.rawData.creationDate = creationDate
+		return this
+	}
+	// now addOption only needs O—you get K for free:
+	addOption<const ID extends string, const O extends OptionBase>(
+		id: ID,
+		option: O
+	): ExerciseBuilder<
+		Seed,
+		Answers,
+		Opts & {
+			[A in ID]: O
+		}
+	> {
+		if (this.options[id]) {
+			console.error(this.serialize("en"))
+			throw new Error(`Duplicate option ID: ${id} for exercise ${this.id}`)
+		}
+		this.options[id] = option
+		return this as any
+	}
+	setSeedGenerator(
+		seedGenerator: (userOptions: ExtractDefaults<Opts>) => Seed
+	) {
+		this.generateSeed = seedGenerator
+		return this
+	}
+	setContextGenerator(
+		contextGenerator: (seed: Seed, lang: Language) => ContextSection[]
+	) {
+		this.generateContext = contextGenerator
+		return this
+	}
+	setAnswersValidator(
+		answersValidator: (
+			seed: Seed,
+			answers: Answers
+		) => { [K in keyof Answers]: boolean }
+	) {
+		this.validateAnswers =
+			answersValidator ||
+			((seed, answers) => {
+				const correction = this.generateSolution(seed)
+				const result = {} as { [K in keyof Answers]: boolean }
+				for (const key in answers) {
+					result[key] = answers[key] === correction[key]
+				}
+				return result
+			})
+		return this
+	}
+	setSolutionGenerator(solutionGenerator: (seed: Seed) => Answers) {
+		this.generateSolution = solutionGenerator
+		return this
 	}
 	serialize(lang: Language) {
+		const {
+			nameLocalizations,
+			descLocalizations,
+			creationDate,
+			tags,
+			beta,
+			id
+		} = this.rawData
+		const options = Object.entries(this.options).reduce(
+			(o, [id, option]) => {
+				return {
+					...o,
+					[id]: option.config
+				}
+			},
+			{ [DEFAULT_N_QUESTIONS_ID]: DEFAULT_N_QUESTIONS_OPTION }
+		) as ExtractConfig<Opts>
+
 		return {
-			id: this.id,
-			name: this.nameLocales[lang],
-			desc: this.descLocales[lang],
-			tags: this.tags,
-			recent: this.recent,
-			beta: this.beta,
-			options: (this.options ?? []).map((o) => {
-				o.title = typeof o.title == "string" ? o.title : o.title[lang]!
-				return o
-			})
+			beta,
+			creationDate,
+			tags,
+			id,
+			options,
+			name: nameLocalizations?.[lang],
+			desc: descLocalizations?.[lang] ?? null
 		}
 	}
-	getOptionValue(id: string, options: UserOptions) {
-		return options[id]
-	}
-	generate(lang: Language, options: UserOptions) {
-		const seed = this.generateSeed(options)
-		const context = this.getContext(seed, lang)
+	generate(userOptions: ExtractDefaults<Opts>, lang: Language) {
+		const seed = this.generateSeed(userOptions)
+		const context = this.generateContext(seed, lang)
 		return {
 			exercise_id: this.id,
 			seed,
