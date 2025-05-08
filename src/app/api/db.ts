@@ -1,21 +1,16 @@
 import path from "path"
 import fs from "fs"
-import {
-	ExerciseGenerator,
-	OptionValuesFrom,
-	OptionDefs
-} from "./defs"
+import { ExerciseBuilder, OptionBase } from "./defs"
 
-type UnknownExerciseGenerator = ExerciseGenerator<
-	any[],
-	Record<string, any>,
-	OptionValuesFrom<OptionDefs>
+type UnknownExercise = ExerciseBuilder<
+	unknown[],
+	{ [key: string]: unknown },
+	{ [key: string]: OptionBase }
 >
-type ExerciseGeneratorCreator = (id: string) => UnknownExerciseGenerator
 export class DB {
-	public cache: Map<string, UnknownExerciseGenerator>
+	public cache: Map<string, UnknownExercise>
 	constructor() {
-		this.cache = new Map<string, UnknownExerciseGenerator>()
+		this.cache = new Map<string, UnknownExercise>()
 	}
 	async fetchAll({ force }: { force: boolean } = { force: false }) {
 		// if (!force && this.cache.size) return this.cache
@@ -24,18 +19,20 @@ export class DB {
 		const files = fs.readdirSync(totalPath)
 
 		for (let file of files) {
+			// Folder
 			if (!file.includes(".")) continue
-			const id = file.split(".")[0]
-			const module = await import("./db/" + file)
-			const getExercise = module.default as ExerciseGeneratorCreator
-			this.cache.set(id, getExercise(id))
-			console.log(`✅ Fetched ${id}`)
+			// File
+			await this.fetch(file)
 		}
 		return this.cache
 	}
 	async fetch(id: string) {
-		if (!this.cache.size) await this.fetchAll()
-		return this.cache.get(id)
+		delete require.cache[require.resolve("./db/" + id)]
+		const module = await import("./db/" + id)
+		const Exercise = module.default as UnknownExercise
+		this.cache.set(Exercise.id, Exercise)
+		console.log(`✅ Fetched ${id}`)
+		return Exercise
 	}
 }
 
