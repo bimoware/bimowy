@@ -32,5 +32,5 @@ h5 {
 }
 
 section {
-	@apply bg-neutral-900 h-full rounded-3xl p-2 overflow-y-auto;
+	@apply rounded-3xl overflow-y-auto;
 }
