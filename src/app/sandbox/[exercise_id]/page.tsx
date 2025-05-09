@@ -1,6 +1,6 @@
 'use client';
 
-import { APIOption, ContextElement, ContextSection, OptionBase, UserOptions } from "@app/api/defs"
+import { APIOption, ContextElement, ContextSection, OptionBase, OptionType, UserOptions } from "@app/api/exercises/defs"
 import Image from "next/image";
 import { useParams } from "next/navigation"
 import { Dispatch, JSX, SetStateAction, useEffect, useRef, useState } from "react"
@@ -8,15 +8,15 @@ import { useLocale, useTranslations } from "use-intl"
 import useSound from "use-sound"
 import katex from "katex"
 import "katex/dist/katex.min.css"
-import { OptionsRouteResult } from "@app/api/options/route";
-import { GenerateRouteResult } from "@app/api/generate/route";
-import { ValidateRouteResult } from "@app/api/validate/route";
+import { ExercisesOptionsRouteResult } from "@app/api/exercises/options/route";
+import { ExercisesGenerateRouteResult } from "@app/api/exercises/generate/route";
+import { ExercisesValidateRouteResult } from "@app/api/exercises/validate/route";
 import Togglable from "@cpn/Togglable";
 
 type PageStep = 'options' | 'normal' | 'end'
 type ExerciseState = 'normal' | 'correcting' | 'corrected'
 type ExerciseData = {
-	content: GenerateRouteResult[number],
+	content: ExercisesGenerateRouteResult[number],
 	state: ExerciseState,
 	inputs: Record<string, Input>
 }
@@ -50,7 +50,7 @@ export default function ExercisePage() {
 	const [name, setName] = useState<string>()
 
 	// Options
-	const [apiOptions, setAPIOptions] = useState<OptionsRouteResult["options"]>(),
+	const [apiOptions, setAPIOptions] = useState<ExercisesOptionsRouteResult["options"]>(),
 		[userOptionValues, setUserOptionValues] = useState<Record<string, any>>()
 
 	// Sounds
@@ -75,7 +75,7 @@ export default function ExercisePage() {
 			return await fetch(url)
 				.then(res => res.json())
 				.then(res => res.data)
-				.then((data: OptionsRouteResult) => {
+				.then((data: ExercisesOptionsRouteResult) => {
 					setName(data.name);
 					setAPIOptions(data.options);
 
@@ -99,7 +99,7 @@ export default function ExercisePage() {
 			return inputs
 		},
 		fetchExercises: async function () {
-			const url = new URL('/api/generate', window.location.origin);
+			const url = new URL('/api/exercises/generate', window.location.origin);
 			url.searchParams.append('id', exerciseId);
 			url.searchParams.append('lang', locale);
 			const res = await fetch(url, {
@@ -112,7 +112,7 @@ export default function ExercisePage() {
 				setPageStep('options')
 				return alert(result.message)
 			}
-			const { data }: { data: GenerateRouteResult } = result
+			const { data }: { data: ExercisesGenerateRouteResult } = result
 			setExercises({
 				items: data.map((ex) => {
 					// Collect inputs
@@ -151,7 +151,7 @@ export default function ExercisePage() {
 			const answers = Object.fromEntries(
 				Object.entries(exercise.inputs).map(([id, input]) => [id, input.value])
 			)
-			const url = new URL('/api/validate', window.location.origin)
+			const url = new URL('/api/exercises/validate', window.location.origin)
 			url.searchParams.append('id', exerciseId)
 
 			return await fetch(url, {
@@ -161,7 +161,7 @@ export default function ExercisePage() {
 			})
 				.then(res => res.json())
 				.then(res => res.data)
-				.then((corrections: ValidateRouteResult) => {
+				.then((corrections: ExercisesValidateRouteResult) => {
 					const isAllCorrect = Object.values(corrections).every(Boolean)
 					if (isAllCorrect) playCorrect()
 					else playIncorrect()
@@ -463,20 +463,20 @@ function getExerciseCorrections(exercises: Exercise) {
 }
 
 function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
-	apiOptions?: APIOption[],
+	apiOptions?: ExercisesOptionsRouteResult["options"],
 	userOptionValues?: Record<string, any>,
 	setUserOptionValues: Dispatch<SetStateAction<Record<string, any>>>
 }) {
 	if (!apiOptions || !userOptionValues) return;
-	return apiOptions.map(option => {
-		const { type, id, title } = option
+	return Object.entries<APIOption>(apiOptions).map(([id, option]) => {
+		const { type, title } = option
 		switch (type) {
-			case 'number':
+			case OptionType.Number:
 				const numberMin = option.min
 				const numberMax = option.max
 				const numberValue = userOptionValues[id] as number
 				return <div key={id}>
-					<span>{title}: </span>
+					<span>{title}:</span>
 					<input
 						{...{ type }}
 						min={numberMin}
@@ -490,8 +490,8 @@ function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 								return newUserOptions;
 							})
 						}} />
-				</div>
-			case 'boolean':
+				</div >
+			case OptionType.Boolean:
 				const booleanValue = userOptionValues[id] as boolean
 				return <div key={id}>
 					<span>{title}? </span>
@@ -506,7 +506,7 @@ function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 						}}
 					/>
 				</div>
-			case 'interval':
+			case OptionType.Interval:
 				const intervalValue = userOptionValues[id] as [number, number]
 				return <div key={id}>
 					<span>{title}: </span>
@@ -534,7 +534,7 @@ function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 							})
 						}} />
 				</div>
-			case 'checkboxes':
+			case OptionType.Checkboxes:
 				const checkboxesOptions = option.options
 				const checkboxesValues = userOptionValues[id] as string[]
 				return <div key={id}>
@@ -610,7 +610,7 @@ function ExerciseContext({ exercises, renderNode }: {
 function Buttons({ pageStep, exercises, apiOptions, actions }: {
 	pageStep: PageStep,
 	exercises?: Exercise,
-	apiOptions?: APIOption[],
+	apiOptions?: ExercisesOptionsRouteResult["options"],
 	actions: {
 		startExercises: () => Promise<void>
 		correctExercise: () => Promise<void>
@@ -622,7 +622,7 @@ function Buttons({ pageStep, exercises, apiOptions, actions }: {
 	const t = useTranslations('Buttons')
 	switch (pageStep) {
 		case 'options':
-			if (apiOptions?.length) return <Button alt={t('Start')} src='/svgs/start.svg' onClick={actions.startExercises} primary />
+			if (apiOptions) return <Button alt={t('Start')} src='/svgs/start.svg' onClick={actions.startExercises} primary />
 			else return <Button alt={t('LoadingOptions')} disabled />
 		case 'normal':
 			if (!exercises) return <Button alt={t('LoadingExercises')} disabled />

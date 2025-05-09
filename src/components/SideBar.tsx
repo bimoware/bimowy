@@ -24,11 +24,10 @@ export default function SideBar() {
             }
           },
           {
-            id: "cheat_sheet",
+            id: "cheat_sheets",
             data: {
-              beta: true,
-              icon: '/svgs/cheat_sheet.svg',
-              path: 'cheatsheet',
+              icon: '/svgs/cheatsheet.svg',
+              path: 'cheatsheets',
               label: 'Cheat Sheets'
             }
           },

@@ -28,3 +28,7 @@ export function randomFromInterval(
 export function randomFrom(arr: any[]) {
 	return arr[Math.floor(Math.random() * arr.length)]
 }
+
+export function sleep(seconds: number) {
+	return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}

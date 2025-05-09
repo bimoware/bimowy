@@ -4,94 +4,81 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useState, Dispatch, SetStateAction, useEffect } from 'react';
-import { AnimatePresence, motion } from "motion/react"
 import useSound from 'use-sound';
-
-type EasterEggState = "not-yet" | "active" | "never-again"
 
 export default function CreditsPage() {
   const t = useTranslations('CreditsPage');
-  const [easterEggState, setEasterEggState] = useState<EasterEggState>("not-yet");
+  const [easterEggEnabled, setEasterEggEnabled] = useState(false);
   const [play] = useSound('/audios/yahaha.mp3')
 
   useEffect(() => {
-    if (easterEggState == "active") play()
-  }, [easterEggState])
+    if (easterEggEnabled) play()
+  }, [easterEggEnabled])
   return <div className="relative text-4xl w-full h-full flex flex-col items-center justify-center gap-4">
-    <AnimatePresence>
-      {[
-        [
-          <span>{t('made_with')}</span>,
-          <HeartEasterEgg
-            heartAlt={t('heart')}
-            easterEggState={easterEggState}
-            setEasterEggState={setEasterEggState}
-          />,
-          <span>{t('by')}</span>,
-          <Mention icon="/media/pfp.jpeg" name="bimoware" href="https://github.com/bimoware" />
-        ],
-        ...(easterEggState !== "active" ? [[]] : [
-          [
-            <span>{t('honorable_mention')}</span>,
-            <Mention icon="/media/moha.jpg" name="Moha" hoverName="Mohammed Gharbi" href="https://www.instagram.com/mohaa.ghrb/" ultra />
-          ]
-        ]),
-        [
-          <span>{t('source_code_on')}</span>,
-          <Mention icon="/svgs/github.svg" background name="bimoware/bimowy" href="https://github.com/bimoware/bimowy/" />
-        ],
-        [
-          <span>{t('inspired')}</span>,
-          <Mention icon="/svgs/khan-academy.svg" name="Khan Academy" href="https://www.khanacademy.org/" />
-        ],
-        [
-          <span>{t('frameworks')}</span>,
-          <Mention icon="/svgs/nextjs.svg" name="Next.Js" href="https://nextjs.org/" />,
-          <span>&</span>,
-          <Mention
-            icon="/svgs/tailwind.svg"
-            background
-            padding
-            name="TailwindCSS"
-            href="https://tailwindcss.com/docs/installation/framework-guides/nextjs/"
-          />
-        ],
-        [
-          <span>{t('available_in')}</span>,
-          <Mention icon="/svgs/globe.svg" name="Next-intl" href="https://next-intl.dev/" />
-        ],
-        [
-          <span>{t('you_like')}</span>,
-          <Mention icon='/svgs/star.svg' name="Ctrl + D" />
-        ],
-      ].map((lineGroup, i) => {
-        if (!lineGroup.length) return;
-        return <motion.div key={i}
-          className="inline-flex gap-2 items-center justify-center *:items-center flex-wrap"
-          // Fade in when the element enters the viewport:
-          initial={{ opacity: 0, scale: 0.2, fontSize: 0 }}
-          animate={{ opacity: 1, scale: 1, fontSize: "1em" }}
-          exit={{ opacity: 0, scale: 0.2, fontSize: 0 }}>
-          {lineGroup.map((elem, j) => <Fragment key={j}>{elem}</Fragment>)}
-        </motion.div>
-      })
-      }
-    </AnimatePresence>
-  </div>
+    {[
+      [
+        <span>{t('made_with')}</span>,
+        <HeartEasterEgg
+          heartAlt={t('heart')}
+          easterEggEnabled={easterEggEnabled}
+          setEasterEggEnabled={setEasterEggEnabled}
+        />,
+        <span>{t('by')}</span>,
+        <Mention icon="/media/pfp.jpeg" name="bimoware" href="https://github.com/bimoware" />
+      ],
+      ...(!easterEggEnabled ? [] :
+        [[
+          <span>{t('honorable_mention')}</span>,
+          <Mention icon="/media/moha.jpg" name="Moha" href="https://www.instagram.com/mohaa.ghrb/" ultra />,
+        ]]
+      ),
+      [
+        <span>{t('source_code_on')}</span>,
+        <Mention icon="/svgs/github.svg" background name="bimoware/bimowy" href="https://github.com/bimoware/bimowy/" />
+      ],
+      [
+        <span>{t('inspired')}</span>,
+        <Mention icon="/svgs/khan-academy.svg" name="Khan Academy" href="https://www.khanacademy.org/" />
+      ],
+      [
+        <span>{t('frameworks')}</span>,
+        <Mention icon="/svgs/nextjs.svg" name="Next.Js" href="https://nextjs.org/" />,
+        <span>&</span>,
+        <Mention
+          icon="/svgs/tailwind.svg"
+          background
+          padding
+          name="TailwindCSS"
+          href="https://tailwindcss.com/docs/installation/framework-guides/nextjs/"
+        />
+      ],
+      [
+        <span>{t('available_in')}</span>,
+        <Mention icon="/svgs/globe.svg" name="Next-intl" href="https://next-intl.dev/" />
+      ],
+      [
+        <span>{t('you_like')}</span>,
+        <Mention icon='/svgs/star.svg' name="Ctrl + D" />
+      ],
+    ].map((lineGroup, i) => {
+      if (!lineGroup.length) return;
+      return <div key={i}
+        className="inline-flex gap-2 items-center justify-center *:items-center flex-wrap">
+        {lineGroup.map((elem, j) => <Fragment key={j}>{elem}</Fragment>)}
+      </div>
+    })
+    }
+  </div >
 }
 
-function HeartEasterEgg({ heartAlt, easterEggState, setEasterEggState }: {
+function HeartEasterEgg({ heartAlt, easterEggEnabled, setEasterEggEnabled }: {
   heartAlt: string;
-  easterEggState: EasterEggState;
-  setEasterEggState: Dispatch<SetStateAction<EasterEggState>>
+  easterEggEnabled: boolean;
+  setEasterEggEnabled: Dispatch<SetStateAction<boolean>>
 }) {
-  const [clickCount, setClickCount] = useState(0);
 
   const handleHeartClick = () => {
-    if (easterEggState === "never-again") return;
-    if (easterEggState == "active") return setEasterEggState('never-again')
-    // if (clickCount < 10) return setClickCount(prev => prev + 1)
-    return setEasterEggState("active")
+    if (!easterEggEnabled) return setEasterEggEnabled(true)
   }
 
   return (
@@ -100,9 +87,8 @@ function HeartEasterEgg({ heartAlt, easterEggState, setEasterEggState }: {
       width={30}
       height={30}
       alt={heartAlt}
-      className={`inline-flex aspect-square hover:scale-110 duration-150
-        ${easterEggState === "active" && "animate-bounce"}
-        ${easterEggState !== "never-again" && "cursor-pointer"}`}
+      className={`inline-flex aspect-square  duration-150
+        ${!easterEggEnabled ? "cursor-pointer hover:scale-110" : "hover:scale-95"}`}
       onClick={handleHeartClick}
     />
   );
@@ -130,7 +116,8 @@ function Mention({ icon, name, hoverName, href, background, padding, ultra }: {
       group
       duration-150
       ${ultra
-          ? `bg-indigo-700 hover:bg-indigo-500/80
+          ? `bg-indigo-800 hover:bg-indigo-800/80
+          hover:gap-3
           hover:-translate-y-2
           hover:grayscale-[10%]`
           : "bg-neutral-700/70 hover:bg-white/10"}`}
@@ -149,8 +136,9 @@ function Mention({ icon, name, hoverName, href, background, padding, ultra }: {
           ${padding && "p-1"}
           ${ultra && "group-hover:scale-125"}`}
       />
-      <span key="main" className={`group-hover:font-bold transition-all ${hoverName && "inline group-hover:hidden"}`}>{name}</span>
-      {hoverName && <span key="notmain" className='group-hover:font-bold transition-all hidden group-hover:inline'>{hoverName}</span>}
+      <span key="main" className={`group-hover:font-bold transition-all`}>
+        {name}
+      </span>
       {href && (
         <Image
           src="/svgs/open_in_view.svg"
@@ -162,7 +150,8 @@ function Mention({ icon, name, hoverName, href, background, padding, ultra }: {
           transition-all duration-300
           aspect-square self-baseline`}
         />
-      )}
-    </Link>
+      )
+      }
+    </Link >
   );
 }

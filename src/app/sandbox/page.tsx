@@ -3,16 +3,16 @@ import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import Image from 'next/image'
-import { ExercisesRouteResult } from '@app/api/exercises/route'
+import { ExercisesAllRouteResult } from '@app/api/exercises/all/route'
 
 export default function ExercisesPage() {
   const locale = useLocale()
-  const [exercises, setExercises] = useState<ExercisesRouteResult>()
+  const [exercises, setExercises] = useState<ExercisesAllRouteResult>()
 
   const fetchExercises = useCallback(async () => {
-    const res = await fetch(`/api/exercises?lang=${locale}`)
+    const res = await fetch(`/api/exercises/all?lang=${locale}`)
     const json = await res.json()
-    setExercises(json.data as ExercisesRouteResult)
+    setExercises(json.data as ExercisesAllRouteResult)
   }, [locale])
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function ExercisesPage() {
   </section>
 }
 
-function Card({ exercise, className }: { exercise: ExercisesRouteResult[number], className: string }) {
+function Card({ exercise, className }: { exercise: ExercisesAllRouteResult[number], className: string }) {
   return (
     <Link
       href={`/sandbox/${exercise.id}`}

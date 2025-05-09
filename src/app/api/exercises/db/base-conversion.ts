@@ -1,5 +1,5 @@
 import { ExerciseBuilder, NumberOption, RadioOption } from "../defs"
-import { randomFromInterval } from "../util"
+import { randomFromInterval } from "../../util"
 
 const bases = ["binary", "decimal", "hexadecimal"] as const
 type Base = (typeof bases)[number]
@@ -13,7 +13,6 @@ export default new ExerciseBuilder<Seed, Answers>("base-conversion")
 		fr: "Conversion de base numérique"
 	})
 	.setTags([...bases])
-	.setCreationDate(2)
 	.addOption(
 		"max",
 		new NumberOption({

@@ -1,42 +1,42 @@
 {
-	"404": {
-		"PageNotFound": "Page Not Found",
-		"PageNotFoundDesc": "Sorrwy, no idea where you planned to go"
-	},
-	"CreditsPage": {
-		"source_code_on": "Source code on",
-		"made_with": "Made with",
-		"by": "by",
-		"inspired": "Inspired from",
-		"frameworks": "Frameworks used are",
-		"et": "and",
-		"and": "and",
-		"open_new_tab": "Open in new tab",
-		"heart": "heart",
-		"available_in": "Available in both English & French with",
-		"you_like": "You like it? Then don't forget to",
-		"star": "Add to favorites",
-		"honorable_mention": "Honorable mention to the GOAT"
-	},
-	"Buttons": {
-		"Start": "Start",
-		"Confirm": "Confirm",
-		"Finish": "Finish",
-		"Next": "Next",
-		"Abandon": "Abandon",
-		"Questions": "Questions",
-		"LoadingExercises": "Generating...",
-		"LoadingOptions": "Loading Options...",
-		"Correcting": "Correcting...",
-		"TryAgain": "Try Again"
-	},
-	"ExercisePage": {
-		"Finished": "Finished",
-		"Accuracy": "Accuracy",
-		"Questions": "Questions",
-		"SelectingOptions": "Selecting options...",
-		"tries": "tries",
-		"Score": "Score"
-	},
-	"PageNotDoneYet": "Page in work..."
+  "404": {
+    "PageNotFound": "Page Not Found",
+    "PageNotFoundDesc": "Sorrwy, no idea where you planned to go"
+  },
+  "CreditsPage": {
+    "source_code_on": "Source code on",
+    "made_with": "Made with",
+    "by": "by",
+    "inspired": "Inspired from",
+    "frameworks": "Frameworks used are",
+    "et": "and",
+    "and": "and",
+    "open_new_tab": "Open in new tab",
+    "heart": "heart",
+    "available_in": "Available in both English & French with",
+    "you_like": "You like it? Then don't forget to",
+    "star": "Add to favorites",
+    "honorable_mention": "Honorable mention to my friend"
+  },
+  "Buttons": {
+    "Start": "Start",
+    "Confirm": "Confirm",
+    "Finish": "Finish",
+    "Next": "Next",
+    "Abandon": "Abandon",
+    "Questions": "Questions",
+    "LoadingExercises": "Generating...",
+    "LoadingOptions": "Loading Options...",
+    "Correcting": "Correcting...",
+    "TryAgain": "Try Again"
+  },
+  "ExercisePage": {
+    "Finished": "Finished",
+    "Accuracy": "Accuracy",
+    "Questions": "Questions",
+    "SelectingOptions": "Selecting options...",
+    "tries": "tries",
+    "Score": "Score"
+  },
+  "PageNotDoneYet": "Page in work..."
 }

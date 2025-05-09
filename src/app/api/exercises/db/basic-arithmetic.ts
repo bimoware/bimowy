@@ -1,5 +1,5 @@
 import { ExerciseBuilder, IntervalOption } from "../defs"
-import { randomFrom, randomFromInterval } from "../util"
+import { randomFrom, randomFromInterval } from "../../util"
 
 const operations = ["+", "-", "*" /*,"%"*/] as const
 type Operation = (typeof operations)[number]
@@ -11,6 +11,7 @@ export default new ExerciseBuilder<Seed, Answers>("basic-arithmetic")
 		en: "Basic arithmetic",
 		fr: "Arithmétique élémentaire"
 	})
+	.setTags(["addition", "substraction", "modulo", "multiplication"])
 	.addOption(
 		"interval",
 		new IntervalOption({
@@ -21,8 +22,6 @@ export default new ExerciseBuilder<Seed, Answers>("basic-arithmetic")
 			defaultValue: [0, 10]
 		})
 	)
-	.setTags(["addition", "substraction", "modulo", "multiplication"])
-	.setCreationDate(1)
 	.setSeedGenerator(({ interval }) => {
 		return [
 			randomFromInterval(...interval),

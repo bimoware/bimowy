@@ -1,37 +1,54 @@
 import path from "path"
 import fs from "fs"
-import { ExerciseBuilder, OptionBase } from "./defs"
+import { UnknownExercise } from "./exercises/defs"
+import { CheatSheetBuilder } from "./cheatsheets/defs"
 
-type UnknownExercise = ExerciseBuilder<
-	unknown[],
-	{ [key: string]: unknown },
-	{ [key: string]: OptionBase }
->
 export class DB {
-	public cache: Map<string, UnknownExercise>
-	constructor() {
-		this.cache = new Map<string, UnknownExercise>()
+	public caches = {
+		exercises: new Map<string, UnknownExercise>(),
+		cheatSheets: new Map<string, CheatSheetBuilder>()
 	}
-	async fetchAll({ force }: { force: boolean } = { force: false }) {
-		// if (!force && this.cache.size) return this.cache
-
-		const totalPath = path.join(process.cwd(), "/src/app/api/db")
+	constructor() {}
+	async fetchAllCheatSheets() {
+		const totalPath = path.join(process.cwd(), "/src/app/api/cheatsheets/db")
 		const files = fs.readdirSync(totalPath)
 
 		for (let file of files) {
 			// Folder
 			if (!file.includes(".")) continue
 			// File
-			await this.fetch(file)
+			await this.fetchCheatSheet(file)
 		}
-		return this.cache
+		return this.caches.cheatSheets
 	}
-	async fetch(id: string) {
-		delete require.cache[require.resolve("./db/" + id)]
-		const module = await import("./db/" + id)
+
+	async fetchCheatSheet(id: string) {
+		delete require.cache[require.resolve("./cheatsheets/db/" + id)]
+		const module = await import("./cheatsheets/db/" + id)
+		const CheatSheet = module.default as CheatSheetBuilder
+		this.caches.cheatSheets.set(CheatSheet.id, CheatSheet)
+		console.log(`✅ Fetched cheat sheet ${id}`)
+		return CheatSheet
+	}
+
+	async fetchAllExercises() {
+		const totalPath = path.join(process.cwd(), "/src/app/api/exercises/db")
+		const files = fs.readdirSync(totalPath)
+
+		for (let file of files) {
+			// Folder
+			if (!file.includes(".")) continue
+			// File
+			await this.fetchExercise(file)
+		}
+		return this.caches.exercises
+	}
+	async fetchExercise(id: string) {
+		delete require.cache[require.resolve("./exercises/db/" + id)]
+		const module = await import("./exercises/db/" + id)
 		const Exercise = module.default as UnknownExercise
-		this.cache.set(Exercise.id, Exercise)
-		console.log(`✅ Fetched ${id}`)
+		this.caches.exercises.set(Exercise.id, Exercise)
+		console.log(`✅ Fetched exercise ${id}`)
 		return Exercise
 	}
 }

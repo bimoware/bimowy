@@ -1,42 +1,42 @@
 {
-	"404": {
-		"PageNotFound": "Page introuvable",
-		"PageNotFoundDesc": "Aucune idée de où tu voulait aller fréro"
-	},
-	"CreditsPage": {
-		"source_code_on": "Code source sur",
-		"made_with": "Fait avec",
-		"by": "par",
-		"inspired": "Inspiré de",
-		"frameworks": "Frameworks utilisés sont",
-		"et": "et",
-		"and": "et",
-		"open_new_tab": "Ouvrir dans un nouvel onglet",
-		"heart": "amour",
-		"available_in": "Disponible en Français & Anglais grâce à",
-		"you_like": "T'aimes bien? Alors n'oublie pas de",
-		"star": "Ctrl + D",
-		"honorable_mention": "Honorable mention au GOAT"
-	},
-	"Buttons": {
-		"Start": "Go",
-		"Confirm": "Confirmer",
-		"Finish": "Finir",
-		"Next": "Prochain",
-		"Abandon": "Abandonner",
-		"Questions": "Exos",
-		"LoadingExercises": "Generation...",
-		"LoadingOptions": "Chargement des options...",
-		"Correcting": "Correction...",
-		"TryAgain": "Réessayer"
-	},
-	"ExercisePage": {
-		"Finished": "Fin",
-		"Accuracy": "Precision",
-		"Questions": "Questions",
-		"SelectingOptions": "Selection des options...",
-		"tries": "essais",
-		"Score": "Score"
-	},
-	"PageNotDoneYet": "Page en travail..."
+  "404": {
+    "PageNotFound": "Page introuvable",
+    "PageNotFoundDesc": "Aucune idée de où tu voulait aller fréro"
+  },
+  "CreditsPage": {
+    "source_code_on": "Code source sur",
+    "made_with": "Fait avec",
+    "by": "par",
+    "inspired": "Inspiré de",
+    "frameworks": "Frameworks utilisés sont",
+    "et": "et",
+    "and": "et",
+    "open_new_tab": "Ouvrir dans un nouvel onglet",
+    "heart": "amour",
+    "available_in": "Disponible en Français & Anglais grâce à",
+    "you_like": "T'aimes bien? Alors n'oublie pas de",
+    "star": "Ctrl + D",
+    "honorable_mention": "Honorable mention à mon ptit pote"
+  },
+  "Buttons": {
+    "Start": "Go",
+    "Confirm": "Confirmer",
+    "Finish": "Finir",
+    "Next": "Prochain",
+    "Abandon": "Abandonner",
+    "Questions": "Exos",
+    "LoadingExercises": "Generation...",
+    "LoadingOptions": "Chargement des options...",
+    "Correcting": "Correction...",
+    "TryAgain": "Réessayer"
+  },
+  "ExercisePage": {
+    "Finished": "Fin",
+    "Accuracy": "Precision",
+    "Questions": "Questions",
+    "SelectingOptions": "Selection des options...",
+    "tries": "essais",
+    "Score": "Score"
+  },
+  "PageNotDoneYet": "Page en travail..."
 }

@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server"
 
-import db from "../db"
-import { Error, Success, isValidLang } from "../util"
-import { OptionsRouteResult } from "../options/route"
+import db from "../../db"
+import { Error, Success, isValidLang } from "../../util"
+import { ExercisesOptionsRouteResult } from "../options/route"
 
 // Example: /api/exercises?lang=fr
 export async function GET(req: NextRequest) {
@@ -15,11 +15,9 @@ export async function GET(req: NextRequest) {
 	if (!isValidLang(lang)) return Error("Invalid language.")
 
 	// Main
-	const cache = await db.fetchAll()
-	const values = Array.from(cache.values())
-		.sort((a, b) => a.rawData.creationDate - b.rawData.creationDate)
-		.map((ex) => ex.serialize(lang))
+	const cache = await db.fetchAllExercises()
+	const values = Array.from(cache.values()).map((ex) => ex.serialize(lang))
 	return Success(values)
 }
 
-export type ExercisesRouteResult = OptionsRouteResult[]
+export type ExercisesAllRouteResult = ExercisesOptionsRouteResult[]

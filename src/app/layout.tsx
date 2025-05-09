@@ -29,7 +29,9 @@ export default async function RootLayout({
       <body className='flex w-screen h-screen p-3 gap-3'>
         <NextIntlClientProvider>
           <SideBar />
-          {children}
+          <div className='w-full h-full overflow-y-scroll overflow-x-clip'>
+            {children}
+          </div>
           {process.env.NODE_ENV == 'production' && <SpeedInsights />}
         </NextIntlClientProvider>
       </body>

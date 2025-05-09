@@ -1,5 +1,5 @@
 import { ExerciseBuilder, IntervalOption } from "../defs"
-import { randomFromInterval } from "../util"
+import { randomFromInterval } from "../../util"
 
 type Dimension = [x: number, y: number]
 type Seed = [Dimension, Dimension]
@@ -25,7 +25,6 @@ export default new ExerciseBuilder<Seed, Answers>("points-to-vector")
 		fr: "Convertir 2 points en un vecteur"
 	})
 	.setTags(["linear-algebra"])
-	.setCreationDate(3)
 	.setSeedGenerator(({ interval }) => {
 		return [
 			[randomFromInterval(...interval), randomFromInterval(...interval)],
