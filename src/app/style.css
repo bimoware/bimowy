@@ -20,7 +20,7 @@ input {
 	@apply [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
 }
 h1 {
-	@apply text-3xl font-bold tracking-wider p-2;
+	@apply text-4xl font-bold tracking-wider my-8 text-center w-full;
 }
 
 h4 {
@@ -32,5 +32,5 @@ h5 {
 }
 
 section {
-	@apply bg-neutral-900 h-full rounded-3xl p-2 overflow-y-auto;
+	@apply rounded-3xl overflow-y-auto;
 }

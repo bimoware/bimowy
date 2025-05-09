@@ -3,7 +3,7 @@
     "PageNotFound": "Page introuvable",
     "PageNotFoundDesc": "Aucune idée de où tu voulait aller fréro"
   },
-  "HomePage": {
+  "CreditsPage": {
     "source_code_on": "Code source sur",
     "made_with": "Fait avec",
     "by": "par",
@@ -14,9 +14,9 @@
     "open_new_tab": "Ouvrir dans un nouvel onglet",
     "heart": "amour",
     "available_in": "Disponible en Français & Anglais grâce à",
-    "you_like": "T'aimes bien? Alors n'oublie pas d'",
-    "star": "Ajouter aux favoris",
-    "honorable_mention": "Honorable mention au GOAT"
+    "you_like": "T'aimes bien? Alors n'oublie pas de",
+    "star": "Ctrl + D",
+    "honorable_mention": "Honorable mention à mon ptit pote"
   },
   "Buttons": {
     "Start": "Go",

@@ -11,23 +11,11 @@ const outfit = Outfit({
   subsets: ['latin']
 })
 export const metadata: Metadata = {
-  title: 'Bimowy - When math works',
-  icons: '/svgs/home.svg',
-  description:
-    'Bimowy is a free, open-source, exercices-focused math platform for students who feel stuck when trying to train on any math subject.' +
-    ' With interactive learning and feedback loop, math becomes free from frustration and starts being actually fun.',
-  metadataBase: new URL(
-    process.env.NODE_ENV == 'production'
-      ? `https://bimowy.dev/`
-      : 'http://localhost:3000/'
-  ),
-  twitter: {
-    card: 'summary'
-  }
+  title: 'Bimowy',
+  icons: '/svgs/home.svg'
 }
 
 export const viewport: Viewport = { themeColor: '#FFFFFE' }
-
 
 export default async function RootLayout({
   children
@@ -38,10 +26,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className={outfit.className}>
-      <body className='flex w-screen h-screen'>
+      <body className='flex w-screen h-screen p-3 gap-3'>
         <NextIntlClientProvider>
           <SideBar />
-          {children}
+          <div className='w-full h-full overflow-y-scroll overflow-x-clip'>
+            {children}
+          </div>
           {process.env.NODE_ENV == 'production' && <SpeedInsights />}
         </NextIntlClientProvider>
       </body>

@@ -4,11 +4,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
+type IconObj = {
+  id: string,
+  data: {
+    icon: string, path: string, label: string, beta?: true
+  }
+}
 export default function SideBar() {
   return (
-    <div className='w-24 h-full p-3 flex flex-col justify-between shrink-0 gap-4'>
-      <section className='!h-fit flex flex-col items-center'>
-        {[
+    <div className='w-16 h-full flex flex-col justify-between shrink-0 gap-4'>
+      <section className='bg-neutral-900 p-1.5 h-fit flex flex-col items-center'>
+        {([
           {
             id: 'home',
             data: {
@@ -18,12 +24,11 @@ export default function SideBar() {
             }
           },
           {
-            id: "discover",
+            id: "cheat_sheets",
             data: {
-              beta: true,
-              icon: '/svgs/path.svg',
-              path: 'discover',
-              label: 'Discover'
+              icon: '/svgs/cheatsheet.svg',
+              path: 'cheatsheets',
+              label: 'Cheat Sheets'
             }
           },
           {
@@ -35,34 +40,6 @@ export default function SideBar() {
             }
           },
           {
-            id: 'draft',
-            data: {
-              beta: true,
-              icon: '/svgs/draft.svg',
-              path: 'draft',
-              label: 'Draft'
-            }
-          },
-
-          {
-            id: 'health',
-            data: {
-              beta: true,
-              icon: '/svgs/health.svg',
-              path: 'health',
-              label: 'Health'
-            }
-          }
-        ].map((btn) => (
-          <SideBarIcon {...btn.data} key={btn.id} />
-        ))}
-      </section>
-      <section className='!h-fit
-      rounded-3xl
-      overflow-y-auto
-      flex flex-col items-center'>
-        {[
-          {
             id: "progress",
             data: {
               beta: true,
@@ -70,16 +47,19 @@ export default function SideBar() {
               path: 'progress',
               label: 'Progress'
             }
+          }
+        ] as IconObj[]).map((btn) => <SideBarIcon {...btn.data} key={btn.id} />)}
+      </section>
+      <section className='bg-neutral-900 p-1.5 h-fit flex flex-col items-center'>
+        {([
+          {
+            id: 'credits',
+            data: {
+              icon: '/svgs/code.svg',
+              path: 'credits',
+              label: 'Credits'
+            }
           },
-          // {
-          //   id: "history",
-          //   data: {
-          //     beta: true,
-          //     icon: '/svgs/history.svg',
-          //     path: 'history',
-          //     label: 'History'
-          //   }
-          // },
           {
             id: 'login',
             data: {
@@ -89,18 +69,7 @@ export default function SideBar() {
               label: 'Login'
             }
           },
-          {
-            id: 'settings',
-            data: {
-              beta: true,
-              icon: '/svgs/settings.svg',
-              path: 'settings',
-              label: 'Settings'
-            }
-          }
-        ].map((btn) => (
-          <SideBarIcon {...btn.data} key={btn.id} />
-        ))}
+        ] as IconObj[]).map((btn) => <SideBarIcon {...btn.data} key={btn.id} />)}
       </section>
     </div >
   )
@@ -128,7 +97,7 @@ function SideBarIcon({
           ? "!opacity-30 cursor-not-allowed"
           : isActive
             ? 'bg-neutral-50/5'
-            : 'hover:bg-neutral-50/5 opacity-90'
+            : 'hover:bg-neutral-50/5 opacity-70'
         }
           group`}
     >
