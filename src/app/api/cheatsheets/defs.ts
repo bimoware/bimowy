@@ -1,8 +1,7 @@
-import { Bellota_Text } from "next/font/google"
 import { Language, LocaleString, LocaleStringRecord } from "../defs"
 
 type CheatSheetConfig = {
-	beta?: boolean
+	beta: boolean
 	id: string
 	nameLocalizations: LocaleStringRecord
 	descLocalizations?: LocaleStringRecord
@@ -29,10 +28,11 @@ export class CheatSheetBuilder {
 		return this
 	}
 	serialize(lang: Language) {
-		const { id, tags, content, nameLocalizations, descLocalizations } =
+		const { id, beta, tags, content, nameLocalizations, descLocalizations } =
 			this.rawData
 		return {
 			id,
+			beta,
 			tags,
 			content,
 			name: nameLocalizations[lang],

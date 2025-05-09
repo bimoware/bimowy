@@ -38,5 +38,11 @@
     "tries": "tries",
     "Score": "Score"
   },
-  "PageNotDoneYet": "Page in work..."
+  "PageNotDoneYet": "Page in work...",
+  "CheatSheetsPage": {
+    "cheatsheets": "Cheat Sheets"
+  },
+  "SandboxPage": {
+    "sandbox": "Sandbox"
+  }
 }

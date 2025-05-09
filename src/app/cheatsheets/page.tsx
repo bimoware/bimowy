@@ -1,10 +1,11 @@
 "use client";
 import { CheatSheetAllRouteResult } from "@app/api/cheatsheets/all/route"
-import Card from "@cpn/Card";
-import { useLocale } from "next-intl";
+import { Card, CardLister } from "@cpn/Card";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react"
 
 export default function CheatSheetsPage() {
+	const t = useTranslations('CheatSheetsPage')
 	const [cheatSheets, setCheatSheets] = useState<CheatSheetAllRouteResult>();
 	const lang = useLocale()
 	useEffect(() => {
@@ -16,12 +17,9 @@ export default function CheatSheetsPage() {
 			})
 	}, [])
 
-	return <>
-		<h1>Cheat Sheets</h1>
-		<div className="flex p-4 gap-6 w-full flex-wrap justify-center items-center">
-			<CheatSheetsList {...{ cheatSheets }} />
-		</div>
-	</>
+	return <CardLister title={t('cheatsheets')}>
+		<CheatSheetsList {...{ cheatSheets }} />
+	</CardLister>
 }
 
 function CheatSheetsList({ cheatSheets }: { cheatSheets?: CheatSheetAllRouteResult }) {

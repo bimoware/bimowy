@@ -38,5 +38,11 @@
     "tries": "essais",
     "Score": "Score"
   },
-  "PageNotDoneYet": "Page en travail..."
+  "PageNotDoneYet": "Page en travail...",
+  "CheatSheetsPage": {
+    "cheatsheets": "Aides Mémoire"
+  },
+  "SandboxPage": {
+    "sandbox": "Bac à sable"
+  }
 }

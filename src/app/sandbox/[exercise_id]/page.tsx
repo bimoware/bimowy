@@ -394,7 +394,7 @@ function Title({ name, pageStep, exercises }: {
 	pageStep: PageStep
 	exercises?: Exercise
 }) {
-	const t = useTranslations('ExercisePage')
+	const t = useTranslations('SandboxExercisePage')
 	return <h1>{name ?? "..."}  {
 		pageStep == "end" ? `- ${t('Finished')}`
 			: pageStep == "normal" && exercises && (

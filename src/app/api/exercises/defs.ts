@@ -293,7 +293,7 @@ export class ExerciseBuilder<
 			tags,
 			id,
 			options,
-			name: nameLocalizations?.[lang],
+			name: nameLocalizations![lang],
 			desc: descLocalizations?.[lang] ?? null
 		}
 	}
