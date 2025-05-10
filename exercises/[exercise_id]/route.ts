@@ -4,20 +4,22 @@ import db from "../../db"
 import { Error, Success } from "../../util"
 import { ExerciseBuilder } from "../defs"
 
-export async function GET(req: NextRequest) {
+export async function GET(
+	req: NextRequest,
+	{ params }: { params: Promise<{ exercise_id: string }> }
+) {
 	// Params
 	const searchParams = req.nextUrl.searchParams
-
-	const exerciseId = searchParams.get("id")
 	const lang = searchParams.get("lang")
+	const { exercise_id } = await params
 
 	// Errors
-	if (!exerciseId) return Error("No ID provided.")
+	if (!exercise_id) return Error("No ID provided.")
 	if (!lang) return Error("No lang provided.")
 	if (lang != "en" && lang != "fr") return Error("Invalid language.")
 
-	const exercise = await db.fetchExercise(exerciseId)
-	if (!exercise) return Error(`No exercise found for id '${exerciseId}'`)
+	const exercise = await db.fetchExercise(exercise_id)
+	if (!exercise) return Error(`No exercise found for id '${exercise_id}'`)
 
 	// Main
 	const exerciseData = exercise.serialize(lang)
@@ -28,4 +30,4 @@ export async function GET(req: NextRequest) {
 	})
 }
 
-export type ExercisesOptionsRouteResult = ReturnType<ExerciseBuilder["serialize"]>
+export type ExerciseRouteResult = ReturnType<ExerciseBuilder["serialize"]>
