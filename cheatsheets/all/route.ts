@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 
 import db from "../../db"
-import { Error, Success, isValidLang, sleep } from "../../util"
+import { Error, Success, isValidLang } from "../../util"
 import { CheatSheetBuilder } from "../defs"
 
 export async function GET(req: NextRequest) {
@@ -16,7 +16,6 @@ export async function GET(req: NextRequest) {
 	// Main
 	const cache = await db.fetchAllCheatSheets()
 	const values = Array.from(cache.values()).map((ex) => ex.serialize(lang))
-	// await sleep(5)
 	return Success(values)
 }
 
