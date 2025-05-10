@@ -2,7 +2,7 @@ import { NextRequest } from "next/server"
 
 import db from "../../db"
 import { Error, Success, isValidLang } from "../../util"
-import { ExercisesOptionsRouteResult } from "../[exercise_id]/route"
+import { ExerciseRouteResult } from "../[exercise_id]/route"
 
 // Example: /api/exercises?lang=fr
 export async function GET(req: NextRequest) {
@@ -20,4 +20,4 @@ export async function GET(req: NextRequest) {
 	return Success(values)
 }
 
-export type ExercisesAllRouteResult = ExercisesOptionsRouteResult[]
+export type ExercisesAllRouteResult = ExerciseRouteResult[]
