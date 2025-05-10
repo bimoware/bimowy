@@ -67,21 +67,22 @@ export class CheatSheetBuilder {
 	}
 	setContent(content: CheatSheetContent) {
 		this.rawData.content = content
+		return this
 	}
 }
 
-type CheatSheetContent = CheatSheetBloc[]
+export type CheatSheetContent = CheatSheetBloc[]
 
-type CheatSheetBloc =
+export type CheatSheetBloc =
 	| {
-			type: "bloc"
-			content: CheatSheetContent
-	  }
+		type: "bloc"
+		content: CheatSheetContent
+	}
 	| {
-			type: "text"
-			text: string
-	  }
+		type: "text"
+		text: string
+	}
 	| {
-			type: "image"
-			href: string
-	  }
+		type: "image"
+		href: string
+	}
