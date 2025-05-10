@@ -11,3 +11,14 @@ export default new CheatSheetBuilder("trigonometry")
 		en: "Trigonometry",
 		fr: "Trigonometrie"
 	})
+	.setContent([
+		{
+			type: 'bloc',
+			content: [
+				{
+					type: "text",
+					text: "sin²(x) + cos²(x) = 1"
+				}
+			]
+		}
+	])
