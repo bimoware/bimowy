@@ -2,13 +2,14 @@ import path from "path"
 import fs from "fs"
 import { UnknownExercise } from "./exercises/defs"
 import { CheatSheetBuilder } from "./cheatsheets/defs"
+import { pathToFileURL } from "url"
 
 export class DB {
 	public caches = {
 		exercises: new Map<string, UnknownExercise>(),
 		cheatSheets: new Map<string, CheatSheetBuilder>()
 	}
-	constructor() {}
+	constructor() { }
 	async fetchAllCheatSheets() {
 		const totalPath = path.join(process.cwd(), "/src/app/api/cheatsheets/db")
 		const files = fs.readdirSync(totalPath)
