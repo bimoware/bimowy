@@ -165,7 +165,7 @@ export class ExerciseBuilder<
 	const Opts extends Record<string, OptionBase<any, any>> = {}
 > {
 	// Properties
-	public options: Record<string, OptionBase<any, any>> = {}
+	public options: Opts = {} as Opts
 	public rawData: ExerciseData = {
 		id: "",
 		beta: false,
@@ -182,7 +182,7 @@ export class ExerciseBuilder<
 		answers: Answers
 	) => { [K in keyof Answers]: boolean }
 	generateSolution!: (seed: Seed) => Answers
-	validateOptions: (userOptions: UserOptions) => string | void
+	validateOptions: (userOptions: ExtractDefaults<Opts>) => LocaleStringRecord | void
 
 	// Constructor
 	constructor(id: string) {
@@ -234,7 +234,6 @@ export class ExerciseBuilder<
 		this.rawData.tags = tags
 		return this
 	}
-	// now addOption only needs O—you get K for free:
 	addOption<const ID extends string, const O extends OptionBase<any, any>>(
 		id: ID,
 		option: O
@@ -249,7 +248,7 @@ export class ExerciseBuilder<
 			console.error(this.serialize("en"))
 			throw new Error(`Duplicate option ID: ${id} for exercise ${this.id}`)
 		}
-		this.options[id] = option
+		this.options[id] = option as unknown as Opts[typeof id]
 		return this as any
 	}
 	setSeedGenerator(seedGenerator: typeof this.generateSeed) {

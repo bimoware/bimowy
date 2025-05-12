@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
 	// Problems
 	const problem = exercise.validateOptions(options)
-	if (problem) return Error(problem)
+	if (problem) return Error(problem[lang])
 
 	// Main
 	const exercises = Array.from({
