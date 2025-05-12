@@ -3,10 +3,10 @@ import { Language, LocaleString, LocaleStringRecord } from "../defs"
 // Contexts
 export type ContextElement =
 	| {
-			type: "text"
-			text: string
-			extra?: ("mono" | "latex")[]
-	  }
+		type: "text"
+		text: string
+		extra?: ("mono" | "latex")[]
+	}
 	| { type: "input"; id: string }
 
 export type ContextSection = {
@@ -26,7 +26,7 @@ export abstract class OptionBase<
 	constructor(
 		public type: T,
 		public config: C
-	) {}
+	) { }
 	serialize(lang: Language) {
 		return {
 			type: this.type,
@@ -174,6 +174,16 @@ export class ExerciseBuilder<
 		tags: []
 	}
 
+	// Methods
+	generateSeed!: (userOptions: ExtractDefaults<Opts>) => Seed
+	generateContext!: (seed: Seed, lang: Language) => ContextSection[]
+	validateAnswers!: (
+		seed: Seed,
+		answers: Answers
+	) => { [K in keyof Answers]: boolean }
+	generateSolution!: (seed: Seed) => Answers
+	validateOptions: (userOptions: UserOptions) => string | void
+
 	// Constructor
 	constructor(id: string) {
 		this.rawData.id = id
@@ -185,17 +195,9 @@ export class ExerciseBuilder<
 			}
 			return result
 		}
+		this.validateOptions = (userOptions) => { }
 		return this
 	}
-	// Methods
-	generateSeed!: (userOptions: ExtractDefaults<Opts>) => Seed
-	generateContext!: (seed: Seed, lang: Language) => ContextSection[]
-	validateAnswers!: (
-		seed: Seed,
-		answers: Answers
-	) => { [K in keyof Answers]: boolean }
-	generateSolution!: (seed: Seed) => Answers
-
 	// Getters
 	get id() {
 		return this.rawData.id
@@ -250,29 +252,24 @@ export class ExerciseBuilder<
 		this.options[id] = option
 		return this as any
 	}
-	setSeedGenerator(
-		seedGenerator: (userOptions: ExtractDefaults<Opts>) => Seed
-	) {
+	setSeedGenerator(seedGenerator: typeof this.generateSeed) {
 		this.generateSeed = seedGenerator
 		return this
 	}
-	setContextGenerator(
-		contextGenerator: (seed: Seed, lang: Language) => ContextSection[]
-	) {
+	setContextGenerator(contextGenerator: typeof this.generateContext) {
 		this.generateContext = contextGenerator
 		return this
 	}
-	setAnswersValidator(
-		answersValidator: (
-			seed: Seed,
-			answers: Answers
-		) => { [K in keyof Answers]: boolean }
-	) {
+	setAnswersValidator(answersValidator: typeof this.validateAnswers) {
 		this.validateAnswers = answersValidator
 		return this
 	}
-	setSolutionGenerator(solutionGenerator: (seed: Seed) => Answers) {
+	setSolutionGenerator(solutionGenerator: typeof this.generateSolution) {
 		this.generateSolution = solutionGenerator
+		return this
+	}
+	setOptionsValidator(optionsValidator: typeof this.validateOptions) {
+		this.validateOptions = optionsValidator
 		return this
 	}
 	serialize(lang: Language) {
