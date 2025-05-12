@@ -2,7 +2,6 @@ import path from "path"
 import fs from "fs"
 import { UnknownExercise } from "./exercises/defs"
 import { CheatSheetBuilder } from "./cheatsheets/defs"
-import { pathToFileURL } from "url"
 
 export class DB {
 	public caches = {
