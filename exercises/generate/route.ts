@@ -26,10 +26,9 @@ export async function POST(req: NextRequest) {
 	let options: UserOptions = await req.json()
 
 	// Problems
-	// if (exercise.extraValidateOptions) {
-	// 	const problems = exercise.extraValidateOptions(options)
-	// 	if (problems) return Error(problems)
-	// }
+	const problem = exercise.validateOptions(options)
+	if (problem) return Error(problem)
+
 	// Main
 	const exercises = Array.from({
 		length:
