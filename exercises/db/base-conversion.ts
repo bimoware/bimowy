@@ -7,7 +7,7 @@ type Base = (typeof bases)[number]
 type Seed = [n: string, from: Base, to: Base]
 type Answers = { answer: string }
 
-export default new ExerciseBuilder<Seed, Answers>("base-conversion")
+const exercise = new ExerciseBuilder<Seed, Answers>("base-conversion")
 	.setName({
 		en: "Base conversion",
 		fr: "Conversion de base numérique"
@@ -111,3 +111,13 @@ export default new ExerciseBuilder<Seed, Answers>("base-conversion")
 		const answer = originalN.toString(baseRadix[to])
 		return { answer }
 	})
+	.setOptionsValidator((userOptions) => {
+		if (userOptions["from"] == userOptions["to"]) {
+			return {
+				en: `Change the options 'From' and 'To'. They can't be the same. (I'm not gonna ask you to convert a number from decimal to decimal lmfao kys)`,
+				fr: `Change les options 'De' et 'À', ils ne peuvent pas étre les mêmes. (Je vais pas te demander de convertir un nombre de decimal à decimal par exemple ptdrr arrache ta tete toi)`
+			}
+		}
+	})
+
+export default exercise
