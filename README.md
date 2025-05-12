@@ -10,10 +10,17 @@ A project inspired by the "Khan Academy" project aimed at helping struggling stu
 
 <div align="center">
 
-https://github.com/user-attachments/assets/ddbd267b-fe8d-4730-ac4e-6f33e84167a0
+https://github.com/user-attachments/assets/6557b363-ef87-4c9f-b26f-a9837bd99abc
 
 </div>
 If you don't like using your mouse like me, just press <code>Shift</code> to change selection, then <code>Enter</code> and the website will know what to do (Start/Next/Try again/End..) 
+
+# 🌐 Languages
+
+Languages are applied every page's UI, the individual exercises, options, errors etc..
+
+- French
+- English
 
 ## ⚙️ Setup
 
@@ -31,7 +38,7 @@ Please make sure to make meaningful commits. Commits that barely help with perfo
 
 ## ❌ Issues
 
-I know it's a bit annoying but please make the effort and waste 3 or 5 minutes giving as many informations as you can in your Issue.
+If you're going to publish an Issue here on Github. Please, while it's a bit annoying at first, make the effort and waste 3 or 5 minutes giving as many informations as you can in your Issue and not just the bare minimum.
 
 ## 📁 Architecture
 
