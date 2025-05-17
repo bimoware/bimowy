@@ -6,7 +6,7 @@ import {
 	ExerciseBuilder,
 	UserOptions
 } from "../defs"
-import { Error, Success, isValidLang } from "../../util"
+import { NextError, NextSuccess, isValidLang } from "../../util"
 
 export async function POST(req: NextRequest) {
 	// Params
@@ -14,20 +14,20 @@ export async function POST(req: NextRequest) {
 
 	// ExerciseId
 	const exerciseId = searchParams.get("id")
-	if (!exerciseId) throw Error("No ID provided.")
+	if (!exerciseId) throw NextError("No ID provided.")
 	const exercise = (await db.fetchExercise(exerciseId))!
 
 	// language
 	const lang = searchParams.get("lang")
-	if (!lang) throw Error("No lang provided")
-	if (!isValidLang(lang)) throw Error("Invalid lang")
+	if (!lang) throw NextError("No lang provided")
+	if (!isValidLang(lang)) throw NextError("Invalid lang")
 
 	// Options
 	let options: UserOptions = await req.json()
 
 	// Problems
 	const problem = exercise.validateOptions(options)
-	if (problem) return Error(problem[lang])
+	if (problem) return NextError(problem[lang])
 
 	// Main
 	const exercises = Array.from({
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 			DEFAULT_N_QUESTIONS_OPTION.config.defaultValue
 	}).map(() => exercise.generate(options, lang))
 
-	return Success(exercises)
+	return NextSuccess(exercises)
 }
 
 export type ExercisesGenerateRouteResult = ReturnType<ExerciseBuilder["generate"]>[]

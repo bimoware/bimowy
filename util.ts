@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server"
 
-export function Error(message: string | string[]) {
+export function NextError(message: string | string[]) {
 	return NextResponse.json({
 		ok: false,
 		message
 	})
 }
 
-export function Success<T>(data: T) {
+export function NextSuccess<T>(data: T) {
 	return NextResponse.json({ ok: true, data })
 }
 
@@ -31,4 +31,12 @@ export function randomFrom(arr: any[]) {
 
 export function sleep(seconds: number) {
 	return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}
+
+export function randomNonZeroInt(min: number, max: number) {
+	let pool = [];
+	for (let i = min; i <= max; i++) {
+		if (i !== 0) pool.push(i);
+	}
+	return pool[Math.floor(Math.random() * pool.length)];
 }
