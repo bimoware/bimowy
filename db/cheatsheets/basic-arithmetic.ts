@@ -1,8 +1,7 @@
-import { CheatSheetBuilder } from "../defs"
+import { CheatSheetBuilder } from "../../cheatsheets/defs"
 
 export default new CheatSheetBuilder("basic-arithmetic")
 	.setBeta(true)
-	.setTags(["+", "-", "*", "/", "//","**", "%", "PEMDAS","BODMAS","| |","floor","ceil","!","sqrt"])
 	.setName({
 		en: "Basic arithmetic",
 		fr: "Arithmétique élémentaire"

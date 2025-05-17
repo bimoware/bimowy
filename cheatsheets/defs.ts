@@ -6,7 +6,6 @@ type CheatSheetConfig = {
 	nameLocalizations: LocaleStringRecord
 	descLocalizations?: LocaleStringRecord
 	content: CheatSheetContent
-	tags: string[]
 }
 
 export class CheatSheetBuilder {
@@ -17,8 +16,7 @@ export class CheatSheetBuilder {
 			fr: "",
 			en: ""
 		},
-		content: [],
-		tags: []
+		content: []
 	}
 	constructor(public id: string) {
 		this.rawData.id = id
@@ -28,20 +26,15 @@ export class CheatSheetBuilder {
 		return this
 	}
 	serialize(lang: Language) {
-		const { id, beta, tags, content, nameLocalizations, descLocalizations } =
+		const { id, beta, content, nameLocalizations, descLocalizations } =
 			this.rawData
 		return {
 			id,
 			beta,
-			tags,
 			content,
 			name: nameLocalizations[lang],
 			desc: descLocalizations?.[lang] ?? null
 		}
-	}
-	setTags(tags: string[]) {
-		this.rawData.tags = tags
-		return this
 	}
 	setName(names: LocaleString) {
 		if (typeof names == "string") {

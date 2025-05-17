@@ -1,21 +1,16 @@
 import { randomFromInterval } from "@app/api/util"
-import { ExerciseBuilder, IntervalOption } from "../defs"
+import { ExerciseBuilder, IntervalOption } from "../../exercises/defs"
 
 type Seed = [x: number, y: number]
 type Answers = { answer: number }
 
-const solutionGenerator = ([x, y]: Seed) => {
-	return {
-		answer: Number(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)).toFixed(2))
-	}
-}
-export default new ExerciseBuilder<Seed, Answers>("vector-norm")
+const exercise = new ExerciseBuilder<Seed, Answers>("vector-norm")
 	.setName({ fr: "Norme de vecteur", en: "Vector Norm" })
 	.setDescription({
 		fr: "Sa 'longeur'",
 		en: "It's 'length'."
 	})
-	.setTags(["vector", "space"])
+	.setDescription('| <3,4> | = 5')
 	.addOption(
 		"interval",
 		new IntervalOption({
@@ -58,10 +53,18 @@ export default new ExerciseBuilder<Seed, Answers>("vector-norm")
 			}
 		]
 	})
-	.setSolutionGenerator(solutionGenerator)
+	.setSolutionGenerator(([x, y]: Seed) => {
+		return {
+			answer: Number(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)).toFixed(2))
+		}
+	})
+
+exercise
 	.setAnswersValidator(([x, y], { answer }) => {
-		const solution = solutionGenerator([x, y])
+		const solution = exercise.generateSolution([x, y])
 		return {
 			answer: Math.abs(solution.answer - answer) <= 0.01
 		}
 	})
+
+export default exercise

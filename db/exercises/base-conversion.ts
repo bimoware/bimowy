@@ -1,4 +1,4 @@
-import { ExerciseBuilder, NumberOption, RadioOption } from "../defs"
+import { ExerciseBuilder, NumberOption, RadioOption } from "../../exercises/defs"
 import { randomFromInterval } from "../../util"
 
 const bases = ["binary", "decimal", "hexadecimal"] as const
@@ -12,7 +12,7 @@ const exercise = new ExerciseBuilder<Seed, Answers>("base-conversion")
 		en: "Base conversion",
 		fr: "Conversion de base numérique"
 	})
-	.setTags([...bases])
+	.setDescription('101010 (2) = 42 (10) = 2A (16)')
 	.addOption(
 		"max",
 		new NumberOption({
