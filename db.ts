@@ -10,7 +10,7 @@ export class DB {
 	}
 	constructor() { }
 	async fetchAllCheatSheets() {
-		const totalPath = path.join(process.cwd(), "/src/app/api/cheatsheets/db")
+		const totalPath = path.join(process.cwd(), "/src/app/api/db/cheatsheets")
 		const files = fs.readdirSync(totalPath)
 
 		for (let file of files) {
@@ -23,8 +23,8 @@ export class DB {
 	}
 
 	async fetchCheatSheet(id: string) {
-		delete require.cache[require.resolve("./cheatsheets/db/" + id)]
-		const module = await import("./cheatsheets/db/" + id)
+		delete require.cache[require.resolve("./db/cheatsheets/" + id)]
+		const module = await import("./db/cheatsheets/" + id)
 		const CheatSheet = module.default as CheatSheetBuilder
 		this.caches.cheatSheets.set(CheatSheet.id, CheatSheet)
 		console.log(`✅ Fetched cheat sheet ${id}`)
@@ -32,7 +32,7 @@ export class DB {
 	}
 
 	async fetchAllExercises() {
-		const totalPath = path.join(process.cwd(), "/src/app/api/exercises/db")
+		const totalPath = path.join(process.cwd(), "/src/app/api/db/exercises")
 		const files = fs.readdirSync(totalPath)
 
 		for (let file of files) {
@@ -44,8 +44,8 @@ export class DB {
 		return this.caches.exercises
 	}
 	async fetchExercise(id: string) {
-		delete require.cache[require.resolve("./exercises/db/" + id)]
-		const module = await import("./exercises/db/" + id)
+		delete require.cache[require.resolve("./db/exercises/" + id)]
+		const module = await import("./db/exercises/" + id)
 		const Exercise = module.default as UnknownExercise
 		this.caches.exercises.set(Exercise.id, Exercise)
 		console.log(`✅ Fetched exercise ${id}`)
