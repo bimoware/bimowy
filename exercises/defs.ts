@@ -146,7 +146,6 @@ type ExerciseData = {
 	beta: boolean
 	nameLocalizations: LocaleStringRecord | null
 	descLocalizations: LocaleStringRecord | null
-	tags: string[]
 }
 
 export const DEFAULT_N_QUESTIONS_ID = "_n"
@@ -170,8 +169,7 @@ export class ExerciseBuilder<
 		id: "",
 		beta: false,
 		nameLocalizations: null,
-		descLocalizations: null,
-		tags: []
+		descLocalizations: null
 	}
 
 	// Methods
@@ -230,10 +228,6 @@ export class ExerciseBuilder<
 		this.rawData.beta = isBeta
 		return this
 	}
-	setTags(tags: string[]) {
-		this.rawData.tags = tags
-		return this
-	}
 	addOption<const ID extends string, const O extends OptionBase<any, any>>(
 		id: ID,
 		option: O
@@ -272,7 +266,7 @@ export class ExerciseBuilder<
 		return this
 	}
 	serialize(lang: Language) {
-		const { nameLocalizations, descLocalizations, tags, beta, id } =
+		const { nameLocalizations, descLocalizations, beta, id } =
 			this.rawData
 		const options = Object.entries(this.options).reduce(
 			(o, [id, option]) => {
@@ -286,7 +280,6 @@ export class ExerciseBuilder<
 
 		return {
 			beta,
-			tags,
 			id,
 			options,
 			name: nameLocalizations![lang],
