@@ -33,7 +33,7 @@ export class CheatSheetBuilder {
 			beta,
 			content,
 			name: nameLocalizations[lang],
-			desc: descLocalizations?.[lang] ?? null
+			desc: descLocalizations?.[lang]
 		}
 	}
 	setName(names: LocaleString) {
@@ -65,17 +65,18 @@ export class CheatSheetBuilder {
 }
 
 export type CheatSheetContent = CheatSheetBloc[]
+export type CheatSheetWidgetID = "TrigonometricCircle" | "TrigonometricTable"
 
 export type CheatSheetBloc =
-	| {
-		type: "bloc"
-		content: CheatSheetContent
-	}
-	| {
-		type: "text"
-		text: string
-	}
-	| {
-		type: "image"
-		href: string
-	}
+	{
+		title?: string
+	} & (
+		{
+			type: "text"
+			text: string
+		}
+		| {
+			type: "widget",
+			id: CheatSheetWidgetID
+		}
+	)

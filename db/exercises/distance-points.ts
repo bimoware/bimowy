@@ -5,7 +5,10 @@ type Seed = [[x1: number, y1: number], [x2: number, y2: number]]
 type Answers = { answer: number }
 
 export default new ExerciseBuilder<Seed, Answers>("distance-between-points")
-	.setDescription("| (1,2) - (4,6) | = 5")
+	.setDescription({
+		en: "| From (1,1) to (4,5) | = 5",
+		fr: "| De (1,1) à (4,5) | = 5"
+	})
 	.addOption(
 		"interval",
 		new IntervalOption({

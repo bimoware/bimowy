@@ -5,7 +5,7 @@ type Seed = [a: number, b: number]
 type Answers = { answer: number }
 
 export default new ExerciseBuilder<Seed, Answers>("multiplication")
-	.setName('Multiplication (*)')
+	.setName('Multiplication')
 	.setDescription('11 * 11 = 121')
 	.addOption(
 		"interval",

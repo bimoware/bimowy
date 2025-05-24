@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
-import db from "@app/api/db"
-import { NextError, NextSuccess, isValidLang } from "../../util"
-import { UserAnswers } from "../defs"
+import db from "@api/db"
+import { NextError, NextSuccess } from "@api/util"
+import { UserAnswers } from "@api/exercises/defs"
 
 export async function POST(req: NextRequest) {
 	// Params

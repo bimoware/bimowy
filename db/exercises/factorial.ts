@@ -1,12 +1,15 @@
 import { ExerciseBuilder, IntervalOption } from "../../exercises/defs"
 import { randomFromInterval } from "../../util"
 
-type Seed = [a: number, b: number]
+type Seed = [n: number]
 type Answers = { answer: number }
 
-export default new ExerciseBuilder<Seed, Answers>("addition")
-	.setName("Addition")
-	.setDescription("1 + 1 = 2")
+export default new ExerciseBuilder<Seed, Answers>("factorial")
+	.setName({
+		en: "Factorial",
+		fr: "Factorielle"
+	})
+	.setDescription("5! = 5*4*3*2*1 = 120")
 	.addOption(
 		"interval",
 		new IntervalOption({
@@ -19,23 +22,26 @@ export default new ExerciseBuilder<Seed, Answers>("addition")
 	)
 	.setSeedGenerator(({ interval }) => {
 		return [
-			randomFromInterval(...interval),
 			randomFromInterval(...interval)
 		]
 	})
-	.setContextGenerator(([n1, n2] /*, lang*/) => {
+	.setContextGenerator(([n]) => {
 		return [
 			{
 				type: "p",
 				content: [
-					{ type: "text", text: `${n1} + ${n2} = ` },
+					{ type: "text", text: `${n}! = ` },
 					{ type: "input", id: "answer" }
 				]
 			}
 		]
 	})
-	.setSolutionGenerator(([n1, n2]) => {
+	.setSolutionGenerator(([n]) => {
 		return {
-			answer: n1 + n2
+			answer: factorial(n)
 		}
 	})
+
+function factorial(n: number): number {
+	return n * (n < 2 ? 1 : factorial(n - 1))
+}

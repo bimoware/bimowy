@@ -1,4 +1,4 @@
-import { randomFromInterval } from "@app/api/util"
+import { randomFromInterval } from "@api/util"
 import { ExerciseBuilder, IntervalOption } from "../../exercises/defs"
 
 type Seed = [x: number, y: number]

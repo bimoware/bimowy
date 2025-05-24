@@ -5,7 +5,10 @@ type Seed = [[x1: number, y1: number], [x2: number, y2: number]]
 type Answers = { x: number; y: number }
 
 export default new ExerciseBuilder<Seed, Answers>("points-to-vector")
-	.setDescription("(1,1) ➡️ (7,4) = <6,3>")
+	.setDescription({
+		en: "From (1,1) to (7,4) = <6,3>",
+		fr: "De (1,1) à (7,4) = <6,3>"
+	})
 	.addOption(
 		"interval",
 		new IntervalOption({

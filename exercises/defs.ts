@@ -193,7 +193,7 @@ export class ExerciseBuilder<
 			}
 			return result
 		}
-		this.validateOptions = (userOptions) => { }
+		this.validateOptions = () => { }
 		return this
 	}
 	// Getters
@@ -266,8 +266,6 @@ export class ExerciseBuilder<
 		return this
 	}
 	serialize(lang: Language) {
-		const { nameLocalizations, descLocalizations, beta, id } =
-			this.rawData
 		const options = Object.entries(this.options).reduce(
 			(o, [id, option]) => {
 				return {
@@ -278,12 +276,15 @@ export class ExerciseBuilder<
 			{ [DEFAULT_N_QUESTIONS_ID]: DEFAULT_N_QUESTIONS_OPTION.serialize(lang) }
 		) as APIOptions
 
+		const desc = this.rawData.descLocalizations?.[lang]
+		const name = this.rawData.nameLocalizations![lang]
+
 		return {
-			beta,
-			id,
+			...this.rawData,
+			isDescLatex: !!(desc && desc.includes('$')),
 			options,
-			name: nameLocalizations![lang],
-			desc: descLocalizations?.[lang] ?? null
+			name,
+			desc
 		}
 	}
 	generate(userOptions: ExtractDefaults<Opts>, lang: Language) {

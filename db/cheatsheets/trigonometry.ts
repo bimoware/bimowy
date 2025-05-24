@@ -12,12 +12,12 @@ export default new CheatSheetBuilder("trigonometry")
 	})
 	.setContent([
 		{
-			type: 'bloc',
-			content: [
-				{
-					type: "text",
-					text: "sin²(x) + cos²(x) = 1"
-				}
-			]
+			type: "widget",
+			id: "TrigonometricCircle"
+		},
+		{
+			type: "widget",
+			id: "TrigonometricTable"
 		}
 	])
+	

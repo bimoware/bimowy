@@ -12,7 +12,7 @@ const exercise = new ExerciseBuilder<Seed, Answers>("base-conversion")
 		en: "Base conversion",
 		fr: "Conversion de base numérique"
 	})
-	.setDescription('101010 (2) = 42 (10) = 2A (16)')
+	.setDescription('101010$_2$ = 42$_{10}$ = 2A$_{16}$')
 	.addOption(
 		"max",
 		new NumberOption({

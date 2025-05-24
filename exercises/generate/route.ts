@@ -1,12 +1,12 @@
 import { NextRequest } from "next/server"
-import db from "../../db"
+import db from "@api/db"
 import {
 	DEFAULT_N_QUESTIONS_ID,
 	DEFAULT_N_QUESTIONS_OPTION,
 	ExerciseBuilder,
 	UserOptions
-} from "../defs"
-import { NextError, NextSuccess, isValidLang } from "../../util"
+} from "@api/exercises/defs"
+import { NextError, NextSuccess, isValidLang } from "@api/util"
 
 export async function POST(req: NextRequest) {
 	// Params

@@ -6,8 +6,8 @@ type Answers = { answer: number }
 
 export default new ExerciseBuilder<Seed, Answers>("substraction")
 	.setName({
-		en: 'Substraction (-)',
-		fr: "Soustraction (-)"
+		en: 'Substraction',
+		fr: "Soustraction"
 	})
 	.setDescription('100 - 1 = 99')
 	.addOption(
