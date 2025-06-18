@@ -1,25 +1,14 @@
 "use client"
-import { supabase } from "@/db/client"
 import Logout from "./Logout"
 import Login from "./Login"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { User } from "@supabase/supabase-js"
+import { useAuthStateChange } from "@/db/util"
 
 export default function LogBox() {
-	const [user, setUser] = useState<User | null>()
+	const [user, setUser] = useState<User | null>(null)
 
-	useEffect(() => {
-		supabase.auth.getUser()
-			.then(res => setUser(res.data.user))
-
-		const { data: authListener } = supabase.auth.onAuthStateChange(
-			(_, session) => {
-				setUser(session?.user);
-			}
-		);
-
-		return () => authListener.subscription.unsubscribe();
-	}, []);
+	useAuthStateChange(setUser)
 
 
 	return (
