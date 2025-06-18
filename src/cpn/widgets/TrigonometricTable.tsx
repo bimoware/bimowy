@@ -2,7 +2,7 @@ import { Language } from "@api/main";
 import { angles } from "@util/angles"
 import { formatNumber } from "@util/format"
 import 'katex/dist/katex.min.css';
-import Latex from "react-latex-next";
+import Latex from 'react-latex-next';
 
 export default function TrigonometricTable({ locale }: { locale: Language }) {
 	return <table className="table-auto">
