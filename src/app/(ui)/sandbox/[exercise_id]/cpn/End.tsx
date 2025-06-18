@@ -3,7 +3,6 @@ import { getExerciseCorrections } from "../util"
 
 export function End({ exercises }: { exercises: Exercise }) {
 	const corrections = getExerciseCorrections(exercises)
-	console.log(corrections)
 	return <>
 		<div className="my-4 w-full h-full flex items-center justify-center">
 			<h1 className="!text-6xl">

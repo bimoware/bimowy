@@ -1,5 +1,4 @@
 import { randomAt } from "@util/random"
-import { ExerciseBuilder } from "@api/exercises/defs"
 import Image from "next/image"
 import Link from "next/link"
 import { ReactNode } from "react"

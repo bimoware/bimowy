@@ -1,7 +1,7 @@
 import { Card, CardLister } from "@/cpn/Card";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Language } from "@api/main";
-import db from '@api/ressources/main'
+import ressources from '@api/ressources/main'
 import { ExerciseBuilder } from "@api/ressources/exercises/defs";
 import { generateMetadataUtil } from "@util/sidebar";
 
@@ -12,7 +12,7 @@ export async function generateMetadata() {
 export default async function SandboxPage() {
 	const t = await getTranslations('SandboxPage')
 	const lang = (await getLocale()) as Language
-	const fetchedExercises = (await db.fetchAllExercises())
+	const fetchedExercises = (await ressources.fetchAllExercises())
 	const exercises = Array.from(fetchedExercises.values())
 		.map(v => v.serialize(lang))
 

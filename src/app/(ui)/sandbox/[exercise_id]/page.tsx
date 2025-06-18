@@ -1,4 +1,4 @@
-import db from "@api/ressources/main";
+import ressources from "@api/ressources/main";
 import { Language } from "@api/main";
 import { getLocale } from "next-intl/server";
 import ExerciseClientPage from "./cpn/ClientPage";
@@ -22,6 +22,6 @@ export default async function ExercisePage({
 async function fetchData({ params }: Params) {
 	const locale = await getLocale() as Language
 	const { exercise_id } = await params;
-	const exercise = await db.fetchExercise(exercise_id)
+	const exercise = await ressources.fetchExercise(exercise_id)
 	return { locale, exercise_id, exercise }
 }

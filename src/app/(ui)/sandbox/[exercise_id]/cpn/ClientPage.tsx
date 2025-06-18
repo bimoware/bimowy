@@ -55,7 +55,6 @@ export default function ExerciseClientPage({ exerciseData, exercise_id, locale }
 
 	const actions = {
 		startExercises: async function () {
-			if (pageStep == "normal") return console.error('Exercises already started!')
 			setPageStep('normal')
 			return await actions.fetchExercises()
 		},
@@ -149,8 +148,6 @@ export default function ExerciseClientPage({ exerciseData, exercise_id, locale }
 							const isCorrect = corrections[id]
 							const input = current.inputs[id]
 							const tries = input.corrected ? input.tries : 0
-
-							console.log({ input, tries })
 
 							current.inputs[id] = {
 								corrected: true,
