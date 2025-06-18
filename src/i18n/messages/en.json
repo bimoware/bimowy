@@ -1,0 +1,56 @@
+{
+  "404": {
+    "PageNotFound": "Page Not Found",
+    "PageNotFoundDesc": "Sorrwy, no idea where you planned to go"
+  },
+  "CreditsPage": {
+    "source_code_on": "Source code on",
+    "made_with": "Made with",
+    "by": "by",
+    "inspired": "Inspired from",
+    "frameworks": "Coded in",
+    "et": "and",
+    "and": "and",
+    "open_new_tab": "Open in new tab",
+    "heart": "heart",
+    "available_in": "Available in French & English with",
+    "you_like": "You like it? Then don't forget to",
+    "star": "Add to favorites",
+    "honorable_mention": "Honorable mention to my friend",
+    "deployed_on": "Deployed for free on",
+    "domain_from": "Domain name bought on",
+    "domain_price": "11.67 $",
+    "title": "Credits",
+    "sorry_easter_egg": "🕺unstoppable black baby dancing 🕺",
+    "no_javascript": "Uh,  video couldn't load, damn"
+  },
+  "Buttons": {
+    "Start": "Start",
+    "Confirm": "Confirm",
+    "Finish": "Finish",
+    "Next": "Next",
+    "Abandon": "Abandon",
+    "Questions": "Questions",
+    "LoadingExercises": "Generating...",
+    "LoadingOptions": "Loading Options...",
+    "Correcting": "Correcting...",
+    "TryAgain": "Try Again"
+  },
+  "SandboxPage": {
+    "sandbox": "Sandbox",
+    "Finished": "Finished",
+    "Accuracy": "Accuracy",
+    "Questions": "Questions",
+    "SelectingOptions": "Selecting options...",
+    "tries": "tries",
+    "Score": "Score"
+  },
+  "PageNotDoneYet": "Page in work...",
+  "CheatSheetsPage": {
+    "cheatsheets": "Cheat Sheets"
+  },
+  "HomePage": {
+    "title": "Wooo... pretty empty here 👻"
+  },
+  "unavailable": "Unavailable"
+}

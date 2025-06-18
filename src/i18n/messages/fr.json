@@ -1,0 +1,56 @@
+{
+  "404": {
+    "PageNotFound": "Page introuvable",
+    "PageNotFoundDesc": "Aucune idée de où tu voulait aller fréro"
+  },
+  "CreditsPage": {
+    "source_code_on": "Code source sur",
+    "made_with": "Fait avec",
+    "by": "par",
+    "inspired": "Inspiré de",
+    "frameworks": "Codé sur",
+    "et": "et",
+    "and": "et",
+    "open_new_tab": "Ouvrir dans un nouvel onglet",
+    "heart": "amour",
+    "available_in": "Disponible en Français & Anglais grâce à",
+    "you_like": "T'aimes bien? Alors n'oublie pas de",
+    "star": "Ctrl + D",
+    "honorable_mention": "Honorable mention à mon ptit pote",
+    "deployed_on": "Posté gratuitement sur",
+    "domain_from": "Nom de domaine acheté sur",
+    "domain_price": "10.39 €",
+    "title": "Credits",
+    "sorry_easter_egg": "🕺 Bébé noir qui dance 🕺",
+    "no_javascript": "Ah oups, la video a pas fonctionné :'D"
+  },
+  "Buttons": {
+    "Start": "Go",
+    "Confirm": "Confirmer",
+    "Finish": "Finir",
+    "Next": "Prochain",
+    "Abandon": "Abandonner",
+    "Questions": "Exos",
+    "LoadingExercises": "Generation...",
+    "LoadingOptions": "Chargement des options...",
+    "Correcting": "Correction...",
+    "TryAgain": "Réessayer"
+  },
+  "SandboxPage": {
+    "sandbox": "Bac à sable",
+    "Finished": "Fin",
+    "Accuracy": "Precision",
+    "Questions": "Questions",
+    "SelectingOptions": "Selection des options...",
+    "tries": "essais",
+    "Score": "Score"
+  },
+  "PageNotDoneYet": "Page en travail...",
+  "CheatSheetsPage": {
+    "cheatsheets": "Aides Mémoire"
+  },
+  "HomePage": {
+    "title": "Wooo... un peu vide ici 👻"
+  },
+  "unavailable": "Indisponnible"
+}
