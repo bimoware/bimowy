@@ -14,11 +14,13 @@ export default function DesktopSideBar({ locale }: { locale: LanguageCode }) {
 	useAuthStateChange(setUser)
 
 	return <div className='h-full
+	p-3
 	flex
 	flex-col
 	justify-between
 	shrink-0
-	gap-4'>
+	gap-4
+	fixed'>
 		{
 			routeGroups
 				.map((routeGroup, i) => <section key={i}
