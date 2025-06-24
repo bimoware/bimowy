@@ -25,7 +25,7 @@ export default function TooltipContainer({ children, tooltip, hidden }: {
 			ref={wrapperRef}
 			onMouseEnter={() => setVisible(true)}
 			onMouseLeave={() => setVisible(false)}
-			style={{ display: 'inline-block', position: 'relative' }}
+			className='inline-block relative'
 		>
 			{children}
 			<AnimatePresence>

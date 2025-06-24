@@ -18,7 +18,7 @@ export function Button({ alt, src, onClick, disabled, primary }: {
 				disabled:bg-black/50 dark:disabled:bg-black/50
 				hover:scale-105
 				bg-black/20 dark:bg-white/5
-				hover:bg-black/30 dark:hover:bg-white/90
+				hover:bg-black/30 dark:hover:bg-white/20
 				cursor-pointer
 				duration-150
 				flex items-center gap-2 px-3 py-2 rounded-2xl text-3xl

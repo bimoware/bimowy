@@ -11,7 +11,8 @@ const printEmojis: Record<ResourceType, string> = {
 export class ResourceHandler {
 	cache = new Map<string, AnyResourceBuilder>()
 	allCached: boolean = false
-	getCache() {
+	async getCache() {
+		if (!this.allCached) await this.fetchAll()
 		return Array.from(this.cache.values())
 	}
 	async fetchAllExercises() {
@@ -32,6 +33,7 @@ export class ResourceHandler {
 			if (this.cache.has(id)) continue
 			await this.fetch(id)
 		}
+		this.allCached = true
 		return this.getCache()
 	}
 	async fetch(id: string) {

@@ -293,7 +293,7 @@ export default function ExercisePage({ exerciseData, exercise_id, locale }: {
 					<Options {...{ apiOptions, userOptionValues, setUserOptionValues }} />
 				</div>
 				: <div className={`${blocClass}
-				bg-white/5 dark:bg-black/5`}>
+				bg-white/5 dark:bg-white/5`}>
 					{pageStep === "end" && exercises
 						? <End {...{ exercises }} />
 						: <ExerciseContext {...{ inputRefs, exercises, renderNode: actions.renderNode }} />}
