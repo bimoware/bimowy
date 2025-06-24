@@ -74,7 +74,7 @@ export default function TooltipContainer({ children, tooltip, hidden }: {
 								overflow-hidden`}
 							>
 								<svg width="6" height="12" viewBox="0 0 6 12" xmlns="http://www.w3.org/2000/svg">
-									<path d="M6,0 Q-6,6 6,12" className='fill-black/20' />
+									<path d="M6,0 Q-6,6 6,12" className='fill-black/20 dark:fill-white/5' />
 								</svg>
 							</div>
 						</motion.div>
