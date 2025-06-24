@@ -1,10 +1,10 @@
 "use client"
-import { Language } from "@api/main"
+import { LanguageCode } from "@util/locale"
 import { getRoutes, Route, split, Tag } from "@util/sidebar"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
 import { useAuthStateChange, useAuthUser } from "@/db/util"
 
-export default function DesktopSideBar({ locale }: { locale: Language }) {
+export default function DesktopSideBar({ locale }: { locale: LanguageCode }) {
 	const [user, setUser] = useAuthUser()
 
 	const routes = getRoutes(user || undefined)
@@ -33,7 +33,7 @@ export default function DesktopSideBar({ locale }: { locale: Language }) {
 							.map(route => <DesktopSideBarIcon
 								key={route.id}
 								{...route}
-								name={route.nameLocalizations[locale]}
+								name={route.names[locale]}
 							/>
 							)
 					}

@@ -42,33 +42,33 @@ If you're going to publish an Issue here on Github. Please, while it's a bit ann
 
 ## 📁 Architecture
 
+The architecture of the website is still changing a lot since this is not yet complete. This is not up to date.
+
 ```plaintext
 src/
 ├─ app/
-│  ├─ api/ # API Routes
-│  │  ├─ ressources/
-│  │  │  ├─ cheatsheets/
-│  │  │  │  ├─ data/
-│  │  │  │  │  └─ trigonometry.ts ...
-│  │  │  │  └─ defs.ts
-│  │  │  ├─ exercises/
-│  │  │  │  ├─ data/
-│  │  │  │  │  ├─ addition.ts, average.ts, base-conversion.ts ...
-│  │  │  │  ├─ generate/route.ts
-│  │  │  │  ├─ validate/route.ts
-│  │  │  │  └─ defs.ts
-│  │  │  ├─ main.ts
-│  │  │  └─ tags.ts
-│  │  ├─ main.ts
-│  │  └─ util.ts
-│  ├─ (ui)/ # UI Pages (cheatsheets, credits, sandbox etc...)
-│  ├─ layout.tsx
-│  └─ page.tsx
-├─ cpn/ # Common components
-├─ db/ # Databse handling
-├─ i18n/ # Multiple language frontend handling
-└─ utils/ # Miscellaneous
-
+│  ├─ (ui)/
+│  │  ├─ cheatsheets/
+│  │  │  └─ [cheatsheet_id]/
+│  │  ├─ credits/
+│  │  ├─ login/
+│  │  ├─ sandbox/
+│  │  │  └─ [exercise_id]/
+│  │  ├─ test/
+│  │  └─ user/
+│  ├─ api/
+│  │  ├─ lib/
+│  │  ├─ resources/
+│  │  │  ├─ [id]/ # API Routes (generate/validate)
+│  │  │  ├─ list/ # All resources data (exercises, cheatsheets)
+│  │  │  └─ handler.ts
+│  │  └─ main.ts
+│  ├─ layout.tsx, page.tsx, style.css ...
+├─ cpn/
+├─ db/
+├─ i18n/
+├─ utils/
+└─ middleware.ts
 ```
 
 ## 📄 License

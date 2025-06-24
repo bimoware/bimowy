@@ -32,6 +32,9 @@
       "@util/*": [
         "./src/utils/*"
       ],
+      "@icons/*": [
+        "./src/cpn/icons/*"
+      ],
       "@app/*": [
         "./src/app/*"
       ],

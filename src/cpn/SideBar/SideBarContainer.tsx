@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import DesktopSideBar from "./DesktopSideBar";
-import { Language } from "@api/main";
+import { LanguageCode } from "@util/locale";
 
-export default function SideBarContainer({ children, locale }: { children: ReactNode, locale: Language }) {
+export default function SideBarContainer({ children, locale }: { children: ReactNode, locale: LanguageCode }) {
 	return <div className="flex gap-3
 	w-full h-full
 	p-3">

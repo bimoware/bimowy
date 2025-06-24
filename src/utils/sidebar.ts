@@ -1,6 +1,7 @@
-import { Language, LocaleStringRecord } from "@api/main"
+import { LanguageCode, LocaleRecord, toLocaleString } from "@util/locale"
 import { User } from "@supabase/supabase-js";
 import { getLocale } from "next-intl/server"
+import { Metadata } from "next";
 
 export type MetadataGenerationProps<T extends string[]> = {
 	params: Promise<{
@@ -18,61 +19,69 @@ type RawRoute = {
 	tags?: Tag[],
 	id: string,
 	path?: string,
-	icon: string | { src: string, rounded: boolean },
-	nameLocalizations: string | LocaleStringRecord
+	icon: string,
+	iconRounded?: boolean,
+	names: string | LocaleRecord
 }
 export type Route = {
 	tags: Tag[]
 	id: string
 	path: string
-	icon: { src: string, rounded: boolean }
-	nameLocalizations: LocaleStringRecord
+	icon: string,
+	iconRounded: boolean
+	names: LocaleRecord
 }
 
 export function getRoutes(user?: User) {
-	return [
+	const routes: RawRoute[] = [
 		{
 			tags: [Tag.Mobile],
 			id: 'home',
 			path: '',
 			icon: '/svgs/home.svg',
-			nameLocalizations: {
+			names: {
 				en: 'Home',
 				fr: 'Acceuil'
 			}
 		},
 		{
 			tags: [Tag.Mobile],
-			id: 'sandbox',
-			icon: '/svgs/sandbox.svg',
-			nameLocalizations: {
-				en: 'Sandbox',
-				fr: 'Bac à sable'
+			id: 'resources',
+			icon: '/svgs/resource.svg',
+			names: {
+				en: "Resources",
+				fr: "Ressources"
 			}
 		},
 		{
-			tags: [Tag.Mobile],
-			id: "cheatsheets",
-			icon: '/svgs/cheatsheet.svg',
-			nameLocalizations: {
-				en: 'Cheat Sheets',
-				fr: 'Aides Mémoire'
+			tags: [Tag.Mobile, Tag.Hidden],
+			id: 'exercise',
+			icon: '/svgs/lab.svg',
+			names: {
+				en: 'Exercise',
+				fr: 'Exercice'
 			}
+		},
+		{
+			tags: [Tag.Mobile, Tag.Hidden],
+			id: "note",
+			icon: '/svgs/note.svg',
+			names: 'Notes'
 		},
 		{
 			tags: [Tag.Beta],
 			id: "progress",
 			icon: '/svgs/progress.svg',
-			nameLocalizations: {
+			names: {
 				en: 'Progress',
 				fr: 'Progrès'
 			}
 		},
 		{
-			tags: [Tag.Beta],
+			tags: [Tag.Beta, Tag.Hidden],
 			id: "psychology",
 			icon: '/svgs/psychology.svg',
-			nameLocalizations: {
+			names: {
 				en: 'Psychology',
 				fr: 'Psychologie'
 			}
@@ -81,19 +90,19 @@ export function getRoutes(user?: User) {
 			tags: [Tag.Hidden, Tag.Meta],
 			id: 'test',
 			icon: '/svgs/test.svg',
-			nameLocalizations: 'Test'
+			names: 'Test'
 		},
 		{
 			tags: [Tag.Meta, Tag.Mobile],
 			id: 'credits',
 			icon: '/svgs/code.svg',
-			nameLocalizations: 'Credits'
+			names: 'Credits'
 		},
 		{
 			tags: [Tag.Meta, Tag.Hidden],
 			id: 'page-not-found',
 			icon: '/svgs/report.svg',
-			nameLocalizations: {
+			names: {
 				en: 'Page not found',
 				fr: 'Page introuvable'
 			}
@@ -102,21 +111,22 @@ export function getRoutes(user?: User) {
 			? {
 				tags: [Tag.Meta, Tag.Mobile],
 				id: 'user',
-				icon: { src: user.user_metadata.avatar_url, rounded: true },
+				icon: user.user_metadata.avatar_url,
 				path: "user/" + user.user_metadata.user_name,
-				nameLocalizations: user.user_metadata.user_name
+				names: user.user_metadata.user_name
 			}
 			: {
 				tags: [Tag.Meta, Tag.Mobile],
 				id: 'login',
 				icon: '/svgs/login.svg',
-				nameLocalizations: {
+				iconRounded: true,
+				names: {
 					en: 'Login',
 					fr: 'Se connecter'
 				}
 			}
-
-	].map(fixRawRoute)
+	]
+	return routes.map(fixRawRoute)
 }
 
 export function fixRawRoute(route: RawRoute) {
@@ -124,20 +134,14 @@ export function fixRawRoute(route: RawRoute) {
 		...route,
 		tags: route.tags || [],
 		path: route.path ?? route.id,
-		icon: typeof route.icon == "string"
-			? { src: route.icon, rounded: false }
-			: route.icon,
-		nameLocalizations: typeof route.nameLocalizations != "string"
-			? route.nameLocalizations
-			: {
-				en: route.nameLocalizations,
-				fr: route.nameLocalizations
-			}
+		icon: route.icon,
+		iconRounded: route.iconRounded ?? false,
+		names: toLocaleString(route.names)
 	}
 }
 
-export function getRoute(id: Route["id"], routes?: ReturnType<typeof getRoutes>) {
-	return (routes || getRoutes()).find(r => r.id == id)!
+export function getRoute(id: Route["id"]) {
+	return getRoutes().find(r => r.id == id)!
 }
 
 export async function generateMetadataUtil(
@@ -145,9 +149,8 @@ export async function generateMetadataUtil(
 	customTitle?: string
 ) {
 	const routeData = getRoute(id)
-	const locale = await getLocale() as Language
 	return {
-		title: customTitle ?? routeData.nameLocalizations[locale],
+		title: customTitle ?? routeData.names[await getLocale() as LanguageCode],
 		icons: routeData.icon
 	}
 }
