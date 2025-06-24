@@ -1,3 +1,12 @@
+<div align="center">
+
+<a href="https://gitmoji.dev">
+  <img
+    src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square"
+    alt="Gitmoji"
+  />
+</a>
+</div>
 # ✨ Bimowy
 
 <div align="center">
@@ -58,39 +67,7 @@ src/
 
 ## 🤝 Commits
 
-- When making a change and wanting to commit it, the commit message is very important, it has to follow `The commit I just did ...` and complete it from here, for example, `This commit deleted isBeta property`, the `deleted isBeta property` is the name of the commit
-- If your pull request idea is big, don't immediately do everything. Make the minimum, and create a **draft** commit so at least the maintainers can approve of the idea. If the idea is approved, THEN you and others can work on actually making the changes to be merged.
-- Those are the emojis to use for when commiting to this repository.
-
-### 1️⃣ ✨ Creating/Adding (finished)
-
-- `✨ Added isUserAdmin(user) helper`
-- `✨ Created icon handler`
-- `✨ Implemented RessourceBuilder base class`
-- `✨ Added simple description to`
-
-### 2️⃣ 🐣 Starting (unfinished / WIP feature)
-
-- `🐣 Started CourseBuilder`
-- `🐣 Initial draft of VideoBuilder`
-
-### 3️⃣ 🗑️ Deleting
-
-- `🗑️ Deleted 'isBeta' property for resources`
-- `🗑️ Removed property 'isBeta' property for resources`
-- `🗑️ Cleaned up unused ExerciseOption interface`
-- `🗑️ Dropped deprecated meta field from RessourceBuilder`
-
-### 4️⃣ 🐛 Editing (removing, deleting, editing)
-
-- `🐛 Typo (not Ressource, Resource)`
-- `🐛 Fixed missing default value in addition.ts`
-- `🐛 Fixed broken import path for tags`
-
-### 5️⃣ 🤖 Automate
-
-- `🤖 Made "difficulty" a getter instead of hardcoded`
-- `🤖 Automated ressource ID generation`
+- For commit messages, you have to follow the [Gitmoji](https://gitmoji.dev/) syntax
 
 ## 📄 License
 
