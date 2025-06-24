@@ -28,8 +28,8 @@ export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyR
 				animate-appear
 				w-fit
 				max-w-full md:max-w-2/5
-				h-fit p-4 px-8
-				bg-neutral-700/20
+				h-fit p-4 px-
+				bg-black/20 dark:bg-white/5
 				rounded-2xl
     		flex flex-col flex-wrap gap-1.5
     		duration-150

@@ -4,7 +4,7 @@ import { Route, Tag } from "@util/sidebar"
 import { randomAt } from "@util/random"
 import Image from "next/image"
 import Link from "next/link"
-import { useSelectedLayoutSegment, useSelectedLayoutSegments } from 'next/navigation'
+import { useSelectedLayoutSegments } from 'next/navigation'
 import TooltipContainer from "../Tooltip"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
@@ -61,8 +61,9 @@ export default function SideBarIcon({
 					${isBeta
 						? "!opacity-30"
 						: isActive
-							? 'bg-neutral-50/5'
-							: 'hover:bg-neutral-50/5 opacity-70'
+							? 'bg-black/20 dark:bg-white/5'
+							: `hover:bg-black/20 dark:hover:bg-white/5
+							opacity-70`
 					}
 					${loading && (isBeta ? "!cursor-wait" : "!cursor-progress")}
 					group`}

@@ -5,21 +5,35 @@
 }
 
 body {
-	@apply bg-neutral-950 text-white w-[100vw] h-[100vh] flex;
+	@apply bg-neutral-50 dark:bg-neutral-950
+	text-black dark:text-white
+	w-[100vw] h-[100vh] flex;
+}
+
+svg {
+	@apply fill-black dark:fill-white;
 }
 
 input[type="number"],
 input[type="text"] {
-	@apply bg-neutral-950/20 rounded-lg
+	@apply bg-white/20 dark:bg-neutral-950/20
+	rounded-lg
 	font-mono
-  outline outline-white/20
-  focus:outline-2 focus:outline-white/50
+  outline
+	outline-neutral-950/20 dark:outline-white/20
+  focus:outline-2
+	focus:outline-neutral-950/50 dark:focus:outline-white/50
   px-3 py-2 min-w-[3ch]
   field-sizing-content
-  shadow-inner shadow-black/20 text-center
-  disabled:opacity-50 disabled:cursor-not-allowed;
-	@apply [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
+  shadow-inner
+	shadow-white/20 dark:shadow-black/20
+	text-center
+  disabled:opacity-50 disabled:cursor-not-allowed
+	[appearance:textfield]
+	[&::-webkit-outer-spin-button]:appearance-none
+	[&::-webkit-inner-spin-button]:appearance-none;
 }
+
 h1 {
 	@apply text-5xl font-bold tracking-wider mt-4 my-6 text-center w-full;
 }
@@ -29,7 +43,8 @@ h4 {
 }
 
 h5 {
-	@apply self-center text-sm text-neutral-50/50 text-wrap;
+	@apply self-center text-sm text-wrap
+	 opacity-70;
 }
 
 section {

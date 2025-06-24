@@ -1,6 +1,6 @@
 import { NoteBuilder } from "@api/lib/note";
-import CheatSheetBlocContainer from "./CheatSheetBlocContainer";
-import { CheatSheetContentElement } from "./CheatSheetContentElement";
+import NoteBlocContainer from "./NoteBlocContainer";
+import NoteContentElement from "./NoteContentElement";
 import { LanguageCode } from "@util/locale";
 
 
@@ -12,11 +12,11 @@ export default function NotePage({ note, locale }: {
 		<h1>{note.name}</h1>
 		<div className="flex items-center justify-center gap-10 flex-wrap">
 			{note.content
-				.map((bloc, i) => <CheatSheetBlocContainer
+				.map((bloc, i) => <NoteBlocContainer
 					key={i}
 					title={bloc.names?.[locale]}>
-					<CheatSheetContentElement {...{ bloc, locale }} />
-				</CheatSheetBlocContainer>)}
+					<NoteContentElement {...{ bloc, locale }} />
+				</NoteBlocContainer>)}
 		</div>
 	</div>
 }

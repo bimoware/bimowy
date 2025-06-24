@@ -35,7 +35,8 @@ export function Mention({ icon, name, href, background, padding, ultra, notround
           hover:gap-3
           hover:-translate-y-2
           hover:grayscale-[10%]`
-					: `bg-neutral-700/70 hover:bg-white/10
+					: `bg-neutral-500/70 dark:bg-neutral-700/70
+					hover:bg-black/10 dark:hover:bg-white/10
 					shadow-black/20 shadow-lg`}`}
 		>
 			<Image

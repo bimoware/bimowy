@@ -15,9 +15,11 @@ export function End({ exercises }: { exercises: Exercise }) {
 				corrections.texts.map((exerciseCorrection, i) => {
 					return <div
 						key={i}
-						className="bg-neutral-950/50
-				w-fit p-3 rounded-xl
-				outline outline-white/10
+						className="
+						bg-black/10 dark:bg-white/10
+						w-fit p-3 rounded-xl
+						outline
+						outline-black/10 dark:outline-white/10
 				">
 						{exerciseCorrection.map((inputCorrection, i) => {
 							return <p key={i}>

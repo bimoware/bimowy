@@ -15,7 +15,7 @@ export default function TooltipContainer({ children, tooltip, hidden }: {
 		if (!visible || !wrapperRef.current) return;
 		const wrap = wrapperRef.current.getBoundingClientRect();
 		// position to the right, vertically centered
-		const left = wrap.right + 8; // gap from element
+		const left = wrap.right + 20; // gap from element
 		const top = wrap.top + wrap.height / 2;
 		setStyles({ left, top });
 	}, [visible]);
@@ -49,14 +49,14 @@ export default function TooltipContainer({ children, tooltip, hidden }: {
 								translateX: "-1em"
 							}}
 							className={`
-							fixed
-							bg-neutral-900
-							shadow-[0px_0px_10px_-20px_#0a0a0a]/10
-							px-2.5 py-1.5 rounded-xl
-							pointer-events-none whitespace-nowrap z-50
-							-translate-y-1/2
-							!ml-2
-							${hidden && "!opacity-50"}`
+								fixed
+								bg-black/20 dark:bg-neutral-900
+								shadow-[0px_0px_10px_-20px_#0a0a0a]/10
+								px-2.5 py-1.5 rounded-xl
+								pointer-events-none whitespace-nowrap z-50
+								-translate-y-1/2
+								!ml-2
+								${hidden && "!opacity-50"}`
 							}
 							style={{
 								left: styles.left,
@@ -67,14 +67,14 @@ export default function TooltipContainer({ children, tooltip, hidden }: {
 							<div
 								className={`
 								absolute
-								-left-1.5 top-1/2
+								-left-2 top-1/2
 								-translate-y-1/2
 								translate-x-0.5
 								w-1.5 h-3
 								overflow-hidden`}
 							>
 								<svg width="6" height="12" viewBox="0 0 6 12" xmlns="http://www.w3.org/2000/svg">
-									<path d="M6,0 Q-6,6 6,12" className='fill-neutral-900' />
+									<path d="M6,0 Q-6,6 6,12" className='fill-black/20' />
 								</svg>
 							</div>
 						</motion.div>

@@ -3,7 +3,7 @@ import { LanguageCode } from "@util/locale";
 import Widgets from "@util/widgets";
 import Latex from "react-latex-next";
 
-export async function CheatSheetContentElement({ bloc, locale }: {
+export default async function NoteContentElement({ bloc, locale }: {
 	bloc: NoteBloc,
 	locale: LanguageCode
 }) {

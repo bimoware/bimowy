@@ -24,7 +24,7 @@ export default function DesktopSideBar({ locale }: { locale: LanguageCode }) {
 		{
 			routeGroups
 				.map((routeGroup, i) => <section key={i}
-					className='bg-neutral-900
+					className='bg-black/15 dark:bg-white/5
 					p-1.5
 					h-fit w-fit
 					flex flex-col items-center

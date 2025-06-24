@@ -1,6 +1,5 @@
 import { ExerciseBuilder } from "@api/lib/exercise";
 import { APIOption, OptionType } from "@api/lib/option";
-import Togglable from "@/cpn/Togglable";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
@@ -31,22 +30,22 @@ export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 								return newUserOptions;
 							})
 						}} />
-				</OptionDiv >
-			case OptionType.Boolean:
-				const booleanValue = userOptionValues[id] as boolean
-				return <OptionDiv key={id}>
-					<span>{title}? </span>
-					<Togglable
-						checked={booleanValue}
-						onChange={() => {
-							setUserOptionValues(prev => {
-								const newUserOptions = { ...prev }
-								newUserOptions[id] = !prev[id]
-								return newUserOptions;
-							})
-						}}
-					/>
 				</OptionDiv>
+			// case OptionType.Boolean:
+			// 	const booleanValue = userOptionValues[id] as boolean
+			// 	return <OptionDiv key={id}>
+			// 		<span>{title}? </span>
+			// 		<Togglable
+			// 			checked={booleanValue}
+			// 			onChange={() => {
+			// 				setUserOptionValues(prev => {
+			// 					const newUserOptions = { ...prev }
+			// 					newUserOptions[id] = !prev[id]
+			// 					return newUserOptions;
+			// 				})
+			// 			}}
+			// 		/>
+			// 	</OptionDiv>
 			case OptionType.Interval:
 				const intervalValue = userOptionValues[id] as [number, number]
 				return <OptionDiv key={id}>
@@ -142,7 +141,8 @@ export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 
 
 function OptionDiv({ children }: { children: ReactNode }) {
-	return <div className="bg-neutral-900
+	return <div className="
+	bg-black/5 dark:bg-white/5
 	rounded-2xl p-2 px-5
 	flex items-center gap-2
 	w-fit

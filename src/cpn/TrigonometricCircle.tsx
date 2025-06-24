@@ -109,14 +109,17 @@ export default function TrigonometricCircle() {
 					angles
 						.map(data => <div
 							key={data.deg}
-							data-selected={angle === data.deg}
-							className={`px-2 py-1 bg-white/5 rounded-xl
+							{...(angle === data.deg ? { "data-selected": true } : {})}
+							className={`px-2 py-1
+							bg-white/5
+							rounded-xl
 							select-none hover:scale-105 cursor-pointer
 							duration-150
-							data-[selected=true]:bg-neutral-200 data-[selected=true]:text-black 
-							data-[selected=true]:shadow-sm data-[selected=true]:font-bold
-							data-[selected=true]:-translate-y-1
-							data-[selected=true]:scale-105`}
+						 dark:data-selected:bg-white/5
+							data-selected:invert 
+							data-selected:shadow-sm data-selected:font-bold
+							data-selected:-translate-y-1
+							data-selected:scale-105`}
 							onClick={(() => setAngle(data.deg))}>
 							<span>{data.deg}°</span>
 							<span className="text-sm opacity-75"> ( {data.rad.value} )</span>
