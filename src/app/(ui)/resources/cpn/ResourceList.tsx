@@ -64,7 +64,7 @@ export default function ResourceList({ resources }: {
 						className="
 						flex items-center gap-1
 						bg-neutral-800
-						invert-0 data-selected:invert
+						data-selected:bg-white data-selected:text-black
 						rounded-full
 						px-2 py-0.5
 						scale-90 data-selected:scale-100
@@ -74,7 +74,9 @@ export default function ResourceList({ resources }: {
 						group"
 						onClick={() => handleToggle(t.id)}>
 
-						<ToggleIcon active={selected} />
+						<ToggleIcon
+							active={selected}
+							className={selected ? "fill-black" : "fill-white"} />
 						{t.names[lang]}
 					</div>
 				})

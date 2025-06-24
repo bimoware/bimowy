@@ -10,10 +10,6 @@ body {
 	w-[100vw] h-[100vh] flex;
 }
 
-svg {
-	@apply fill-black dark:fill-white;
-}
-
 input[type="number"],
 input[type="text"] {
 	@apply bg-white/20 dark:bg-neutral-950/20
