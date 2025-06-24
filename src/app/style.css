@@ -21,7 +21,7 @@ input[type="text"] {
 	@apply [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
 }
 h1 {
-	@apply text-5xl font-bold tracking-wider mt-6 mb-10 text-center w-full;
+	@apply text-5xl font-bold tracking-wider mt-4 my-6 text-center w-full;
 }
 
 h4 {

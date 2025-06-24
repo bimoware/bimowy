@@ -9,7 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import './style.css'
 import { generateMetadataUtil } from '@util/sidebar';
-import { Language } from '@api/main';
+import { LanguageCode } from '@util/locale';
 import SideBarContainer from '@cpn/SideBar/SideBarContainer';
 
 export async function generateMetadata() {
@@ -23,7 +23,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const locale = await getLocale() as Language
+  const locale = await getLocale() as LanguageCode
 
   return (
     <html lang={locale} className={outfit.className}>

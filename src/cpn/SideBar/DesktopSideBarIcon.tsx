@@ -4,7 +4,7 @@ import { Route, Tag } from "@util/sidebar"
 import { randomAt } from "@util/random"
 import Image from "next/image"
 import Link from "next/link"
-import { useSelectedLayoutSegment } from 'next/navigation'
+import { useSelectedLayoutSegment, useSelectedLayoutSegments } from 'next/navigation'
 import TooltipContainer from "../Tooltip"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
@@ -37,13 +37,13 @@ export default function SideBarIcon({
 }: Route & { name: string }) {
 	const [loading, setLoading] = useState(false)
 	const t = useTranslations()
-	const segment = useSelectedLayoutSegment() || ''
-	const isActive = segment === path
+	const segments = useSelectedLayoutSegments()
+	const isActive = segments.length ? segments.includes(path) : path === ""
 	const isBeta = tags.includes(Tag.Beta)
 
 	useEffect(() => {
 		setLoading(false)
-	}, [segment])
+	}, [segments])
 
 	return <TooltipContainer
 		hidden={isBeta}
@@ -51,19 +51,19 @@ export default function SideBarIcon({
 		<Link href={`/${path}`}>
 			<div
 				className={`
-				aspect-square rounded-xl
-				duration-150 
-				hover:translate-x-0.5 hover:scale-105
-				active:scale-90
-				select-none
-				m-1
-				${isBeta
+					aspect-square rounded-xl
+					duration-150 
+					hover:translate-x-0.5 hover:scale-105
+					active:scale-90
+					select-none
+					m-1
+					p-2
+					${isBeta
 						? "!opacity-30"
 						: isActive
 							? 'bg-neutral-50/5'
 							: 'hover:bg-neutral-50/5 opacity-70'
 					}
-					${icon.rounded ? "p-1" : "p-2"}
 					${loading && (isBeta ? "!cursor-wait" : "!cursor-progress")}
 					group`}
 				onClick={() => setLoading(true)}
@@ -72,12 +72,11 @@ export default function SideBarIcon({
 					className={`duration-150
 						select-none
 						w-8
-						${icon.rounded && "rounded-full"}
 						${randomAt(randoms["scale"], name)}
 						${randomAt(randoms["rotations"], name)}
 						${randomAt(randoms["translationsX"], name)}
 						${randomAt(randoms["translationsY"], name)}`}
-					src={loading && !isActive ? "/svgs/loading.svg" : icon.src}
+					src={loading && !isActive ? "/svgs/loading.svg" : icon}
 					alt={name}
 					width={100}
 					height={100}

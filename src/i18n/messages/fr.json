@@ -46,11 +46,11 @@
     "Score": "Score"
   },
   "PageNotDoneYet": "Page en travail...",
-  "CheatSheetsPage": {
-    "cheatsheets": "Aides Mémoire"
-  },
   "HomePage": {
     "title": "Wooo... un peu vide ici 👻"
   },
-  "unavailable": "Indisponnible"
+  "unavailable": "Indisponnible",
+  "ResourcesPage": {
+    "title": "Ressources"
+  }
 }
