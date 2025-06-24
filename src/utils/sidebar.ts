@@ -78,7 +78,7 @@ export function getRoutes(user?: User) {
 			}
 		},
 		{
-			tags: [Tag.Beta],
+			tags: [Tag.Beta, Tag.Hidden],
 			id: "psychology",
 			icon: '/svgs/psychology.svg',
 			names: {
