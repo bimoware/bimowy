@@ -1,12 +1,3 @@
-<div align="center">
-
-<a href="https://gitmoji.dev">
-  <img
-    src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square"
-    alt="Gitmoji"
-  />
-</a>
-</div>
 # ✨ Bimowy
 
 <div align="center">
@@ -67,7 +58,25 @@ src/
 
 ## 🤝 Commits
 
-- For commit messages, you have to follow the [Gitmoji](https://gitmoji.dev/) syntax
+- For commit messages, you have to follow the <a href="https://gitmoji.dev">
+  <img
+    src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square"
+    alt="Gitmoji"
+  />
+  </a> syntax
+
+## 📦 Database
+
+<div align="center">
+<a href="https://supabase.com">
+  <img
+    width="168"
+    height="30"
+    src="https://supabase.com/badge-made-with-supabase-dark.svg"
+    alt="Made with Supabase"
+  />
+</a>
+</div>
 
 ## 📄 License
 
