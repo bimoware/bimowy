@@ -1,5 +1,5 @@
-import { LanguageCode } from "@util/locale";
-import { angles } from "@util/angles"
+import { LanguageCode } from "@/utils/locale";
+import { angles } from "@/utils/angles"
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import { toRounded } from "@api/lib/misc";

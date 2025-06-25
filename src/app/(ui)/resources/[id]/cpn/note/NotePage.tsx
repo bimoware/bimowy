@@ -1,7 +1,7 @@
 import { NoteBuilder } from "@api/lib/note";
 import NoteBlocContainer from "./NoteBlocContainer";
 import NoteContentElement from "./NoteContentElement";
-import { LanguageCode } from "@util/locale";
+import { LanguageCode } from "@/utils/locale";
 
 
 export default function NotePage({ note, locale }: {

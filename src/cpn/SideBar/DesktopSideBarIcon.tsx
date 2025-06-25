@@ -1,7 +1,7 @@
 "use client"
 
-import { Route, Tag } from "@util/sidebar"
-import { randomAt } from "@util/random"
+import { Route, Tag } from "@/utils/sidebar"
+import { randomAt } from "@/utils/random"
 import Image from "next/image"
 import Link from "next/link"
 import { useSelectedLayoutSegments } from 'next/navigation'

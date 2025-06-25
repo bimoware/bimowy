@@ -1,6 +1,6 @@
 import { ExerciseBuilder } from "@api/lib/exercise"
 import { IntervalOption } from "@api/lib/option"
-import { randomFromInterval } from "@util/random"
+import { randomFromInterval } from "@/utils/random"
 
 type Seed = [[x1: number, y1: number], [x2: number, y2: number]]
 type Answers = { answer: number }

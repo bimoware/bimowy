@@ -1,4 +1,4 @@
-import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@util/locale";
+import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@/utils/locale";
 import { GLOBAL_TAGS, TAG_ID } from "./tag";
 
 export enum ResourceType {

@@ -1,6 +1,6 @@
 "use client"
-import { LanguageCode } from "@util/locale"
-import { getRoutes, Route, split, Tag } from "@util/sidebar"
+import { LanguageCode } from "@/utils/locale"
+import { getRoutes, Route, split, Tag } from "@/utils/sidebar"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
 import { useAuthStateChange, useAuthUser } from "@/db/util"
 

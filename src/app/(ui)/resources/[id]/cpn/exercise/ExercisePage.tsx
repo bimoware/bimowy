@@ -11,7 +11,7 @@ import { End } from "./End";
 import { Options } from "./Options";
 import { Title } from "./Title";
 import { Buttons } from "./Buttons";
-import { LanguageCode } from "@util/locale";
+import { LanguageCode } from "@/utils/locale";
 import { ExerciseBuilder } from "@api/lib/exercise";
 import { ContextElement, ContextSection } from "@api/lib/context";
 

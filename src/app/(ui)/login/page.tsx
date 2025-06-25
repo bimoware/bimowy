@@ -1,4 +1,4 @@
-import { generateMetadataUtil } from "@util/sidebar"
+import { generateMetadataUtil } from "@/utils/sidebar"
 import LogBox from "./cpn/LogBox"
 
 

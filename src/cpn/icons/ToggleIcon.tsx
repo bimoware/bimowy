@@ -1,4 +1,4 @@
-import { defaultIconProps } from "@util/icons";
+import { defaultIconProps } from "@/utils/icons";
 
 export default function ToggleIcon({ active = false, className }: { active?: boolean, className?: string }) {
 	return <svg

@@ -1,4 +1,4 @@
-import { randomAt } from "@util/random";
+import { randomAt } from "@/utils/random";
 import Image from "next/image";
 import Link from "next/link";
 

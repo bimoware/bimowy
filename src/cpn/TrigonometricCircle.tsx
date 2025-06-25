@@ -1,6 +1,6 @@
 "use client";
 import { toRounded } from "@api/lib/misc";
-import { angles } from "@util/angles";
+import { angles } from "@/utils/angles";
 import { CSSProperties, SVGAttributes, useEffect, useRef, useState } from "react";
 
 export default function TrigonometricCircle() {
@@ -115,8 +115,8 @@ export default function TrigonometricCircle() {
 							rounded-xl
 							select-none hover:scale-105 cursor-pointer
 							duration-150
-						 dark:data-selected:bg-white/5
-							data-selected:invert 
+						 dark:data-selected:bg-white
+						 dark:data-selected:text-black
 							data-selected:shadow-sm data-selected:font-bold
 							data-selected:-translate-y-1
 							data-selected:scale-105`}

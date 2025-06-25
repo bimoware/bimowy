@@ -1,4 +1,4 @@
-import { LocaleRecord, LanguageCode } from "@util/locale";
+import { LocaleRecord, LanguageCode } from "@/utils/locale";
 import {
 	ExtractDefaultValueFromOptions,
 	DEFAULT_N_QUESTIONS_ID,

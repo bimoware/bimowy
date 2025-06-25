@@ -1,6 +1,6 @@
 import { ExerciseBuilder } from "@api/lib/exercise"
 import { NumberOption, RadioOption } from "@api/lib/option"
-import { randomFromInterval } from "@util/random"
+import { randomFromInterval } from "@/utils/random"
 
 const bases = ["binary", "decimal", "hexadecimal"] as const
 type Base = (typeof bases)[number]

@@ -2,10 +2,10 @@
 
 import { AnyResourceBuilder } from "@api/lib/resource"
 import { Card } from "./Card"
-import { useLanguage } from "@util/locale"
+import { useLanguage } from "@/utils/locale"
 import { useState } from "react"
 import ToggleIcon from "@icons/ToggleIcon"
-import { generateMetadataUtil } from "@util/sidebar"
+import { generateMetadataUtil } from "@/utils/sidebar"
 
 export async function generateMetadata() {
 	return generateMetadataUtil('resources')

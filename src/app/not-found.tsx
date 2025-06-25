@@ -1,4 +1,4 @@
-import { generateMetadataUtil } from '@util/sidebar'
+import { generateMetadataUtil } from '@/utils/sidebar'
 import { useTranslations } from 'next-intl'
 
 export async function generateMetadata() {

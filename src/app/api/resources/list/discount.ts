@@ -1,7 +1,7 @@
 import { ExerciseBuilder } from "@api/lib/exercise"
 import { toRounded } from "@api/lib/misc"
 import { IntervalOption } from "@api/lib/option"
-import { randomFromInterval } from "@util/random"
+import { randomFromInterval } from "@/utils/random"
 
 type Seed = [price: number, discount: number]
 type Answers = { finalPrice: number }

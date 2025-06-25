@@ -8,7 +8,7 @@ import {
 	DEFAULT_N_QUESTIONS_OPTION, UserOptions
 } from "@api/lib/option"
 import { NextError, NextSuccess } from "@api/lib/routing"
-import { isValidLang } from "@util/locale"
+import { isValidLang } from "@/utils/locale"
 
 export async function POST(
 	req: NextRequest,
