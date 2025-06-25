@@ -1,6 +1,6 @@
 "use client";
+import { toRounded } from "@api/lib/misc";
 import { angles } from "@util/angles";
-import { formatNumber } from "@util/format";
 import { CSSProperties, SVGAttributes, useEffect, useRef, useState } from "react";
 
 export default function TrigonometricCircle() {
@@ -99,7 +99,7 @@ export default function TrigonometricCircle() {
 						disabled
 						type="text"
 						className="text-md"
-						value={`${isRadWhole ? "=" : "≃"} ${formatNumber(convertToRad(angle) / Math.PI)}π`}
+						value={`${isRadWhole ? "=" : "≃"} ${toRounded(convertToRad(angle) / Math.PI)}π`}
 					/>
 				</div>
 			</div>

@@ -1,4 +1,5 @@
 import { ExerciseBuilder } from "@api/lib/exercise"
+import { toRounded } from "@api/lib/misc"
 import { IntervalOption } from "@api/lib/option"
 import { randomFromInterval } from "@util/random"
 
@@ -45,14 +46,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 
 	generateSolution([x, y]) {
 		return {
-			answer: Number(Math.sqrt(x * x + y * y).toFixed(2))
+			answer: toRounded(Math.sqrt(x * x + y * y))
 		}
-	},
-
-	validateAnswers([x, y], { answer }) {
-		const solution = this.generateSolution([x, y])
-		return {
-			answer: Math.abs(solution.answer - answer) <= 0.01
-		}
-	},
+	}
 })

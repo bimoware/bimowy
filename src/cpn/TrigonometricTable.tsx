@@ -1,8 +1,8 @@
 import { LanguageCode } from "@util/locale";
 import { angles } from "@util/angles"
-import { formatNumber } from "@util/format"
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
+import { toRounded } from "@api/lib/misc";
 
 export default function TrigonometricTable({ locale }: { locale: LanguageCode }) {
 	return <table className="table-auto">
@@ -56,6 +56,6 @@ export default function TrigonometricTable({ locale }: { locale: LanguageCode })
 
 function AproximationSubtitle({ value }: { value: number }) {
 	return <span className="opacity-50 ml-0.5 text-xs">
-		≃ {formatNumber(value)}
+		≃ {toRounded(value)}
 	</span>
 }

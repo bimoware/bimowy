@@ -1,4 +1,5 @@
 import { ExerciseBuilder } from "@api/lib/exercise"
+import { toRounded } from "@api/lib/misc"
 import { IntervalOption } from "@api/lib/option"
 import { randomFromInterval } from "@util/random"
 
@@ -56,7 +57,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 		const yDiff = y2 - y1
 		const norm = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2))
 		return {
-			answer: Number(norm.toFixed(2))
+			answer: toRounded(norm)
 		}
 	}
 })
