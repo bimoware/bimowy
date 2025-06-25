@@ -1,4 +1,4 @@
-import { generateMetadataUtil } from "@util/sidebar";
+import { generateMetadataUtil } from "@/utils/sidebar";
 
 export async function generateMetadata() {
   return await generateMetadataUtil('test')
