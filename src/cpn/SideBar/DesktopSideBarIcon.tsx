@@ -33,7 +33,8 @@ export default function SideBarIcon({
 	icon,
 	path,
 	name,
-	tags
+	tags,
+	iconRounded
 }: Route & { name: string }) {
 	const [loading, setLoading] = useState(false)
 	const t = useTranslations()
@@ -73,6 +74,7 @@ export default function SideBarIcon({
 					className={`duration-150
 						select-none
 						w-8
+						${iconRounded && "rounded-full"}
 						${randomAt(randoms["scale"], name)}
 						${randomAt(randoms["rotations"], name)}
 						${randomAt(randoms["translationsX"], name)}

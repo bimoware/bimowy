@@ -113,7 +113,8 @@ export function getRoutes(user?: User) {
 				id: 'user',
 				icon: user.user_metadata.avatar_url,
 				path: "user/" + user.user_metadata.user_name,
-				names: user.user_metadata.user_name
+				names: user.user_metadata.user_name,
+				iconRounded: true
 			}
 			: {
 				tags: [Tag.Meta, Tag.Mobile],
