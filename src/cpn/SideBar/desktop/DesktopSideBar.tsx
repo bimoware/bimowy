@@ -4,18 +4,18 @@ import { getRoutes, Route, split, Tag } from "@/utils/sidebar"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
 import { useAuthStateChange, useAuthUser } from "@/db/util"
 
-export default function DesktopSideBar({ locale }: { locale: LanguageCode }) {
+export default function DesktopSideBar({ lang }: { lang: LanguageCode }) {
 	const [user, setUser] = useAuthUser()
 
-	const routes = getRoutes(user || undefined)
+	const routes = getRoutes(user)
 	const routeGroups = split(routes, (route) => !route.tags.includes(Tag.Meta))
 	const isVisible = (route: Route) => !route.tags.includes(Tag.Hidden)
 
 	useAuthStateChange(setUser)
 
-	return <div className='h-full
+	return <div className='h-screen
 	p-3
-	flex
+	hidden md:flex
 	flex-col
 	justify-between
 	shrink-0
@@ -35,7 +35,7 @@ export default function DesktopSideBar({ locale }: { locale: LanguageCode }) {
 							.map(route => <DesktopSideBarIcon
 								key={route.id}
 								{...route}
-								name={route.names[locale]}
+								name={route.names[lang]}
 							/>
 							)
 					}

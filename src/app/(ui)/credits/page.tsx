@@ -11,7 +11,7 @@ export async function generateMetadata() {
 
 export default async function CreditsPage() {
   const t = await getTranslations('CreditsPage');
-  return <div className='w-full overflow-y-auto'>
+  return <div className='w-full'>
     <h1>{t('title')}</h1>
     <div className="relative text-2xl md:text-4xl w-full h-full flex flex-col  gap-4">
       <EasterEggHeart />

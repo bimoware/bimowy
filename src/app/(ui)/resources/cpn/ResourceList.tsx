@@ -62,6 +62,7 @@ export default function ResourceList({ resources }: {
 							selected ? { "data-selected": true } : {}
 						)}
 						className="
+						select-none
 						flex items-center gap-1
 						bg-neutral-800
 						data-selected:bg-white data-selected:text-black

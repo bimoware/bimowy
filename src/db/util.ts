@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { supabase } from "./client";
 import { User } from "@supabase/supabase-js";
 
-export function useAuthStateChange(setUser: Dispatch<SetStateAction<User | null>>) {
+export function useAuthStateChange(setUser: Dispatch<SetStateAction<User | undefined>>) {
 	return useEffect(() => {
 
 		const { data: authListener } = supabase.auth.onAuthStateChange(
 			(_, session) => {
-				setUser(session?.user || null);
+				setUser(session?.user);
 			}
 		);
 
@@ -16,7 +16,7 @@ export function useAuthStateChange(setUser: Dispatch<SetStateAction<User | null>
 }
 
 export function useAuthUser() {
-	return useState<User | null>(null)
+	return useState<User | undefined>(undefined)
 }
 
 export async function getAuthUser() {

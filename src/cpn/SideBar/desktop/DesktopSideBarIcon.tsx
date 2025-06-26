@@ -5,7 +5,7 @@ import { randomAt } from "@/utils/random"
 import Image from "next/image"
 import Link from "next/link"
 import { useSelectedLayoutSegments } from 'next/navigation'
-import TooltipContainer from "../Tooltip"
+import TooltipContainer from "../../Tooltip"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
@@ -39,7 +39,7 @@ export default function SideBarIcon({
 	const [loading, setLoading] = useState(false)
 	const t = useTranslations()
 	const segments = useSelectedLayoutSegments()
-	const isActive = segments.length ? segments.includes(path) : path === ""
+	const isActive = segments.length ? segments.slice(2).includes(path) : path === "/"
 	const isBeta = tags.includes(Tag.Beta)
 
 	useEffect(() => {
@@ -53,10 +53,10 @@ export default function SideBarIcon({
 			<div
 				className={`
 					aspect-square rounded-xl
-					duration-150 
 					hover:translate-x-0.5 hover:scale-105
 					active:scale-90
 					select-none
+					duration-150
 					m-1
 					p-2
 					${isBeta
@@ -71,8 +71,8 @@ export default function SideBarIcon({
 				onClick={() => setLoading(true)}
 			>
 				<Image
-					className={`duration-150
-						select-none
+					className={`select-none
+						duration-150
 						w-8
 						${iconRounded && "rounded-full"}
 						${randomAt(randoms["scale"], name)}

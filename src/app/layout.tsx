@@ -23,13 +23,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const locale = await getLocale() as LanguageCode
+  const lang = await getLocale() as LanguageCode
 
   return (
-    <html lang={locale} className={outfit.className}>
-      <body className='w-screen h-screen'>
+    <html lang={lang} className={outfit.className}>
+      <body className='w-screen min-h-screen'>
         <NextIntlClientProvider>
-          <SideBarContainer {...{ locale }}>
+          <SideBarContainer {...{ lang }}>
             {children}
           </SideBarContainer>
         </NextIntlClientProvider>
