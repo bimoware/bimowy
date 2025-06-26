@@ -17,7 +17,7 @@ export default function MobileSideBar({ lang }: { lang: LanguageCode }) {
 
 	return <div
 		className='w-full
-		m-3
+		p-3
 		flex sm:hidden
 		justify-center
 		shrink-0
