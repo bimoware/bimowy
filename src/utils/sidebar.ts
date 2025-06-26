@@ -69,7 +69,7 @@ export function getRoutes(user?: User) {
 			names: 'Notes'
 		},
 		{
-			tags: [Tag.Beta],
+			tags: [Tag.Beta, Tag.Hidden],
 			id: "progress",
 			icon: '/svgs/progress.svg',
 			names: {
@@ -123,7 +123,7 @@ export function getRoutes(user?: User) {
 				iconRounded: true,
 				names: {
 					en: 'Login',
-					fr: 'Se connecter'
+					fr: 'Connexion'
 				}
 			}
 	]
