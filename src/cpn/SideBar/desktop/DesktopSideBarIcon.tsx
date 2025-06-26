@@ -39,7 +39,10 @@ export default function SideBarIcon({
 	const [loading, setLoading] = useState(false)
 	const t = useTranslations()
 	const segments = useSelectedLayoutSegments()
-	const isActive = segments.length ? segments.slice(2).includes(path) : path === "/"
+	const pathParts = [...segments].filter(p => !p.includes('('))
+	const isActive = pathParts.length
+		? pathParts[0] === path
+		: path === ""
 	const isBeta = tags.includes(Tag.Beta)
 
 	useEffect(() => {
