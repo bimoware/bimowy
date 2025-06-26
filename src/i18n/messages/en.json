@@ -9,22 +9,22 @@
     "by": "by",
     "inspired": "Inspired from",
     "frameworks": "Coded in",
-    "et": "and",
-    "and": "and",
     "open_new_tab": "Open in new tab",
     "heart": "heart",
     "available_in": "Available in French & English with",
     "you_like": "You like it? Then don't forget to",
-    "star": "Add to favorites",
     "honorable_mention": "Honorable mention to my friend",
-    "deployed_on": "Deployed for free on",
+    "deployed_on": "Deployed on",
     "domain_from": "Domain name bought on",
     "domain_price": "11.67 $",
     "title": "Credits",
-    "sorry_easter_egg": "🕺unstoppable black baby dancing 🕺",
+    "sorry_easter_egg": "🕺 unstoppable black baby dancing 🕺",
     "no_javascript": "Uh,  video couldn't load, damn"
   },
-  "Buttons": {
+  "ResourcesPage": {
+    "title": "Resources"
+  },
+  "ResourcePage": {
     "Start": "Start",
     "Confirm": "Confirm",
     "Finish": "Finish",
@@ -34,23 +34,11 @@
     "LoadingExercises": "Generating...",
     "LoadingOptions": "Loading Options...",
     "Correcting": "Correcting...",
-    "TryAgain": "Try Again"
+    "TryAgain": "Try Again",
+    "Finished": "Finished"
   },
-  "SandboxPage": {
-    "sandbox": "Sandbox",
-    "Finished": "Finished",
-    "Accuracy": "Accuracy",
-    "Questions": "Questions",
-    "SelectingOptions": "Selecting options...",
-    "tries": "tries",
-    "Score": "Score"
-  },
-  "PageNotDoneYet": "Page in work...",
   "HomePage": {
     "title": "Wooo... pretty empty here 👻"
   },
-  "unavailable": "Unavailable",
-  "ResourcesPage": {
-    "title": "Resources"
-  }
+  "unavailable": "Unavailable"
 }

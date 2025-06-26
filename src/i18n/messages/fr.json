@@ -4,27 +4,27 @@
     "PageNotFoundDesc": "Aucune idée de où tu voulait aller fréro"
   },
   "CreditsPage": {
+    "title": "Credits",
     "source_code_on": "Code source sur",
     "made_with": "Fait avec",
     "by": "par",
     "inspired": "Inspiré de",
     "frameworks": "Codé sur",
-    "et": "et",
-    "and": "et",
     "open_new_tab": "Ouvrir dans un nouvel onglet",
     "heart": "amour",
     "available_in": "Disponible en Français & Anglais grâce à",
     "you_like": "T'aimes bien? Alors n'oublie pas de",
-    "star": "Ctrl + D",
     "honorable_mention": "Honorable mention à mon ptit pote",
-    "deployed_on": "Posté gratuitement sur",
+    "deployed_on": "Posté sur",
     "domain_from": "Nom de domaine acheté sur",
     "domain_price": "10.39 €",
-    "title": "Credits",
     "sorry_easter_egg": "🕺 Bébé noir qui dance 🕺",
     "no_javascript": "Ah oups, la video a pas fonctionné :'D"
   },
-  "Buttons": {
+  "ResourcesPage": {
+    "title": "Ressources"
+  },
+  "ResourcePage": {
     "Start": "Go",
     "Confirm": "Confirmer",
     "Finish": "Finir",
@@ -34,23 +34,11 @@
     "LoadingExercises": "Generation...",
     "LoadingOptions": "Chargement des options...",
     "Correcting": "Correction...",
-    "TryAgain": "Réessayer"
+    "TryAgain": "Réessayer",
+    "Finished": "Fini"
   },
-  "SandboxPage": {
-    "sandbox": "Bac à sable",
-    "Finished": "Fin",
-    "Accuracy": "Precision",
-    "Questions": "Questions",
-    "SelectingOptions": "Selection des options...",
-    "tries": "essais",
-    "Score": "Score"
-  },
-  "PageNotDoneYet": "Page en travail...",
   "HomePage": {
     "title": "Wooo... un peu vide ici 👻"
   },
-  "unavailable": "Indisponnible",
-  "ResourcesPage": {
-    "title": "Ressources"
-  }
+  "unavailable": "Indisponnible"
 }

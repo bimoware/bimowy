@@ -15,7 +15,7 @@ export function Buttons({ pageStep, exercises, apiOptions, actions }: {
 		end: () => void
 	}
 }) {
-	const t = useTranslations('Buttons')
+	const t = useTranslations('ResourcePage')
 	switch (pageStep) {
 		case 'options':
 			if (apiOptions) return <Button alt={t('Start')} src='/svgs/start.svg' onClick={actions.startExercises} primary />
@@ -40,7 +40,7 @@ export function Buttons({ pageStep, exercises, apiOptions, actions }: {
 						<Button
 							alt={
 								isLast
-									? t(allCorrect ? 'Next' : 'Abandon')
+									? allCorrect ? t('Next') : t('Abandon')
 									: t('Finish')
 							}
 							src={isLast ? '/svgs/next.svg' : '/svgs/end.svg'}

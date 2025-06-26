@@ -19,8 +19,7 @@ export function EasterEggHeart() {
 				src="/svgs/heart.svg"
 				width={30}
 				height={30}
-				title={"Click me 🫠"}
-				alt={"Easter Egg 🫠"}
+				alt={"🫠"}
 				className={`inline-flex aspect-square duration-150 py-0.5 sm:py-0
         ${!easterEggEnabled ? "cursor-pointer hover:scale-110" : "hover:scale-95"}`}
 				onClick={() => {
@@ -35,15 +34,11 @@ export function EasterEggHeart() {
 		</>,
 		...(!easterEggEnabled ? [] :
 			[
-
 				<span>{t('sorry_easter_egg')}</span>,
 				<video width="238" height="512" autoPlay preload="none" loop>
 					<source src="/media/blackbabydance.mp4" type="video/mp4" />
 					<span>{t('no_javascript')}</span>
 				</video>
-
-				// <span>{t('honorable_mention')}</span>
-				// <Mention icon="/media/moha.jpg" name="Moha" href="https://www.instagram.com/mohaa.ghrb/" ultra />
 			]
 		)
 	].map((group, i) => <GroupLine key={"easteregg-" + i}> {group}</GroupLine>)

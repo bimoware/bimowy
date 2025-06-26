@@ -7,7 +7,7 @@ export function Title({ name, pageStep, exercises }: {
 	pageStep: PageStep
 	exercises?: Exercise
 }) {
-	const t = useTranslations('SandboxPage')
+	const t = useTranslations('ResourcePage')
 	return <h1>{name ?? "..."}  {
 		pageStep == "options"
 			? "- Options"
