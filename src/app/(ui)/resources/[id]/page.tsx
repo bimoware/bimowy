@@ -1,6 +1,6 @@
 import { ResourceType } from "@api/lib/resource"
 import { resourceHandler } from "@api/main"
-import { getLanguage, useLanguage } from "@/utils/locale"
+import { getLanguage } from "@/utils/locale"
 import { generateMetadataUtil } from "@/utils/sidebar"
 import ExercisePage from "./cpn/exercise/ExercisePage"
 import { ExerciseBuilder } from "@api/lib/exercise"
