@@ -13,7 +13,7 @@ export default function SideBarContainer({ children, lang }: {
 		<main className='w-full h-full
 		flex
 		justify-center p-3
-		pb-24 sm:pb-auto
+		pb-24 sm:pb-3
 		ml-0 sm:ml-24'>
 			{children}
 		</main>
