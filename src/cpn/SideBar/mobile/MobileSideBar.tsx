@@ -44,10 +44,10 @@ export default function MobileSideBar({ lang }: { lang: LanguageCode }) {
 							`}>
 							<Image
 								className={`select-none
-								duration-75
+								duration-150
 								w-8
 								group-active:scale-75
-								${!isActive && "scale-75"}
+								${isActive ? "-translate-y-1" : "scale-75"}
 								${r.iconRounded && "rounded-full"}
 								`}
 								src={r.icon}
