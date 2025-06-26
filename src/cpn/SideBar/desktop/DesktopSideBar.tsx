@@ -15,7 +15,7 @@ export default function DesktopSideBar({ lang }: { lang: LanguageCode }) {
 
 	return <div className='h-screen
 	p-3
-	hidden md:flex
+	hidden sm:flex
 	flex-col
 	justify-between
 	shrink-0

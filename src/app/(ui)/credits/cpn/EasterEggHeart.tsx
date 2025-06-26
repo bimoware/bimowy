@@ -21,7 +21,7 @@ export function EasterEggHeart() {
 				height={30}
 				title={"Click me 🫠"}
 				alt={"Easter Egg 🫠"}
-				className={`inline-flex aspect-square duration-150 py-0.5 md:py-0
+				className={`inline-flex aspect-square duration-150 py-0.5 sm:py-0
         ${!easterEggEnabled ? "cursor-pointer hover:scale-110" : "hover:scale-95"}`}
 				onClick={() => {
 					if (!easterEggEnabled) {

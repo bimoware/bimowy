@@ -27,7 +27,7 @@ export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyR
 			className={`
 				animate-appear
 				w-fit
-				max-w-full md:max-w-2/5
+				max-w-full sm:max-w-2/5
 				h-fit p-4 px-
 				bg-black/20 dark:bg-white/5
 				rounded-2xl

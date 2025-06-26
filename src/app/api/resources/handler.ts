@@ -1,6 +1,6 @@
 import path from "path"
 import fs from "fs"
-import { AnyResourceBuilder, ResourceBuilder, ResourceConfig, ResourceType } from "@api/lib/resource"
+import { AnyResourceBuilder, ResourceType } from "@api/lib/resource"
 import { ExerciseBuilder } from "@api/lib/exercise"
 
 const printEmojis: Record<ResourceType, string> = {
@@ -37,8 +37,7 @@ export class ResourceHandler {
 		return this.getCache()
 	}
 	async fetch(id: string) {
-		const cachedresource = this.cache.get(id)
-		if (cachedresource) return cachedresource
+		if (this.cache.has(id)) return this.cache.get(id)!
 		const module = await import(`./list/${id}`)
 		const resource = module.default as AnyResourceBuilder
 		this.cache.set(resource.id, resource)

@@ -6,7 +6,7 @@ import { User } from "@supabase/supabase-js"
 import { useAuthStateChange } from "@/db/util"
 
 export default function LogBox() {
-	const [user, setUser] = useState<User | null>(null)
+	const [user, setUser] = useState<User>()
 
 	useAuthStateChange(setUser)
 

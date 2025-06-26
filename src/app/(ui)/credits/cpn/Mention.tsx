@@ -44,7 +44,7 @@ export function Mention({ icon, name, href, background, padding, ultra, notround
 				width={70}
 				height={70}
 				alt={name}
-				className={`h-5 md:h-8 w-fit
+				className={`h-5 sm:h-8 w-fit
           aspect-square
           select-none
           group-hover:scale-105 duration-150
