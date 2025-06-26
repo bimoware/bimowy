@@ -56,7 +56,7 @@ export default function MobileSideBar({ lang }: { lang: LanguageCode }) {
 								height={200}
 							/>
 							<span className={`text-sm
-							${isActive ? "opacity-80" : "opacity-70"}`}>{name}</span>
+							${isActive ? "opacity-80 font-bold" : "opacity-70"}`}>{name}</span>
 						</Link>
 					})
 			}
