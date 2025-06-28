@@ -9,7 +9,7 @@ import TooltipContainer from "../../Tooltip"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
-const randoms = {
+const randomClasses = {
 	"rotations": [
 		'group-hover:-rotate-5',
 		'group-hover:rotate-5',
@@ -78,10 +78,10 @@ export default function SideBarIcon({
 						duration-150
 						w-8
 						${iconRounded && "rounded-full"}
-						${randomAt(randoms["scale"], name)}
-						${randomAt(randoms["rotations"], name)}
-						${randomAt(randoms["translationsX"], name)}
-						${randomAt(randoms["translationsY"], name)}`}
+						${randomAt(randomClasses["scale"], name)}
+						${randomAt(randomClasses["rotations"], name)}
+						${randomAt(randomClasses["translationsX"], name)}
+						${randomAt(randomClasses["translationsY"], name)}`}
 					src={loading && !isActive ? "/svgs/loading.svg" : icon}
 					alt={name}
 					width={100}
