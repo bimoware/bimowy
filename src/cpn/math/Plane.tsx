@@ -25,21 +25,21 @@ export const defaultStrokeProps: SVGAttributes<SVGElement> = {
 	strokeLinecap: "round"
 }
 export const randomFillClasses = [
-	"fill-blue-500",
-	"fill-fuchsia-500",
-	"fill-indigo-600",
-	"fill-orange-500",
+	"fill-purple-500",
 	"fill-red-500",
+	"fill-sky-500",
+	"fill-green-500",
 	"fill-amber-500",
+	"fill-indigo-600",
 ];
 
 export const randomStrokeClasses = [
-	"stroke-blue-500",
-	"stroke-fuchsia-500",
-	"stroke-indigo-600",
-	"stroke-orange-500",
+	"stroke-purple-500",
 	"stroke-red-500",
+	"stroke-sky-500",
+	"stroke-green-500",
 	"stroke-amber-500",
+	"stroke-indigo-600",
 ];
 
 type ElemProps = {
