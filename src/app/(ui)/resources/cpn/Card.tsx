@@ -22,7 +22,6 @@ const translations = [
 export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyResourceBuilder["serialize"]>) {
 	return (
 		<Link
-			{...(beta ? { title: "Beta" } : {})}
 			{...{ href }}
 			className={`
 				animate-appear
@@ -49,23 +48,23 @@ export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyR
 				select-none
 				flex gap-1"
 			>
+				<Image
+					src={{
+						[ResourceType.Exercise]: "/svgs/lab.svg",
+						[ResourceType.Note]: "/svgs/note.svg",
+						[ResourceType.Course]: "/svgs/course.svg"
+					}[type]}
+					alt={type}
+					width={30}
+					height={30}
+				/>
 				{
-					beta ? <Image
+					beta && <Image
 						src="/svgs/warning.svg"
 						alt="Beta"
 						width={30}
 						height={30}
-					/> : <>
-						<Image
-							src={{
-								[ResourceType.Exercise]: "/svgs/lab.svg",
-								[ResourceType.Note]: "/svgs/note.svg"
-							}[type]}
-							alt={type}
-							width={30}
-							height={30}
-						/>
-					</>
+					/>
 				}
 			</div>
 			<h4>{name}</h4>
@@ -94,6 +93,6 @@ export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyR
 					}
 				</div>
 			}
-		</Link>
+		</Link >
 	)
 }
