@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# github
+*.git
+
 # dependencies
 /node_modules
 /.pnp
@@ -40,10 +43,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# vs code
+# bimowy
 .vscode
-cache.txt
 /cache
-/test/
-
-*.git
+**/test/
