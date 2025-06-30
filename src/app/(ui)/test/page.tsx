@@ -7,14 +7,13 @@ export function generateMetadata() {
 
 export default function TestPage() {
 	return <div className="p-1
-	w-80
-	aspect-square
+	w-80 aspect-square
 	bg-white/5
 	rounded-2xl">
 		<Plane
 			ranges={{
-				x: { min: -7, max: 7 },
-				y: { min: -7, max: 7 }
+				x: { min: -4, max: 4 },
+				y: { min: -4, max: 4 }
 			}}
 			elems={[
 				{
