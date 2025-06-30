@@ -9,10 +9,10 @@ export type MetadataGenerationProps<T extends string[]> = {
 };
 
 export enum Tag {
-	Hidden = "hidden",
+	Desktop = "desktop",
+	Mobile = "mobile",
 	Beta = "beta",
-	Meta = "meta",
-	Mobile = "mobile"
+	Meta = "meta"
 }
 type RawRoute = {
 	tags?: Tag[],
@@ -34,7 +34,7 @@ export type Route = {
 export function getRoutes(user?: User) {
 	const routes: RawRoute[] = [
 		{
-			tags: [Tag.Mobile],
+			tags: [Tag.Desktop, Tag.Mobile],
 			id: 'home',
 			path: '',
 			icon: '/svgs/home.svg',
@@ -44,7 +44,7 @@ export function getRoutes(user?: User) {
 			}
 		},
 		{
-			tags: [Tag.Mobile],
+			tags: [Tag.Desktop, Tag.Mobile],
 			id: 'resources',
 			icon: '/svgs/resource.svg',
 			names: {
@@ -53,7 +53,7 @@ export function getRoutes(user?: User) {
 			}
 		},
 		{
-			tags: [Tag.Mobile, Tag.Hidden],
+			tags: [],
 			id: 'exercise',
 			icon: '/svgs/lab.svg',
 			names: {
@@ -62,34 +62,31 @@ export function getRoutes(user?: User) {
 			}
 		},
 		{
-			tags: [Tag.Mobile, Tag.Hidden],
+			tags: [],
 			id: "note",
 			icon: '/svgs/note.svg',
 			names: 'Notes'
 		},
 		{
-			tags: [Tag.Beta, Tag.Hidden],
-			id: "progress",
-			icon: '/svgs/progress.svg',
-			names: {
-				en: 'Progress',
-				fr: 'Progrès'
-			}
+			tags: [],
+			id: "course",
+			icon: '/svgs/course.svg',
+			names: { en: 'Course', fr: "Cours" }
 		},
 		{
-			tags: [Tag.Hidden, Tag.Meta],
+			tags: [],
 			id: 'test',
 			icon: '/svgs/test.svg',
 			names: 'Test'
 		},
 		{
-			tags: [Tag.Meta, Tag.Mobile],
+			tags: [Tag.Desktop, Tag.Mobile, Tag.Meta],
 			id: 'credits',
 			icon: '/svgs/code.svg',
 			names: 'Credits'
 		},
 		{
-			tags: [Tag.Meta, Tag.Hidden],
+			tags: [],
 			id: 'page-not-found',
 			icon: '/svgs/report.svg',
 			names: {
@@ -97,25 +94,26 @@ export function getRoutes(user?: User) {
 				fr: 'Page introuvable'
 			}
 		},
-		user
-			? {
-				tags: [Tag.Meta, Tag.Mobile],
-				id: 'user',
-				icon: user.user_metadata.avatar_url,
-				path: "user/" + user.user_metadata.user_name,
-				names: user.user_metadata.user_name,
-				iconRounded: true
-			}
-			: {
-				tags: [Tag.Meta, Tag.Mobile],
-				id: 'login',
-				icon: '/svgs/login.svg',
-				iconRounded: true,
-				names: {
-					en: 'Login',
-					fr: 'Connexion'
+		{
+			tags: [Tag.Meta, Tag.Mobile, Tag.Desktop],
+			...(user
+				? {
+					id: 'user',
+					icon: user.user_metadata.avatar_url,
+					path: "user/" + user.user_metadata.user_name,
+					names: user.user_metadata.user_name,
+					iconRounded: true
 				}
-			}
+				: {
+					id: 'login',
+					icon: '/svgs/login.svg',
+					iconRounded: true,
+					names: {
+						en: 'Login',
+						fr: 'Connexion'
+					}
+				})
+		}
 	]
 	return routes.map(fixRawRoute)
 }
