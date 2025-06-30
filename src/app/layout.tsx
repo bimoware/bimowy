@@ -10,7 +10,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import './style.css'
 import { generateMetadataUtil } from '@/utils/sidebar';
 import { LanguageCode } from '@/utils/locale';
-import SideBarContainer from '@cpn/sidebar/SideBarContainer';
+import SideBarContainer from '@cpn/sidebars/SideBarContainer';
 
 export async function generateMetadata() {
   return await generateMetadataUtil('home')
