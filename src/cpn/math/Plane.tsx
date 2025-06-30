@@ -17,7 +17,8 @@ export const defaultPolyProps: SVGAttributes<SVGElement> = {
 }
 
 export const defaultSVGProps: SVGAttributes<SVGElement> = {
-	viewBox: "0 0 100 100"
+	viewBox: "0 0 100 100",
+	opacity: 0.5
 }
 
 export const defaultStrokeProps: SVGAttributes<SVGElement> = {
