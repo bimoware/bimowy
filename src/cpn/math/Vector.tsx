@@ -52,6 +52,17 @@ export function Vector({ x1, x2, y1, y2, id, ranges }: { id: string } & VectorPr
 		[rightCoorX, rightCoorY]
 	].map(grps => grps.join(',')).join(' ');
 
+	// Label
+	const [biggestX, smallestX] = x2Coor > x1Coor ? [x2Coor, x1Coor] : [x1Coor, x2Coor]
+	const [biggestY, smallestY] = y2Coor > y1Coor ? [y2Coor, y1Coor] : [y1Coor, y2Coor]
+
+	const middleXCoor = smallestX + (biggestX - smallestX) / 2
+	const middleYCoor = smallestY + (biggestY - smallestY) / 2
+
+	const labelXCoor = middleXCoor - headLength * 1.5 * Math.cos(angleScreen + Math.PI / 4)
+	const labelYCoor = middleYCoor - headLength * 1.5 * -Math.sin(angleScreen + Math.PI / 4)
+
+	// --
 	const strokeColor = randomAt(randomStrokeClasses, id)
 	const fillColor = randomAt(randomFillClasses, id)
 
@@ -86,6 +97,22 @@ export function Vector({ x1, x2, y1, y2, id, ranges }: { id: string } & VectorPr
 				strokeWidth={1}
 				points={arrPoints}
 			/>
+			{/* Label */}
+
+			<text
+				{...defaultPolyProps}
+				stroke="white"
+				strokeWidth={1.5}
+				x={labelXCoor} y={labelYCoor}
+				fontSize={5}
+			>{id}</text>
+			<text
+				{...defaultPolyProps}
+				className={randomAt(randomFillClasses, id)}
+				strokeWidth={0}
+				x={labelXCoor} y={labelYCoor}
+				fontSize={5}
+			>{id}</text>
 		</svg>
 	</>
 }
