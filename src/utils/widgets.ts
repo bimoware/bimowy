@@ -1,5 +1,5 @@
-import TrigonometricCircle from "@cpn/TrigonometricCircle"
-import TrigonometricTable from "@cpn/TrigonometricTable"
+import TrigonometricCircle from "@cpn/math/TrigonometricCircle"
+import TrigonometricTable from "@cpn/math/TrigonometricTable"
 
 const ALL_WIDGETS = {
 	TrigonometricCircle,
