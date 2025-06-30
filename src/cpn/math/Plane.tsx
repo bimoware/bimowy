@@ -26,16 +26,20 @@ export const defaultStrokeProps: SVGAttributes<SVGElement> = {
 }
 export const randomFillClasses = [
 	"fill-blue-500",
-	"fill-fuchsia-600",
+	"fill-fuchsia-500",
+	"fill-indigo-600",
 	"fill-orange-500",
 	"fill-red-500",
+	"fill-amber-500",
 ];
 
 export const randomStrokeClasses = [
 	"stroke-blue-500",
-	"stroke-fuchsia-600",
+	"stroke-fuchsia-500",
+	"stroke-indigo-600",
 	"stroke-orange-500",
 	"stroke-red-500",
+	"stroke-amber-500",
 ];
 
 type ElemProps = {
