@@ -5,7 +5,8 @@ import { ExerciseBuilder } from "@api/lib/exercise"
 
 const printEmojis: Record<ResourceType, string> = {
 	"exercise": "🧪",
-	"note": "📄"
+	"note": "📄",
+	"course": "📦"
 }
 
 export class ResourceHandler {
