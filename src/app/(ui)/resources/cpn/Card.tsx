@@ -75,8 +75,7 @@ export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyR
 					</Latex>
 				</h5>
 			}
-
-			{
+			{/* {
 				tags && <div
 					className='flex gap-2 flex-wrap justify-center mt-1'>
 					{
@@ -92,7 +91,7 @@ export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyR
 						))
 					}
 				</div>
-			}
+			} */}
 		</Link >
 	)
 }
