@@ -6,7 +6,7 @@ export default function SideBarContainer({ children }: {
 	children: ReactNode
 }) {
 	return <div className="flex
-	w-full h-full">
+	w-full min-h-screen">
 		<DesktopSideBar />
 		<main className='w-full h-full
 		flex
