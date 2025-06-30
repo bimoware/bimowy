@@ -46,4 +46,3 @@ next-env.d.ts
 # bimowy
 .vscode
 /cache
-**/test/
