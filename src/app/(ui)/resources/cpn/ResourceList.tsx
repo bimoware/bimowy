@@ -28,6 +28,14 @@ const RESOURCE_TYPES = [
 			fr: "Exercises"
 		},
 		icon: "/svgs/lab.svg"
+	},
+	{
+		id: "course",
+		names: {
+			en: "Courses",
+			fr: "Cours"
+		},
+		icon: "/svg/course.svg"
 	}
 ] as const
 

@@ -3,7 +3,8 @@ import { GLOBAL_TAGS, TAG_ID } from "./tag";
 
 export enum ResourceType {
 	Exercise = "exercise",
-	Note = "note"
+	Note = "note",
+	Course = "course"
 }
 
 export interface ResourceConfig<T extends ResourceType> {
