@@ -1,7 +1,6 @@
 import { LanguageCode, LocaleRecord, toLocaleString } from "@/utils/locale"
 import { User } from "@supabase/supabase-js";
 import { getLocale } from "next-intl/server"
-import { Metadata } from "next";
 
 export type MetadataGenerationProps<T extends string[]> = {
 	params: Promise<{
@@ -75,15 +74,6 @@ export function getRoutes(user?: User) {
 			names: {
 				en: 'Progress',
 				fr: 'Progrès'
-			}
-		},
-		{
-			tags: [Tag.Beta, Tag.Hidden],
-			id: "psychology",
-			icon: '/svgs/psychology.svg',
-			names: {
-				en: 'Psychology',
-				fr: 'Psychologie'
 			}
 		},
 		{
