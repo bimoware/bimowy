@@ -1,5 +1,5 @@
 import { randomAt } from "@/utils/random";
-import { defaultSVGProps, defaultPolyProps, randomFillClasses, getBetweenPercentage, PlaneProps } from "./Plane";
+import { defaultSVGProps, defaultPolyProps, randomFillClasses, getBetweenPercentage, PlaneProps, randomStrokeClasses } from "./Plane";
 
 export type PointProps = {
 	type: "point",
@@ -24,5 +24,19 @@ export function Point({ x, y, id, ranges }: PointProps & PlaneProps) {
 			className={randomAt(randomFillClasses, id)}
 			stroke="white" strokeWidth={1}
 			r={2} />
-	</svg>;
+		<text
+			{...defaultPolyProps}
+			stroke="white"
+			strokeWidth={1.5}
+			x={xCoor + 2.5} y={yCoor - 2.5}
+			fontSize={5}
+		>{id}</text>
+		<text
+			{...defaultPolyProps}
+			className={randomAt(randomFillClasses, id)}
+			strokeWidth={0}
+			x={xCoor + 2.5} y={yCoor - 2.5}
+			fontSize={5}
+		>{id}</text>
+	</svg >;
 }
