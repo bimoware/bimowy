@@ -39,7 +39,7 @@ export function Vector({ x1, x2, y1, y2, id, ranges }: { id: string } & VectorPr
 	const rightAngleScreen = angleScreen - diffAngle;
 
 	const vectorLength = Math.hypot(x2Coor - x1Coor, y2Coor - y1Coor);
-	const headLength = roundBetween(2, vectorLength * 1 / 5, 5);
+	const headLength = roundBetween(3, vectorLength * 1 / 5, 5);
 
 	const leftCoorX = x2Coor + headLength * Math.cos(leftAngleScreen);
 	const leftCoorY = y2Coor + headLength * Math.sin(leftAngleScreen);
@@ -53,21 +53,23 @@ export function Vector({ x1, x2, y1, y2, id, ranges }: { id: string } & VectorPr
 	].map(grps => grps.join(',')).join(' ');
 
 	// Label
+	const sideAngle = angleScreen + Math.PI / 4
+
 	const [biggestX, smallestX] = x2Coor > x1Coor ? [x2Coor, x1Coor] : [x1Coor, x2Coor]
 	const [biggestY, smallestY] = y2Coor > y1Coor ? [y2Coor, y1Coor] : [y1Coor, y2Coor]
 
 	const middleXCoor = smallestX + (biggestX - smallestX) / 2
 	const middleYCoor = smallestY + (biggestY - smallestY) / 2
 
-	const labelXCoor = middleXCoor - headLength * 1.5 * Math.cos(angleScreen + Math.PI / 4)
-	const labelYCoor = middleYCoor - headLength * 1.5 * -Math.sin(angleScreen + Math.PI / 4)
+	const labelXCoor = middleXCoor - Math.max(6, headLength) * Math.cos(sideAngle)
+	const labelYCoor = middleYCoor + Math.max(6, headLength) * Math.sin(sideAngle)
 
 	// --
 	const strokeColor = randomAt(randomStrokeClasses, id)
 	const fillColor = randomAt(randomFillClasses, id)
 
 	return <>
-		<svg {...defaultSVGProps}  {...{ id }}>
+		<svg {...defaultSVGProps}  {...{ id }} opacity={0.9}>
 
 			{/* Background */}
 			<line
@@ -101,18 +103,20 @@ export function Vector({ x1, x2, y1, y2, id, ranges }: { id: string } & VectorPr
 
 			<text
 				{...defaultPolyProps}
-				stroke="white"
-				strokeWidth={1.5}
+				stroke="white" strokeWidth={1.5}
 				x={labelXCoor} y={labelYCoor}
-				fontSize={5}
+				fontSize={8}
+				textAnchor="middle"
 			>{id}</text>
 			<text
 				{...defaultPolyProps}
 				className={randomAt(randomFillClasses, id)}
 				strokeWidth={0}
 				x={labelXCoor} y={labelYCoor}
-				fontSize={5}
+				fontSize={8}
+				textAnchor="middle"
 			>{id}</text>
+
 		</svg>
 	</>
 }
