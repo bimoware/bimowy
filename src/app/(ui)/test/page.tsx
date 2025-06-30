@@ -41,6 +41,12 @@ export default function TestPage() {
 					x2: 2, y2: 3
 				},
 				{
+					type: "vector",
+					id: "y",
+					x1: -1, y1: -1,
+					x2: -4, y2: 0
+				},
+				{
 					type: "point",
 					id: "A",
 					x: 2,
