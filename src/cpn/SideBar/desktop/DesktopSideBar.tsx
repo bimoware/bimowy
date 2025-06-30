@@ -1,10 +1,11 @@
 "use client"
-import { LanguageCode } from "@/utils/locale"
+import { LanguageCode, useLanguage } from "@/utils/locale"
 import { getRoutes, Route, split, Tag } from "@/utils/sidebar"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
 import { useAuthStateChange, useAuthUser } from "@/db/util"
 
-export default function DesktopSideBar({ lang }: { lang: LanguageCode }) {
+export default function DesktopSideBar() {
+	const lang = useLanguage()
 	const [user, setUser] = useAuthUser()
 
 	const routes = getRoutes(user)

@@ -1,15 +1,13 @@
 import { ReactNode } from "react";
-import { LanguageCode } from "@/utils/locale";
 import DesktopSideBar from "./desktop/DesktopSideBar";
 import MobileSideBar from "./mobile/MobileSideBar";
 
-export default function SideBarContainer({ children, lang }: {
-	children: ReactNode,
-	lang: LanguageCode
+export default function SideBarContainer({ children }: {
+	children: ReactNode
 }) {
 	return <div className="flex
 	w-full h-full">
-		<DesktopSideBar {...{ lang }} />
+		<DesktopSideBar />
 		<main className='w-full h-full
 		flex
 		justify-center p-3
@@ -17,6 +15,6 @@ export default function SideBarContainer({ children, lang }: {
 		ml-0 sm:ml-24'>
 			{children}
 		</main>
-		<MobileSideBar {...{ lang }} />
+		<MobileSideBar />
 	</div>
 }

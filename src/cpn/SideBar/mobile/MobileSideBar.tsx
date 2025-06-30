@@ -1,14 +1,14 @@
 "use client"
 import { useAuthUser } from "@/db/util";
-import { LanguageCode } from "@/utils/locale";
+import { LanguageCode, useLanguage } from "@/utils/locale";
 import { getRoutes, Route, Tag } from "@/utils/sidebar";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
 
-export default function MobileSideBar({ lang }: { lang: LanguageCode }) {
+export default function MobileSideBar() {
+	const lang = useLanguage()
 	const [user] = useAuthUser()
-
 	const routes = getRoutes(user)
 	const isVisible = (route: Route) => !route.tags.includes(Tag.Hidden)
 		&& route.tags.includes(Tag.Mobile)

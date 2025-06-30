@@ -29,7 +29,7 @@ export default async function RootLayout({
     <html lang={lang} className={outfit.className}>
       <body className='w-screen min-h-screen'>
         <NextIntlClientProvider>
-          <SideBarContainer {...{ lang }}>
+          <SideBarContainer>
             {children}
           </SideBarContainer>
         </NextIntlClientProvider>
