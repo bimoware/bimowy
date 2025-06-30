@@ -1,6 +1,6 @@
 "use client";
 import { toRounded } from "@api/lib/misc";
-import { angles } from "@/utils/angles";
+import { angles } from "./util";
 import { CSSProperties, SVGAttributes, useEffect, useRef, useState } from "react";
 
 export default function TrigonometricCircle() {

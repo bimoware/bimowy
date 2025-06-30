@@ -1,7 +1,7 @@
 "use client"
 import { useAuthUser } from "@/db/util";
-import { LanguageCode, useLanguage } from "@/utils/locale";
-import { getRoutes, Route, Tag } from "@/utils/sidebar";
+import { useLanguage } from "@/utils/locale";
+import { getRoutes, Route, Tag } from "@cpn/sidebars/main";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
@@ -10,8 +10,7 @@ export default function MobileSideBar() {
 	const lang = useLanguage()
 	const [user] = useAuthUser()
 	const routes = getRoutes(user)
-	const isVisible = (route: Route) => !route.tags.includes(Tag.Hidden)
-		&& route.tags.includes(Tag.Mobile)
+	const isVisible = (route: Route) => route.tags.includes(Tag.Mobile)
 	const segments = useSelectedLayoutSegments()
 	const pathParts = [...segments].filter(p => !p.includes('('))
 

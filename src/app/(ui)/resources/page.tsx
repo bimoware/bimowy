@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getLanguage } from "@/utils/locale";
 import { resourceHandler } from '@api/main'
-import { generateMetadataUtil } from "@/utils/sidebar";
+import { generateMetadataUtil } from "@cpn/sidebars/main";
 import ResourceList from "./cpn/ResourceList";
 
 

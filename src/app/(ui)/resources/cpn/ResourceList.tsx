@@ -5,7 +5,7 @@ import { Card } from "./Card"
 import { useLanguage } from "@/utils/locale"
 import { useState } from "react"
 import ToggleIcon from "@icons/ToggleIcon"
-import { generateMetadataUtil } from "@/utils/sidebar"
+import { generateMetadataUtil } from "@cpn/sidebars/main"
 
 export async function generateMetadata() {
 	return generateMetadataUtil('resources')

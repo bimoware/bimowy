@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { Mention } from './cpn/Mention';
 import { GroupLine } from './cpn/GroupLine';
 import { EasterEggHeart } from './cpn/EasterEggHeart';
-import { generateMetadataUtil } from '@/utils/sidebar';
+import { generateMetadataUtil } from '@cpn/sidebars/main';
 
 export async function generateMetadata() {
   return await generateMetadataUtil('credits')

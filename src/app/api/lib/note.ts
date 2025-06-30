@@ -1,4 +1,4 @@
-import Widgets from "@/utils/widgets";
+import Widgets from "@cpn/widgets";
 import { LanguageCode, LocaleRecord } from "@/utils/locale";
 import { ResourceBuilder, ResourceType, ResourceConfig } from "./resource";
 

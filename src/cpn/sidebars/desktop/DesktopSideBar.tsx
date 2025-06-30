@@ -1,6 +1,6 @@
 "use client"
 import { LanguageCode, useLanguage } from "@/utils/locale"
-import { getRoutes, Route, split, Tag } from "@/utils/sidebar"
+import { getRoutes, Route, split, Tag } from "@cpn/sidebars/main"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
 import { useAuthStateChange, useAuthUser } from "@/db/util"
 
@@ -9,8 +9,8 @@ export default function DesktopSideBar() {
 	const [user, setUser] = useAuthUser()
 
 	const routes = getRoutes(user)
+	const isVisible = (route: Route) => route.tags.includes(Tag.Desktop)
 	const routeGroups = split(routes, (route) => !route.tags.includes(Tag.Meta))
-	const isVisible = (route: Route) => !route.tags.includes(Tag.Hidden)
 
 	useAuthStateChange(setUser)
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { Route, Tag } from "@/utils/sidebar"
+import { Route, Tag } from "@cpn/sidebars/main"
 import { randomAt } from "@/utils/random"
 import Image from "next/image"
 import Link from "next/link"

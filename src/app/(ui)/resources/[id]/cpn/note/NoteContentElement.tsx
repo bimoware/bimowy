@@ -1,6 +1,6 @@
 import { NoteBloc } from "@api/lib/note";
 import { LanguageCode } from "@/utils/locale";
-import Widgets from "@/utils/widgets";
+import Widgets from "@cpn/widgets";
 import Latex from "react-latex-next";
 
 export default async function NoteContentElement({ bloc, locale }: {

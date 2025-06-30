@@ -8,7 +8,7 @@ import { Viewport } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import './style.css'
-import { generateMetadataUtil } from '@/utils/sidebar';
+import { generateMetadataUtil } from '@cpn/sidebars/main';
 import { LanguageCode } from '@/utils/locale';
 import SideBarContainer from '@cpn/sidebars/SideBarContainer';
 
