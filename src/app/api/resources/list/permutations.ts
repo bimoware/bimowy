@@ -32,7 +32,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 		return [n, k]
 	},
 
-	generateContext([n, k], lang) {
+	generateContext([n, k]) {
 		return [
 			{
 				type: "p",

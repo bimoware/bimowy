@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:src/utils/random.ts
 export function randomAt<T>(list: T[], id: string): T {
 	const totalCharCode = id
 		.split('')
@@ -5,6 +6,11 @@ export function randomAt<T>(list: T[], id: string): T {
 	return list[totalCharCode % list.length]
 }
 // Random
+=======
+export function factorial(n: number): number {
+	return n * (n < 2 ? 1 : factorial(n - 1))
+}
+>>>>>>> Stashed changes:src/lib/resources/misc.ts
 
 export function randomFromInterval(
 	min: number,
@@ -16,12 +22,12 @@ export function randomFromInterval(
 	return value;
 }
 
-export function randomFrom(arr: any[]) {
+export function randomFrom(arr: string[]) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
 // Exercises
 export function randomNonZeroInt(min: number, max: number) {
-	let pool = [];
+	const pool = [];
 	for (let i = min; i <= max; i++) {
 		if (i !== 0) pool.push(i);
 	}

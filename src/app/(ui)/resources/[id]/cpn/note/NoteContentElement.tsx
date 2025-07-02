@@ -11,7 +11,6 @@ export default async function NoteContentElement({ bloc, locale }: {
 		case 'text':
 			return bloc.texts.map((t, i) => <Latex key={i}>{t}</Latex>)
 		case 'widget':
-			bloc.id
 			const Widget = Widgets[bloc.id]
 			return <Widget {...{ locale }} />
 		default:

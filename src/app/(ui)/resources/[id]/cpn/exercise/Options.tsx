@@ -1,11 +1,15 @@
+<<<<<<< Updated upstream
 import { ExerciseBuilder } from "@api/lib/exercise";
 import { APIOption, OptionType } from "@api/lib/option";
+=======
+import { APIOption, ExerciseBuilder, OptionType } from "@/lib/resources";
+>>>>>>> Stashed changes
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 	apiOptions?: ReturnType<ExerciseBuilder["serialize"]>["options"],
-	userOptionValues?: Record<string, any>,
-	setUserOptionValues: Dispatch<SetStateAction<Record<string, any>>>
+	userOptionValues?: Record<string, unknown>,
+	setUserOptionValues: Dispatch<SetStateAction<Record<string, unknown>>>
 }) {
 	if (!apiOptions || !userOptionValues) return;
 	return Object.entries<APIOption>(apiOptions).map(([id, option]) => {
@@ -14,7 +18,7 @@ export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 			case OptionType.Number:
 				const numberMin = option.min
 				const numberMax = option.max
-				const numberValue = userOptionValues[id] as number
+				const numberValue = userOptionValues[id] as unknown as number
 				return <OptionDiv key={id}>
 					<span>{title}:</span>
 					<input
@@ -31,45 +35,32 @@ export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 							})
 						}} />
 				</OptionDiv>
-			// case OptionType.Boolean:
-			// 	const booleanValue = userOptionValues[id] as boolean
-			// 	return <OptionDiv key={id}>
-			// 		<span>{title}? </span>
-			// 		<Togglable
-			// 			checked={booleanValue}
-			// 			onChange={() => {
-			// 				setUserOptionValues(prev => {
-			// 					const newUserOptions = { ...prev }
-			// 					newUserOptions[id] = !prev[id]
-			// 					return newUserOptions;
-			// 				})
-			// 			}}
-			// 		/>
-			// 	</OptionDiv>
 			case OptionType.Interval:
 				const intervalValue = userOptionValues[id] as [number, number]
 				return <OptionDiv key={id}>
 					<span>{title}: </span>
 					<input
-						type="number"
+						type="text"
 						value={intervalValue[0]}
 						onChange={(e) => {
-							let value = Number(e.target.value);
+							const value = Number(e.target.value);
 							if (value < intervalValue[1]) setUserOptionValues(prev => {
 								const newUserOptions = { ...prev }
-								newUserOptions[id] = [value, prev[id][1]]
+								const previousInterval = prev[id] as [number, number]
+								newUserOptions[id] = [value, previousInterval[1]]
 								return newUserOptions;
 							})
 						}} />
 					<span> - </span>
 					<input
-						type="number"
+						type="text"
 						value={intervalValue[1]}
 						onChange={(e) => {
 							const value = Number(e.target.value);
 							if (value > intervalValue[0]) setUserOptionValues(prev => {
 								const newUserOptions = { ...prev }
-								newUserOptions[id] = [prev[id][0], value]
+								const previousInterval = prev[id] as [number, number]
+								newUserOptions[id] = [previousInterval[0], value]
 								return newUserOptions;
 							})
 						}} />
@@ -94,7 +85,7 @@ export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 							onClick={() => {
 								setUserOptionValues(prev => {
 									const newUserOptions = { ...prev }
-									const currentValues = [...newUserOptions[id]]
+									const currentValues = newUserOptions[id] as string[]
 
 									if (currentValues.includes(o)) {
 										newUserOptions[id] = currentValues.filter(option => option !== o)
@@ -146,5 +137,7 @@ function OptionDiv({ children }: { children: ReactNode }) {
 	rounded-2xl p-2 px-5
 	flex items-center gap-2
 	w-fit
-	text-4xl">{children}</div>
+	text-4xl">
+		{children}
+	</div>
 }

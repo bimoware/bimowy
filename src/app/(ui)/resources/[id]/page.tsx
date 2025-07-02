@@ -1,6 +1,11 @@
+<<<<<<< Updated upstream
 import { ResourceType } from "@api/lib/resource"
 import { resourceHandler } from "@api/main"
 import { getLanguage } from "@/utils/locale"
+=======
+import { ResourceType } from "@/lib/resources"
+import { getLanguage } from "@/lib/locale"
+>>>>>>> Stashed changes
 import { generateMetadataUtil } from "@cpn/sidebars/main"
 import ExercisePage from "./cpn/exercise/ExercisePage"
 import { ExerciseBuilder } from "@api/lib/exercise"
@@ -8,13 +13,18 @@ import { NoteBuilder } from "@api/lib/note"
 import NotePage from "./cpn/note/NotePage"
 import { CourseBuilder } from "@api/lib/course"
 import CoursePage from "./cpn/course/CoursePage"
+import { resourcesManager } from "@/server/resourcesManager";
 
 export async function generateMetadata({ params }: {
 	params: Promise<{ id: string }>
 }) {
 	const lang = await getLanguage()
 	const { id } = await params
+<<<<<<< Updated upstream
 	const resource = await resourceHandler.fetch(id)
+=======
+	const resource = await resourcesManager.fetch(id)
+>>>>>>> Stashed changes
 	return await generateMetadataUtil(resource.type, resource.names[lang])
 }
 
@@ -23,7 +33,11 @@ export default async function ResourcePage({ params }: {
 }) {
 	const locale = await getLanguage()
 	const { id } = await params
+<<<<<<< Updated upstream
 	const resource = await resourceHandler.fetch(id)
+=======
+	const resource = await resourcesManager.fetch(id)
+>>>>>>> Stashed changes
 	switch (resource.type) {
 		case ResourceType.Exercise:
 			const exerciseData = resource.serialize(locale) as ReturnType<ExerciseBuilder["serialize"]>

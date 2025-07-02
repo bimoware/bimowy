@@ -1,6 +1,7 @@
 import { Exercise } from "./ExercisePage"
 
 type ExerciseInputCorrection = { emoji: string, score: number, extra?: string }
+
 export function getExerciseCorrections(exercises: Exercise) {
 	const data = {
 		total: 0,

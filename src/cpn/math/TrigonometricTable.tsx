@@ -1,10 +1,20 @@
+<<<<<<< Updated upstream
 import { LanguageCode } from "@/utils/locale";
 import { angles } from "./util";
 import 'katex/dist/katex.min.css';
 import Latex from 'react-latex-next';
 import { toRounded } from "@api/lib/misc";
+=======
+import { useLanguage } from "@/lib/locale";
+import { angles } from "./util";
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next';
+import { toRounded } from "@/lib/extra";
+>>>>>>> Stashed changes
 
-export default function TrigonometricTable({ locale }: { locale: LanguageCode }) {
+export type TrigonometricTableProps = object
+export default function TrigonometricTable() {
+	const locale = useLanguage()
 	return <table className="table-auto">
 		<thead>
 			<tr>

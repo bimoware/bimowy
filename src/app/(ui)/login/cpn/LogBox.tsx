@@ -16,7 +16,7 @@ export default function LogBox() {
 			{
 				!user
 					? <Login />
-					: <Logout {...{ user }} />
+					: <Logout />
 			}
 		</div>
 	)

@@ -1,8 +1,14 @@
 "use client";
+<<<<<<< Updated upstream
 import { toRounded } from "@api/lib/misc";
+=======
+
+import { toRounded } from "@/lib/extra"
+>>>>>>> Stashed changes
 import { angles } from "./util";
 import { CSSProperties, SVGAttributes, useEffect, useRef, useState } from "react";
 
+export type TrigonometricCircleProps = object
 export default function TrigonometricCircle() {
 	const [angle, setAngle] = useState(0);
 	const path = getPath(angle);

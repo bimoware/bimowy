@@ -3,7 +3,7 @@ import { CourseBuilder } from "@api/lib/course";
 import Image from "next/image";
 
 export default function CoursePage({
-	id, desc, name, content
+	content
 }: ReturnType<CourseBuilder["serialize"]> & { locale: LanguageCode }) {
 	if (!content.length) return <h1>Course still empty...</h1>
 	return <div className="w-full h-full flex">

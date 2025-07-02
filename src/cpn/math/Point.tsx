@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 import { randomAt } from "@/utils/random";
 import { defaultSVGProps, defaultPolyProps, randomFillClasses, getBetweenPercentage, PlaneProps, randomStrokeClasses } from "./Plane";
+=======
+import { randomAt } from "@/lib/extra";
+import { defaultSVGProps, defaultPolyProps, randomFillClasses, getBetweenPercentage, PlaneProps } from "./Plane";
+>>>>>>> Stashed changes
 
 export type PointProps = {
 	type: "point",

@@ -1,8 +1,13 @@
+<<<<<<< Updated upstream
 import { supabase } from "@/db/client";
 import { User } from "@supabase/supabase-js";
 import { FormEvent } from "react";
+=======
+import { FormEvent } from "react";
+import { supabaseClient } from "@/lib/supabase";
+>>>>>>> Stashed changes
 
-export default function Logout({ user }: { user: User }) {
+export default function Logout() {
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()

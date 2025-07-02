@@ -6,9 +6,16 @@ import {
 import {
 	DEFAULT_N_QUESTIONS_ID,
 	DEFAULT_N_QUESTIONS_OPTION, UserOptions
+<<<<<<< Updated upstream
 } from "@api/lib/option"
 import { NextError, NextSuccess } from "@api/lib/routing"
 import { isValidLang } from "@/utils/locale"
+=======
+} from "@/lib/resources"
+import { NextError, NextSuccess } from "@api/routing"
+import { isValidLang } from "@/lib/locale"
+import { resourcesManager } from "@/server/resourcesManager"
+>>>>>>> Stashed changes
 
 export async function POST(
 	req: NextRequest,
@@ -20,7 +27,11 @@ export async function POST(
 	// ExerciseId
 	const { id: exerciseId } = await params
 	if (!exerciseId) throw NextError("No ID provided.")
+<<<<<<< Updated upstream
 	const exercise = await resourceHandler.fetch(exerciseId)! as ExerciseBuilder
+=======
+	const exercise = await resourcesManager.fetch(exerciseId)! as ExerciseBuilder
+>>>>>>> Stashed changes
 
 	// language
 	const lang = searchParams.get("lang")
@@ -28,7 +39,7 @@ export async function POST(
 	if (!isValidLang(lang)) throw NextError("Invalid lang")
 
 	// Options
-	let options: UserOptions = await req.json()
+	const options: UserOptions = await req.json()
 
 	// Problems
 	const problem = exercise.validateOptions(options)

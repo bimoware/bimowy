@@ -3,6 +3,10 @@ import { getLanguage } from "@/utils/locale";
 import { resourceHandler } from '@api/main'
 import { generateMetadataUtil } from "@cpn/sidebars/main";
 import ResourceList from "./cpn/ResourceList";
+<<<<<<< Updated upstream
+=======
+import { resourcesManager } from "@/server/resourcesManager";
+>>>>>>> Stashed changes
 
 
 export async function generateMetadata() {
@@ -11,7 +15,7 @@ export async function generateMetadata() {
 export default async function ResourcesPage() {
 	const t = await getTranslations('ResourcesPage')
 	const lang = await getLanguage()
-	const resources = (await resourceHandler.fetchAll())
+	const resources = (await resourcesManager.fetchAll())
 		.map(r => r.serialize(lang))
 
 	return <div>

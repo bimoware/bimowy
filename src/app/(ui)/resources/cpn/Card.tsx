@@ -1,8 +1,13 @@
 import { randomAt } from "@/utils/random"
 import Image from "next/image"
 import Link from "next/link"
+<<<<<<< Updated upstream
 import Latex from "react-latex-next"
 import { AnyResourceBuilder, ResourceType } from "@api/lib/resource"
+=======
+import { AnyResourceBuilder, ResourceType } from "@/lib/resources"
+import Latex from "react-latex-next"
+>>>>>>> Stashed changes
 import "katex/dist/katex.min.css"
 
 const rotations = [
@@ -19,7 +24,7 @@ const translations = [
 	'hover:-translate-y-1'
 ]
 
-export function Card({ id, beta, href, name, desc, tags, type }: ReturnType<AnyResourceBuilder["serialize"]>) {
+export function Card({ id, beta, href, name, desc, type }: ReturnType<AnyResourceBuilder["serialize"]>) {
 	return (
 		<Link
 			{...{ href }}

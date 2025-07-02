@@ -8,7 +8,7 @@ export default new CourseBuilder({
 		en: "Intro to 2D planes",
 		fr: "Intro au plan 2D"
 	},
-	getContent(lang) {
+	getContent() {
 		return [
 			// {
 			// 	id: "points",

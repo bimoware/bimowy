@@ -31,7 +31,7 @@ export default new ExerciseBuilder<
 			randomFromInterval(...interval)
 		]
 	},
-	generateContext([n1, n2], lang) {
+	generateContext([n1, n2]) {
 		return [
 			{
 				type: "p",

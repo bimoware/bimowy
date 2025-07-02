@@ -1,7 +1,12 @@
+<<<<<<< Updated upstream:src/app/api/resources/list/vector-norm.ts
 import { ExerciseBuilder } from "@api/lib/exercise"
 import { toRounded } from "@api/lib/misc"
 import { IntervalOption } from "@api/lib/option"
 import { randomFromInterval } from "@/utils/random"
+=======
+import { toRounded } from "@/lib/extra"
+import { ExerciseBuilder, IntervalOption, randomFromInterval } from "@/lib/resources"
+>>>>>>> Stashed changes:src/lib/resources/list/vector-norm.ts
 
 type Seed = [x: number, y: number]
 type Answers = { answer: number }

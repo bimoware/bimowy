@@ -64,7 +64,7 @@ export function getBetweenPercentage(min: number, max: number, n: number) {
 
 export default function Plane({ elems = [], ranges }: PlaneProps) {
 	return <div className="w-full h-full relative
-	*:absolute *:w-full *:h-full
+	*:absolute *:w-full *:h-full min-h-52
 	pb-2">
 		<PlaneBackground {...{ ranges }} />
 		<X_Axis {...{ ranges }} />

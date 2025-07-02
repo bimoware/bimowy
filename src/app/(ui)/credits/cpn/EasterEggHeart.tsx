@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import useSound from "use-sound";
 import { Mention } from "./Mention";
 import { GroupLine } from "./GroupLine";
@@ -32,14 +32,12 @@ export function EasterEggHeart() {
 			<span>{t('by')}</span>
 			<Mention icon="/media/pfp.jpeg" name="bimoware" href="https://github.com/bimoware" />
 		</>,
-		...(!easterEggEnabled ? [] :
-			[
-				<span>{t('sorry_easter_egg')}</span>,
-				<video width="238" height="512" autoPlay preload="none" loop>
-					<source src="/media/blackbabydance.mp4" type="video/mp4" />
-					<span>{t('no_javascript')}</span>
-				</video>
-			]
-		)
-	].map((group, i) => <GroupLine key={"easteregg-" + i}> {group}</GroupLine>)
+		easterEggEnabled && <span>{t('sorry_easter_egg')}</span>,
+		easterEggEnabled && <video width="238" height="512" autoPlay preload="none" loop>
+			<source src="/media/blackbabydance.mp4" type="video/mp4" />
+			<span>{t('no_javascript')}</span>
+		</video>
+	]
+		.filter(Boolean)
+		.map((group, i) => <GroupLine key={"easteregg-" + i}> {group}</GroupLine>)
 }

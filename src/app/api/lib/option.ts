@@ -15,8 +15,8 @@ export type BaseOptionConfig = {
 };
 
 export abstract class OptionBase<
-	T extends OptionType,
-	C extends BaseOptionConfig
+	T extends OptionType = OptionType,
+	C extends BaseOptionConfig = BaseOptionConfig
 > {
 	constructor(
 		public type: T,
@@ -32,7 +32,7 @@ export abstract class OptionBase<
 }
 
 // Opts (Options) is a record w/ keys=option IDs & values=OptType
-export type OptsType = Record<string, OptionBase<any, any>>
+export type OptsType = Record<string, OptionBase>
 
 
 // User
@@ -74,7 +74,9 @@ type RadioConfig<T> = BaseOptionConfig & {
 	defaultValue: T;
 };
 
-export class RadioOption<T extends AllowedRadioOptionType> extends OptionBase<
+export class RadioOption<
+	T extends AllowedRadioOptionType = AllowedRadioOptionType
+> extends OptionBase<
 	OptionType.Radio, RadioConfig<T>
 > {
 	constructor(public config: RadioConfig<T>) {
@@ -99,7 +101,9 @@ type CheckboxesConfig<T> = BaseOptionConfig & {
 	options: T[];
 };
 
-export class CheckboxesOption<T> extends OptionBase<
+export class CheckboxesOption<
+	T = string
+> extends OptionBase<
 	OptionType.Checkboxes, CheckboxesConfig<T>
 > {
 	constructor(public config: CheckboxesConfig<T>) {
@@ -109,10 +113,10 @@ export class CheckboxesOption<T> extends OptionBase<
 // ..
 export type APIOption = ReturnType<
 	(NumberOption |
-		RadioOption<any> |
+		RadioOption |
 		IntervalOption |
 		BooleanOption |
-		CheckboxesOption<any>)["serialize"]
+		CheckboxesOption)["serialize"]
 >;
 
 export type APIOptions = Record<string, APIOption>;
