@@ -1,20 +1,14 @@
-import { LocaleRecord, LanguageCode } from "@/utils/locale";
+import { LocaleRecord, LanguageCode } from "@/lib/locale";
 import {
 	ExtractDefaultValueFromOptions,
 	DEFAULT_N_QUESTIONS_ID,
 	DEFAULT_N_QUESTIONS_OPTION,
 	OptsType
 } from "./option";
-import { ContextSection } from "./context";
 import { ResourceBuilder, ResourceConfig, ResourceType } from "./resource";
 import ALL_WIDGETS from "@cpn/widgets";
 import React from "react";
 
-<<<<<<< Updated upstream:src/app/api/lib/exercise.ts
-<<<<<<< Updated upstream:src/app/api/lib/exercise.ts
-=======
-=======
->>>>>>> Stashed changes:src/lib/resources/builders/exercise.ts
 export type ContextString = {
 	type: "text";
 	text: string;
@@ -35,7 +29,6 @@ export type ContextWidget<
 export type ContextElement = ContextString | ContextInput
 export type ContextSection = ContextParagraph | ContextWidget<keyof typeof ALL_WIDGETS>
 
->>>>>>> Stashed changes:src/lib/resources/builders/exercise.ts
 // Seed means the source array that contains the values
 // so we know how did the randomly generated exercise turn out
 // Eg. If the exercise was addition & the seed was [8,4], we know what the exercise was 8 + 4

@@ -1,6 +1,6 @@
 "use client"
-import { useAuthUser } from "@/db/util";
-import { useLanguage } from "@/utils/locale";
+import { useAuthUser } from "@/lib/supabase";
+import { useLanguage } from "@/lib/locale";
 import { getRoutes, Route, Tag } from "@cpn/sidebars/main";
 import Image from "next/image";
 import Link from "next/link";

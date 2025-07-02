@@ -1,12 +1,4 @@
-<<<<<<< Updated upstream:src/app/api/lib/note.ts
-<<<<<<< Updated upstream:src/app/api/lib/note.ts
-import Widgets from "@cpn/widgets";
-import { LanguageCode, LocaleRecord } from "@/utils/locale";
-=======
-=======
->>>>>>> Stashed changes:src/lib/resources/builders/note.ts
 import { LanguageCode, LocaleRecord } from "@/lib/locale";
->>>>>>> Stashed changes:src/lib/resources/builders/note.ts
 import { ResourceBuilder, ResourceType, ResourceConfig } from "./resource";
 import ALL_WIDGETS from "@cpn/widgets";
 

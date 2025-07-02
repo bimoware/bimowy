@@ -1,11 +1,11 @@
 "use client"
 
 import { Route, Tag } from "@cpn/sidebars/main"
-import { randomAt } from "@/utils/random"
+import { randomAt } from "@/lib/extra"
 import Image from "next/image"
 import Link from "next/link"
 import { useSelectedLayoutSegments } from 'next/navigation'
-import TooltipContainer from "../../Tooltip"
+import TooltipContainer from "@/cpn/Tooltip"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 

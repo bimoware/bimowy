@@ -1,5 +1,5 @@
-import { LanguageCode } from "@/utils/locale";
-import { CourseBuilder } from "@api/lib/course";
+import { LanguageCode } from "@/lib/locale";
+import { CourseBuilder } from "@/lib/resources";
 import Image from "next/image";
 
 export default function CoursePage({

@@ -1,19 +1,11 @@
-<<<<<<< Updated upstream:src/db/util.ts
-<<<<<<< Updated upstream:src/db/util.ts
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { supabase } from "./client";
-=======
-=======
->>>>>>> Stashed changes:src/lib/supabase/util.ts
 import React, { Dispatch, SetStateAction } from "react";
 import { supabaseClient } from "./client";
->>>>>>> Stashed changes:src/lib/supabase/util.ts
 import { User } from "@supabase/supabase-js";
 
 export function useAuthStateChange(setUser: Dispatch<SetStateAction<User | undefined>>) {
 	return React.useEffect(() => {
 
-		const { data: authListener } = supabase.auth.onAuthStateChange(
+		const { data: authListener } = supabaseClient.auth.onAuthStateChange(
 			(_, session) => {
 				setUser(session?.user);
 			}
@@ -28,7 +20,7 @@ export function useAuthUser() {
 }
 
 export async function getAuthUser() {
-	const user = await supabase.auth.getUser()
+	const user = await supabaseClient.auth.getUser()
 	return user.data.user
 }
 

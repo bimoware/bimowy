@@ -1,5 +1,5 @@
-import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@/utils/locale";
-import { GLOBAL_TAGS, TAG_ID } from "./tag";
+import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@/lib/locale";
+import { GLOBAL_TAGS, TAG_ID } from "../tag";
 
 export enum ResourceType {
 	Exercise = "exercise",

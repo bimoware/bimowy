@@ -1,17 +1,5 @@
-<<<<<<< Updated upstream:src/app/api/resources/list/discount.ts
-<<<<<<< Updated upstream:src/app/api/resources/list/discount.ts
-import { ExerciseBuilder } from "@api/lib/exercise"
-import { toRounded } from "@api/lib/misc"
-import { IntervalOption } from "@api/lib/option"
-import { randomFromInterval } from "@/utils/random"
-=======
 import { toRounded } from "@/lib/extra"
 import { ExerciseBuilder, IntervalOption, randomFromInterval } from "@/lib/resources"
->>>>>>> Stashed changes:src/lib/resources/list/discount.ts
-=======
-import { toRounded } from "@/lib/extra"
-import { ExerciseBuilder, IntervalOption, randomFromInterval } from "@/lib/resources"
->>>>>>> Stashed changes:src/lib/resources/list/discount.ts
 
 type Seed = [price: number, discount: number]
 type Answers = { finalPrice: number }

@@ -1,7 +1,7 @@
-import { NoteBuilder } from "@api/lib/note";
+import { NoteBuilder } from "@/lib/resources";
 import NoteBlocContainer from "./NoteBlocContainer";
 import NoteContentElement from "./NoteContentElement";
-import { LanguageCode } from "@/utils/locale";
+import { LanguageCode } from "@/lib/locale";
 
 
 export default function NotePage({ name, content, locale }: ReturnType<NoteBuilder["serialize"]> & {

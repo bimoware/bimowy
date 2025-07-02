@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import useSound from "use-sound"
-import 'katex/dist/katex.min.css';
-import Latex from 'react-latex-next';
 import { ExercisesGenerateRouteResult } from "@api/resources/[id]/generate/route";
 import { ExercisesValidateRouteResult } from "@api/resources/[id]/validate/route";
 import { ExerciseContext } from "./ExerciseContext";
@@ -11,17 +9,8 @@ import { End } from "./End";
 import { Options } from "./Options";
 import { Title } from "./Title";
 import { Buttons } from "./Buttons";
-<<<<<<< Updated upstream
-import { LanguageCode } from "@/utils/locale";
-import { ExerciseBuilder } from "@api/lib/exercise";
-import { ContextElement, ContextSection } from "@api/lib/context";
-=======
 import { LanguageCode } from "@/lib/locale";
 import { ContextElement, ContextSection, ExerciseBuilder } from "@/lib/resources";
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 export type PageStep = 'options' | 'normal' | 'end'
 export type ExerciseData = {

@@ -1,4 +1,4 @@
-import { NoteBuilder } from "@api/lib/note";
+import { NoteBuilder } from "@/lib/resources";
 
 export default new NoteBuilder({
 	id: "trigonometry",

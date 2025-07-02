@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl"
 import { Button } from "./Button"
 import { Exercise, PageStep } from "./ExercisePage"
-import { ExerciseBuilder } from "@api/lib/exercise"
+import { ExerciseBuilder } from "@/lib/resources"
 
 export function Buttons({ pageStep, exercises, apiOptions, actions }: {
 	pageStep: PageStep,

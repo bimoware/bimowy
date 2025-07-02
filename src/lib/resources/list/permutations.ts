@@ -1,7 +1,4 @@
-import { ExerciseBuilder } from "@api/lib/exercise"
-import { factorial } from "@api/lib/misc"
-import { IntervalOption } from "@api/lib/option"
-import { randomFromInterval } from "@/utils/random"
+import { ExerciseBuilder, factorial, IntervalOption, randomFromInterval } from "@/lib/resources"
 
 type Seed = [n: number, k: number]
 type Answers = { answer: number }
@@ -17,12 +14,12 @@ const options = {
 }
 
 export default new ExerciseBuilder<Seed, Answers, typeof options>({
-	id: "combinations",
+	id: "permutations",
 	names: {
-		en: "Combinations",
-		fr: "Combinaisons"
+		en: "Permutations",
+		fr: "Permutations"
 	},
-	descs: '$^n$C$_r$ = C($n$,$r$) = $(^r_n)$ = $\\frac{n!}{(n-r)!r!}$',
+	descs: '$^n$P$_r$ = P$(n,r)$ = $\\frac{n!}{(n-r)!}$',
 	tags: ['combinatorics'],
 	options,
 
@@ -37,8 +34,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 			{
 				type: "p",
 				content: [
-					{ type: "text", text: `$(^{${n}}_{${k}})$`, extra: ["latex"] },
-					{ type: "text", text: "=" },
+					{ type: "text", text: `$^{${n}}P_{${k}}$ = `, extra: ["latex"] },
 					{ type: "input", id: "answer" }
 				]
 			}
@@ -46,6 +42,6 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 	},
 
 	generateSolution([n, k]) {
-		return { answer: factorial(n) / (factorial(k) * factorial(n - k)) }
+		return { answer: factorial(n) / factorial(n - k) }
 	}
 })

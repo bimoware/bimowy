@@ -1,24 +1,14 @@
 import { NextRequest } from "next/server"
-import { resourceHandler } from "@api/main"
 import {
 	ExerciseBuilder
-} from "@api/lib/exercise"
+} from "@/lib/resources"
 import {
 	DEFAULT_N_QUESTIONS_ID,
 	DEFAULT_N_QUESTIONS_OPTION, UserOptions
-<<<<<<< Updated upstream
-} from "@api/lib/option"
-import { NextError, NextSuccess } from "@api/lib/routing"
-import { isValidLang } from "@/utils/locale"
-=======
 } from "@/lib/resources"
 import { NextError, NextSuccess } from "@api/routing"
 import { isValidLang } from "@/lib/locale"
 import { resourcesManager } from "@/server/resourcesManager"
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 export async function POST(
 	req: NextRequest,
@@ -30,15 +20,7 @@ export async function POST(
 	// ExerciseId
 	const { id: exerciseId } = await params
 	if (!exerciseId) throw NextError("No ID provided.")
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	const exercise = await resourceHandler.fetch(exerciseId)! as ExerciseBuilder
-=======
 	const exercise = await resourcesManager.fetch(exerciseId)! as ExerciseBuilder
->>>>>>> Stashed changes
-=======
-	const exercise = await resourcesManager.fetch(exerciseId)! as ExerciseBuilder
->>>>>>> Stashed changes
 
 	// language
 	const lang = searchParams.get("lang")

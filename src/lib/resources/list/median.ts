@@ -1,6 +1,4 @@
-import { ExerciseBuilder } from "@api/lib/exercise"
-import { IntervalOption, NumberOption } from "@api/lib/option"
-import { randomFromInterval } from "@/utils/random"
+import { ExerciseBuilder, IntervalOption, NumberOption, randomFromInterval } from "@/lib/resources"
 
 type Seed = number[]
 type Answers = { answer: Seed[number] }

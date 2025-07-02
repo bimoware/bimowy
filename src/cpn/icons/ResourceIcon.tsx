@@ -1,5 +1,5 @@
-import { ResourceType } from "@api/lib/resource"
-import { defaultIconProps } from "@/utils/icons"
+import { ResourceType } from "@/lib/resources"
+import { defaultIconProps } from "./util"
 
 export default function ResourceIcon({ type }: {
 	type: ResourceType

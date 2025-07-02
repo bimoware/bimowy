@@ -1,8 +1,8 @@
 "use client"
-import { LanguageCode, useLanguage } from "@/utils/locale"
+import { useLanguage } from "@/lib/locale"
 import { getRoutes, Route, split, Tag } from "@cpn/sidebars/main"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
-import { useAuthStateChange, useAuthUser } from "@/db/util"
+import { useAuthStateChange, useAuthUser } from "@/lib/supabase/util"
 
 export default function DesktopSideBar() {
 	const lang = useLanguage()

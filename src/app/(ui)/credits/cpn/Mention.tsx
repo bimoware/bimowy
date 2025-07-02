@@ -1,12 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { randomAt } from "@/utils/random";
-=======
 import { randomAt } from "@/lib/extra";
->>>>>>> Stashed changes
-=======
-import { randomAt } from "@/lib/extra";
->>>>>>> Stashed changes
 import Image from "next/image";
 import Link from "next/link";
 

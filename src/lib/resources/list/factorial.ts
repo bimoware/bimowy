@@ -1,8 +1,6 @@
-import { ExerciseBuilder } from "@api/lib/exercise"
-import { IntervalOption } from "@api/lib/option"
-import { randomFromInterval } from "@/utils/random"
+import { ExerciseBuilder, factorial, IntervalOption, randomFromInterval } from "@/lib/resources"
 
-type Seed = [a: number, b: number]
+type Seed = [n: number]
 type Answers = { answer: number }
 
 const options = {
@@ -14,37 +12,38 @@ const options = {
 		defaultValue: [0, 10]
 	})
 }
-
 export default new ExerciseBuilder<
 	Seed,
 	Answers,
 	typeof options
 >({
-	id: "addition",
-	names: "Addition",
-	descs: "1 + 1 = 2",
-	tags: ["arithmetic"],
 	options,
+	id: "factorial",
+	names: ({
+		en: "Factorial",
+		fr: "Factorielle"
+	}),
+	tags: ["arithmetic"],
+	descs: "5! = 5*4*3*2*1 = 120",
 	generateSeed({ interval }) {
 		return [
-			randomFromInterval(...interval),
 			randomFromInterval(...interval)
 		]
 	},
-	generateContext([n1, n2]) {
+	generateContext([n]) {
 		return [
 			{
 				type: "p",
 				content: [
-					{ type: "text", text: `${n1} + ${n2} = ` },
+					{ type: "text", text: `${n}! = ` },
 					{ type: "input", id: "answer" }
 				]
 			}
 		]
 	},
-	generateSolution([n1, n2]) {
+	generateSolution([n]) {
 		return {
-			answer: n1 + n2
+			answer: factorial(n)
 		}
 	}
 })

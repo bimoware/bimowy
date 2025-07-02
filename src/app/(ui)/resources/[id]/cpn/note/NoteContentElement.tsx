@@ -1,5 +1,5 @@
-import { NoteBloc } from "@api/lib/note";
-import { LanguageCode } from "@/utils/locale";
+import { NoteBloc } from "@/lib/resources";
+import { LanguageCode } from "@/lib/locale";
 import Widgets from "@cpn/widgets";
 import Latex from "react-latex-next";
 

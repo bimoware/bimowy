@@ -1,4 +1,4 @@
-import { randomAt } from "@/utils/random";
+import { randomAt } from "@/lib/extra";
 import { defaultPolyProps, defaultStrokeProps, defaultSVGProps, getBetweenPercentage, PlaneProps, randomFillClasses, randomStrokeClasses } from "./Plane";
 import { roundBetween } from "./util";
 

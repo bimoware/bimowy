@@ -1,4 +1,4 @@
-import { CourseBuilder } from "@api/lib/course";
+import { CourseBuilder } from "@/lib/resources";
 
 export default new CourseBuilder({
 	id: "intro-plane",

@@ -1,15 +1,6 @@
 "use client";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { toRounded } from "@api/lib/misc";
-=======
 
 import { toRounded } from "@/lib/extra"
->>>>>>> Stashed changes
-=======
-
-import { toRounded } from "@/lib/extra"
->>>>>>> Stashed changes
 import { angles } from "./util";
 import { CSSProperties, SVGAttributes, useEffect, useRef, useState } from "react";
 

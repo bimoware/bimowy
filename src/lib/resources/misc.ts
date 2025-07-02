@@ -1,19 +1,6 @@
-<<<<<<< Updated upstream:src/utils/random.ts
-export function randomAt<T>(list: T[], id: string): T {
-	const totalCharCode = id
-		.split('')
-		.reduce((prev, curr) => prev + curr.charCodeAt(0), 0)
-	return list[totalCharCode % list.length]
-}
-// Random
-=======
 export function factorial(n: number): number {
 	return n * (n < 2 ? 1 : factorial(n - 1))
 }
-<<<<<<< Updated upstream:src/utils/random.ts
->>>>>>> Stashed changes:src/lib/resources/misc.ts
-=======
->>>>>>> Stashed changes:src/lib/resources/misc.ts
 
 export function randomFromInterval(
 	min: number,

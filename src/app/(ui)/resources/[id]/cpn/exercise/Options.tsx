@@ -1,13 +1,4 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { ExerciseBuilder } from "@api/lib/exercise";
-import { APIOption, OptionType } from "@api/lib/option";
-=======
 import { APIOption, ExerciseBuilder, OptionType } from "@/lib/resources";
->>>>>>> Stashed changes
-=======
-import { APIOption, ExerciseBuilder, OptionType } from "@/lib/resources";
->>>>>>> Stashed changes
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {

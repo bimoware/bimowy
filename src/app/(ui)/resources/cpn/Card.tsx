@@ -1,18 +1,8 @@
-import { randomAt } from "@/utils/random"
+import { randomAt } from "@/lib/extra"
 import Image from "next/image"
 import Link from "next/link"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import Latex from "react-latex-next"
-import { AnyResourceBuilder, ResourceType } from "@api/lib/resource"
-=======
 import { AnyResourceBuilder, ResourceType } from "@/lib/resources"
 import Latex from "react-latex-next"
->>>>>>> Stashed changes
-=======
-import { AnyResourceBuilder, ResourceType } from "@/lib/resources"
-import Latex from "react-latex-next"
->>>>>>> Stashed changes
 import "katex/dist/katex.min.css"
 
 const rotations = [

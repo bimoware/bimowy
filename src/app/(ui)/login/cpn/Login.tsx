@@ -1,12 +1,13 @@
 "use client"
-import { supabase } from "@/db/client";
-import Image from "next/image";
+
 import { FormEvent } from "react";
+import { supabaseClient } from "@/lib/supabase";
+import Image from "next/image";
 
 export default function Login() {
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		await supabase.auth.signInWithOAuth({
+		await supabaseClient.auth.signInWithOAuth({
 			provider: "github"
 		})
 	}

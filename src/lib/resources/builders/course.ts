@@ -1,4 +1,4 @@
-import { LanguageCode } from "@/utils/locale";
+import { LanguageCode } from "@/lib/locale";
 import { ResourceBuilder, ResourceConfig, ResourceType } from "./resource";
 
 type CourseElem = {

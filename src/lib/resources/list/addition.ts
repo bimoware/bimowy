@@ -1,12 +1,10 @@
-import { ExerciseBuilder } from "@api/lib/exercise"
-import { IntervalOption } from "@api/lib/option"
-import { randomFromInterval } from "@/utils/random"
+import { ExerciseBuilder, IntervalOption, randomFromInterval } from "@/lib/resources"
 
 type Seed = [a: number, b: number]
 type Answers = { answer: number }
 
 const options = {
-	interval: new IntervalOption({
+	"interval": new IntervalOption({
 		title: {
 			en: "Interval of values",
 			fr: "Intervalle des valeurs"
@@ -15,38 +13,36 @@ const options = {
 	})
 }
 
-export default new ExerciseBuilder<Seed, Answers, typeof options>({
-	id: "multiplication",
-	names: {
-		en: "Multiplication",
-		fr: "Multiplication"
-	},
-	descs: "11 * 11 = 121",
+export default new ExerciseBuilder<
+	Seed,
+	Answers,
+	typeof options
+>({
+	id: "addition",
+	names: "Addition",
+	descs: "1 + 1 = 2",
 	tags: ["arithmetic"],
 	options,
-
 	generateSeed({ interval }) {
 		return [
 			randomFromInterval(...interval),
 			randomFromInterval(...interval)
 		]
 	},
-
 	generateContext([n1, n2]) {
 		return [
 			{
 				type: "p",
 				content: [
-					{ type: "text", text: `${n1} * ${n2} = ` },
+					{ type: "text", text: `${n1} + ${n2} = ` },
 					{ type: "input", id: "answer" }
 				]
 			}
 		]
 	},
-
 	generateSolution([n1, n2]) {
 		return {
-			answer: n1 * n2
+			answer: n1 + n2
 		}
 	}
 })

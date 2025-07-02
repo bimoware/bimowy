@@ -1,14 +1,5 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import { ContextElement, ContextSection } from "@api/lib/context";
-=======
 "use client"
 import { ContextElement, ContextInput, ContextParagraph, ContextSection, ContextString, ContextWidget } from "@/lib/resources";
->>>>>>> Stashed changes
-=======
-"use client"
-import { ContextElement, ContextInput, ContextParagraph, ContextSection, ContextString, ContextWidget } from "@/lib/resources";
->>>>>>> Stashed changes
 import { Exercise, ExerciseData } from "./ExercisePage";
 import { Dispatch, RefObject, SetStateAction } from "react";
 import Latex from 'react-latex-next';

@@ -1,16 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import { getLanguage } from "@/utils/locale";
-import { resourceHandler } from '@api/main'
+import { getLanguage } from "@/lib/locale";
 import { generateMetadataUtil } from "@cpn/sidebars/main";
 import ResourceList from "./cpn/ResourceList";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
 import { resourcesManager } from "@/server/resourcesManager";
->>>>>>> Stashed changes
-=======
-import { resourcesManager } from "@/server/resourcesManager";
->>>>>>> Stashed changes
 
 
 export async function generateMetadata() {

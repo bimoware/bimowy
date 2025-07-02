@@ -1,4 +1,4 @@
-import { LocaleRecord, LanguageCode } from "@/utils/locale";
+import { LocaleRecord, LanguageCode } from "@/lib/locale";
 
 export enum OptionType {
 	Number = "number",

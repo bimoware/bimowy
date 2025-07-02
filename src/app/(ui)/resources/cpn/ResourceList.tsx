@@ -1,8 +1,8 @@
 "use client"
 
-import { AnyResourceBuilder } from "@api/lib/resource"
+import { AnyResourceBuilder } from "@/lib/resources"
 import { Card } from "./Card"
-import { useLanguage } from "@/utils/locale"
+import { useLanguage } from "@/lib/locale"
 import { useState } from "react"
 import ToggleIcon from "@icons/ToggleIcon"
 import { generateMetadataUtil } from "@cpn/sidebars/main"
