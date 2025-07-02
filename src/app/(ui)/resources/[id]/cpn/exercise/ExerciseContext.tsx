@@ -5,10 +5,7 @@ import { Dispatch, RefObject, SetStateAction } from "react";
 import Latex from 'react-latex-next';
 import 'katex/dist/katex.min.css';
 import ALL_WIDGETS from "@cpn/widgets";
-import { useLanguage } from "@/lib/locale";
-import { PlaneProps } from "@cpn/math/Plane";
-import { TrigonometricTableProps } from "@cpn/math/TrigonometricTable";
-import { TrigonometricCircleProps } from "@cpn/math/TrigonometricCircle";
+import { Widget } from "@cpn/Widget";
 
 
 export type ExerciseContextProps = {
@@ -111,14 +108,5 @@ function TextNode({ node }: {
 }
 
 function WidgetNode({ node }: { node: ContextWidget<keyof typeof ALL_WIDGETS> }) {
-	const locale = useLanguage();
-
-	switch (node.id) {
-		case "TrigonometricCircle":
-			return <ALL_WIDGETS.TrigonometricCircle {...(node.props as TrigonometricCircleProps)} />;
-		case "TrigonometricTable":
-			return <ALL_WIDGETS.TrigonometricTable {...(node.props as TrigonometricTableProps)}  {...{ locale }} />;
-		case "Plane":
-			return <ALL_WIDGETS.Plane {...(node.props as PlaneProps)} />;
-	}
+	return <Widget id={node.id} props={node.props} />
 }
