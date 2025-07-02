@@ -10,6 +10,9 @@ export function randomAt<T>(list: T[], id: string): T {
 export function factorial(n: number): number {
 	return n * (n < 2 ? 1 : factorial(n - 1))
 }
+<<<<<<< Updated upstream:src/utils/random.ts
+>>>>>>> Stashed changes:src/lib/resources/misc.ts
+=======
 >>>>>>> Stashed changes:src/lib/resources/misc.ts
 
 export function randomFromInterval(

@@ -18,6 +18,9 @@ import { ContextElement, ContextSection } from "@api/lib/context";
 =======
 import { LanguageCode } from "@/lib/locale";
 import { ContextElement, ContextSection, ExerciseBuilder } from "@/lib/resources";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 export type PageStep = 'options' | 'normal' | 'end'

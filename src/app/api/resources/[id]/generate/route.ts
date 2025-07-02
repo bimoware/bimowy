@@ -15,6 +15,9 @@ import { isValidLang } from "@/utils/locale"
 import { NextError, NextSuccess } from "@api/routing"
 import { isValidLang } from "@/lib/locale"
 import { resourcesManager } from "@/server/resourcesManager"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 export async function POST(
@@ -28,7 +31,11 @@ export async function POST(
 	const { id: exerciseId } = await params
 	if (!exerciseId) throw NextError("No ID provided.")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	const exercise = await resourceHandler.fetch(exerciseId)! as ExerciseBuilder
+=======
+	const exercise = await resourcesManager.fetch(exerciseId)! as ExerciseBuilder
+>>>>>>> Stashed changes
 =======
 	const exercise = await resourcesManager.fetch(exerciseId)! as ExerciseBuilder
 >>>>>>> Stashed changes

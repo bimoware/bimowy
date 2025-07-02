@@ -1,8 +1,11 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { supabase } from "@/db/client";
 import { User } from "@supabase/supabase-js";
 import { FormEvent } from "react";
 =======
+=======
+>>>>>>> Stashed changes
 import { FormEvent } from "react";
 import { supabaseClient } from "@/lib/supabase";
 >>>>>>> Stashed changes

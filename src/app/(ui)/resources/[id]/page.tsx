@@ -1,8 +1,11 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { ResourceType } from "@api/lib/resource"
 import { resourceHandler } from "@api/main"
 import { getLanguage } from "@/utils/locale"
 =======
+=======
+>>>>>>> Stashed changes
 import { ResourceType } from "@/lib/resources"
 import { getLanguage } from "@/lib/locale"
 >>>>>>> Stashed changes
@@ -21,7 +24,11 @@ export async function generateMetadata({ params }: {
 	const lang = await getLanguage()
 	const { id } = await params
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	const resource = await resourceHandler.fetch(id)
+=======
+	const resource = await resourcesManager.fetch(id)
+>>>>>>> Stashed changes
 =======
 	const resource = await resourcesManager.fetch(id)
 >>>>>>> Stashed changes
@@ -34,7 +41,11 @@ export default async function ResourcePage({ params }: {
 	const locale = await getLanguage()
 	const { id } = await params
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	const resource = await resourceHandler.fetch(id)
+=======
+	const resource = await resourcesManager.fetch(id)
+>>>>>>> Stashed changes
 =======
 	const resource = await resourcesManager.fetch(id)
 >>>>>>> Stashed changes

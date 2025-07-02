@@ -1,5 +1,10 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { ContextElement, ContextSection } from "@api/lib/context";
+=======
+"use client"
+import { ContextElement, ContextInput, ContextParagraph, ContextSection, ContextString, ContextWidget } from "@/lib/resources";
+>>>>>>> Stashed changes
 =======
 "use client"
 import { ContextElement, ContextInput, ContextParagraph, ContextSection, ContextString, ContextWidget } from "@/lib/resources";

@@ -1,8 +1,14 @@
 import path from "path"
 <<<<<<<< Updated upstream:src/app/api/resources/handler.ts
+<<<<<<<< Updated upstream:src/app/api/resources/handler.ts
 import fs from "fs"
 import { AnyResourceBuilder, ResourceType } from "@api/lib/resource"
 import { ExerciseBuilder } from "@api/lib/exercise"
+========
+import { readdirSync } from 'fs';
+import { AnyResourceBuilder, ResourceType } from "@/lib/resources/builders/resource"
+import { ExerciseBuilder } from "@/lib/resources/builders/exercise";
+>>>>>>>> Stashed changes:src/server/resourcesManager.ts
 ========
 import { readdirSync } from 'fs';
 import { AnyResourceBuilder, ResourceType } from "@/lib/resources/builders/resource"
@@ -16,7 +22,11 @@ const printEmojis: Record<ResourceType, string> = {
 }
 
 <<<<<<<< Updated upstream:src/app/api/resources/handler.ts
+<<<<<<<< Updated upstream:src/app/api/resources/handler.ts
 export class ResourceHandler {
+========
+class ResourceManager {
+>>>>>>>> Stashed changes:src/server/resourcesManager.ts
 ========
 class ResourceManager {
 >>>>>>>> Stashed changes:src/server/resourcesManager.ts
@@ -36,9 +46,15 @@ class ResourceManager {
 	async fetchAll() {
 		if (this.allCached) return Array.from(this.cache.values())
 <<<<<<<< Updated upstream:src/app/api/resources/handler.ts
+<<<<<<<< Updated upstream:src/app/api/resources/handler.ts
 		const totalPath = path.join(process.cwd(), "/src/app/api/resources/list")
 		const files = fs.readdirSync(totalPath)
 		for (let file of files) {
+========
+		const totalPath = path.join(process.cwd(), "/src/lib/resources/list")
+		const files = readdirSync(totalPath)
+		for (const file of files) {
+>>>>>>>> Stashed changes:src/server/resourcesManager.ts
 ========
 		const totalPath = path.join(process.cwd(), "/src/lib/resources/list")
 		const files = readdirSync(totalPath)

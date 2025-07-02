@@ -9,6 +9,9 @@ import { NextError, NextSuccess } from "@api/routing"
 import { SeedType, UserAnswers } from "@/lib/resources"
 import { ExerciseBuilder } from "@/lib/resources"
 import { resourcesManager } from "@/server/resourcesManager"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 export async function POST(
@@ -29,10 +32,13 @@ export async function POST(
 
 	// Main
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	const exercise = await resourceHandler.fetch(exerciseId)
 	if (!exercise) return NextError(`Resource with ID '${exerciseId}' not found`)
 	if (!(exercise instanceof ExerciseBuilder)) return NextError(`Resource with ID '${exerciseId}' is not an exercise.`)
 =======
+=======
+>>>>>>> Stashed changes
 	const exercise = await resourcesManager.fetch(exerciseId)
 	if (!exercise)
 		return NextError(`Resource with ID '${exerciseId}' not found`)

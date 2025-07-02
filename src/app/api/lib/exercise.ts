@@ -11,7 +11,10 @@ import ALL_WIDGETS from "@cpn/widgets";
 import React from "react";
 
 <<<<<<< Updated upstream:src/app/api/lib/exercise.ts
+<<<<<<< Updated upstream:src/app/api/lib/exercise.ts
 =======
+=======
+>>>>>>> Stashed changes:src/lib/resources/builders/exercise.ts
 export type ContextString = {
 	type: "text";
 	text: string;

@@ -1,5 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv"
+<<<<<<< Updated upstream:src/db/server.ts
+=======
+
+dotenv.config()
+>>>>>>> Stashed changes:src/lib/supabase/server.ts
 
 dotenv.config()
 

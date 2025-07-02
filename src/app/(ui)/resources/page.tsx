@@ -4,6 +4,10 @@ import { resourceHandler } from '@api/main'
 import { generateMetadataUtil } from "@cpn/sidebars/main";
 import ResourceList from "./cpn/ResourceList";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+import { resourcesManager } from "@/server/resourcesManager";
+>>>>>>> Stashed changes
 =======
 import { resourcesManager } from "@/server/resourcesManager";
 >>>>>>> Stashed changes
