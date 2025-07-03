@@ -17,7 +17,7 @@ export function Y_Axis({ ranges }: { ranges: Ranges }) {
 				generateIntegers(yMin, yMax)
 					.map(n => {
 						if (n == 0) return;
-						const y = getBetweenPercentage(yMin, yMax, n)
+						const y = getBetweenPercentage(yMin, yMax, -n)
 						return <Fragment key={n}>
 							<line {...defaultPolyProps}
 								y1={y} y2={y}
