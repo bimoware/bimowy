@@ -33,7 +33,8 @@ export default function SideBarIcon({
 	path,
 	name,
 	tags,
-	iconFree
+	iconFree,
+	isRounded
 }: Route & { name: string }) {
 	const t = useTranslations()
 	const segments = useSelectedLayoutSegments()
@@ -69,7 +70,9 @@ export default function SideBarIcon({
 				<Image
 					className={`select-none
 						duration-150
+						${isRounded && "rounded-full"}
 						${iconFree ? "w-11" : "w-8"}
+						${isBeta && "opacity-50"}
 						${randomAt(randomClasses["scale"], name)}
 						${randomAt(randomClasses["rotations"], name)}
 						${randomAt(randomClasses["translationsX"], name)}

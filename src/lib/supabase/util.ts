@@ -24,7 +24,12 @@ export async function getAuthUser() {
 	return user.data.user
 }
 
+export type UserMetadata = Record<
+	"avatar_url" | "email" | "full_name" | "name" | "preferred_username" | "user_name",
+	string
+>
+
 export async function getAuthUserMetaData() {
 	const user = await getAuthUser()
-	return user?.user_metadata
+	return user?.user_metadata as UserMetadata
 }

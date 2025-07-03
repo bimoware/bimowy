@@ -23,6 +23,7 @@ type RawRoute = {
 	path?: string,
 	icon: string,
 	iconFree?: boolean,
+	isRounded?: boolean,
 	names: string | LocaleRecord
 }
 
@@ -32,6 +33,7 @@ export type Route = {
 	path: string
 	icon: string
 	favicon?: string
+	isRounded: boolean,
 	iconFree: boolean
 	names: LocaleRecord
 }
@@ -99,17 +101,17 @@ export function getRoutes(user?: User) {
 			}
 		},
 		{
+			id: "log",
 			tags: [Tag.Meta, Tag.Mobile, Tag.Desktop],
 			...(user
 				? {
-					id: 'user',
-					icon: user.user_metadata.avatar_url,
-					path: "user/" + user.user_metadata.user_name,
-					names: user.user_metadata.user_name,
-					iconFree: true
+					icon: "/svgs/logout.svg",
+					names: {
+						en: `Log out`,
+						fr: `Se déco`
+					},
 				}
 				: {
-					id: 'login',
 					icon: '/svgs/login.svg',
 					names: {
 						en: 'Login',
@@ -128,7 +130,8 @@ export function fixRawRoute(route: RawRoute) {
 		path: route.path ?? route.id,
 		icon: route.icon,
 		iconFree: route.iconFree ?? false,
-		names: toLocaleString(route.names)
+		names: toLocaleString(route.names),
+		isRounded: route.isRounded ?? false
 	}
 }
 
