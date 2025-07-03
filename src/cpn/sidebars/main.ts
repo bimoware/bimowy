@@ -1,5 +1,6 @@
 import { LanguageCode, LocaleRecord, toLocaleString } from "@/lib/locale"
 import { User } from "@supabase/supabase-js";
+import { Metadata } from "next";
 import { getLocale } from "next-intl/server"
 
 export type MetadataGenerationProps<T extends string[]> = {
@@ -14,19 +15,23 @@ export enum Tag {
 	Beta = "beta",
 	Meta = "meta"
 }
+
 type RawRoute = {
 	tags?: Tag[],
+	favicon?: string
 	id: string,
 	path?: string,
 	icon: string,
 	iconRounded?: boolean,
 	names: string | LocaleRecord
 }
+
 export type Route = {
 	tags: Tag[]
 	id: string
 	path: string
-	icon: string,
+	icon: string
+	favicon?: string
 	iconRounded: boolean
 	names: LocaleRecord
 }
@@ -36,6 +41,7 @@ export function getRoutes(user?: User) {
 		{
 			tags: [Tag.Desktop, Tag.Mobile],
 			id: 'home',
+			favicon: '/favicon.ico',
 			path: '',
 			icon: '/svgs/home.svg',
 			names: {
@@ -136,11 +142,15 @@ export function getRoute(id: Route["id"]) {
 export async function generateMetadataUtil(
 	id: Route["id"],
 	customTitle?: string
-) {
+): Promise<Metadata> {
 	const routeData = getRoute(id)
 	return {
 		title: customTitle ?? routeData.names[await getLocale() as LanguageCode],
-		icons: routeData.icon
+		icons: routeData.favicon ?? routeData.icon,
+		applicationName: "Bimowy",
+		twitter: {
+			card: "summary"
+		}
 	}
 }
 
