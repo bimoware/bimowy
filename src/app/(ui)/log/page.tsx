@@ -3,7 +3,7 @@ import LogBox from "./cpn/LogBox"
 
 
 export async function generateMetadata() {
-	return await generateMetadataUtil('login')
+	return await generateMetadataUtil('log')
 }
 
 export default function LoginPage() {
