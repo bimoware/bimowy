@@ -9,11 +9,8 @@
     "by": "by",
     "inspired": "Inspired from",
     "frameworks": "Coded in",
-    "open_new_tab": "Open in new tab",
-    "heart": "heart",
     "available_in": "Available in French & English with",
     "you_like": "You like it? Then don't forget to",
-    "honorable_mention": "Honorable mention to my friend",
     "deployed_on": "Deployed on",
     "domain_from": "Domain name bought on",
     "domain_price": "11.67 $",
@@ -30,7 +27,6 @@
     "Finish": "Finish",
     "Next": "Next",
     "Abandon": "Abandon",
-    "Questions": "Questions",
     "LoadingExercises": "Generating...",
     "LoadingOptions": "Loading Options...",
     "Correcting": "Correcting...",
@@ -39,7 +35,8 @@
     "Options": "Options"
   },
   "HomePage": {
-    "title": "Wooo... pretty empty here 👻"
+    "Welcome": "You're back",
+    "or_maybe": "or maybe should I call you"
   },
   "unavailable": "Unavailable"
 }
