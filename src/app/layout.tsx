@@ -7,7 +7,7 @@ import { getLocale } from 'next-intl/server';
 import { Viewport } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-import './style.css'
+import '@/styles/index.css'
 import { generateMetadataUtil } from '@cpn/sidebars/main';
 import { LanguageCode } from '@/lib/locale';
 import SideBarContainer from '@cpn/sidebars/SideBarContainer';
