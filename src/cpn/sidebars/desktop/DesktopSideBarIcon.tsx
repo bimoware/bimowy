@@ -7,7 +7,6 @@ import Link from "next/link"
 import { useSelectedLayoutSegments } from 'next/navigation'
 import TooltipContainer from "@/cpn/Tooltip"
 import { useTranslations } from "next-intl"
-import { useEffect, useState } from "react"
 
 const randomClasses = {
 	"rotations": [
@@ -34,9 +33,8 @@ export default function SideBarIcon({
 	path,
 	name,
 	tags,
-	iconRounded
+	iconFree
 }: Route & { name: string }) {
-	const [loading, setLoading] = useState(false)
 	const t = useTranslations()
 	const segments = useSelectedLayoutSegments()
 	const pathParts = [...segments].filter(p => !p.includes('('))
@@ -44,10 +42,6 @@ export default function SideBarIcon({
 		? pathParts[0] === path
 		: path === ""
 	const isBeta = tags.includes(Tag.Beta)
-
-	useEffect(() => {
-		setLoading(false)
-	}, [segments])
 
 	return <TooltipContainer
 		hidden={isBeta}
@@ -61,28 +55,26 @@ export default function SideBarIcon({
 					select-none
 					duration-150
 					m-1
-					p-2
-					${isBeta
-						? "!opacity-30"
-						: isActive
-							? 'bg-black/20 dark:bg-white/5'
-							: `hover:bg-black/20 dark:hover:bg-white/5
+					${iconFree ? "p-1" : "p-2"}
+					${!iconFree && (
+						isBeta
+							? "!opacity-30"
+							: isActive
+								? 'bg-black/20 dark:bg-white/5'
+								: `hover:bg-black/20 dark:hover:bg-white/5
 							opacity-70`
-					}
-					${loading && (isBeta ? "!cursor-wait" : "!cursor-progress")}
+					)}
 					group`}
-				onClick={() => setLoading(true)}
 			>
 				<Image
 					className={`select-none
 						duration-150
-						w-8
-						${iconRounded && "rounded-full"}
+						${iconFree ? "w-11" : "w-8"}
 						${randomAt(randomClasses["scale"], name)}
 						${randomAt(randomClasses["rotations"], name)}
 						${randomAt(randomClasses["translationsX"], name)}
 						${randomAt(randomClasses["translationsY"], name)}`}
-					src={loading && !isActive ? "/svgs/loading.svg" : icon}
+					src={icon}
 					alt={name}
 					width={100}
 					height={100}
