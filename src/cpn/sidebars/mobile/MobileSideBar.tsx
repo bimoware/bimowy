@@ -47,7 +47,7 @@ export default function MobileSideBar() {
 								w-8
 								group-active:scale-75
 								${isActive ? "-translate-y-1" : "scale-75"}
-								${r.iconRounded && "rounded-full"}
+								${r.isRounded && "rounded-full"}
 								`}
 								src={r.icon}
 								alt={name}
@@ -55,7 +55,9 @@ export default function MobileSideBar() {
 								height={200}
 							/>
 							<span className={`text-sm
-							${isActive ? "opacity-80 font-bold" : "opacity-70"}`}>{name}</span>
+							${isActive
+									? "opacity-80 font-bold"
+									: "opacity-70"}`}>{name}</span>
 						</Link>
 					})
 			}
