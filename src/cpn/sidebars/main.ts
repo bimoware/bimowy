@@ -146,10 +146,13 @@ export async function generateMetadataUtil(
 	const routeData = getRoute(id)
 	return {
 		title: customTitle ?? routeData.names[await getLocale() as LanguageCode],
-		icons: routeData.favicon ?? routeData.icon,
+		icons: {
+			icon: routeData.favicon ?? routeData.icon,
+		},
 		applicationName: "Bimowy",
 		twitter: {
-			card: "summary"
+			card: "summary_large_image",
+			images: ["/media/banner.png"]
 		}
 	}
 }
