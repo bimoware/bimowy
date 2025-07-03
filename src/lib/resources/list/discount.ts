@@ -27,8 +27,11 @@ export default new ExerciseBuilder<
 	typeof options
 >({
 	id: "discount",
-	names: "Discount",
-	descs: "Calculate the final price after applying a discount.",
+	names: { en: "Discount", fr: "Reduction" },
+	descs: {
+		en: "Calculate the final price after applying a discount.",
+		fr: "Calculer le prix final aprés une reduc"
+	},
 	tags: ["arithmetic", "conversion"],
 	options,
 	generateSeed({ priceInterval, discountInterval }) {
