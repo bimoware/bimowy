@@ -43,7 +43,7 @@ export const randomStrokeClasses = [
 	"stroke-indigo-600",
 ];
 
-type ElemProps = {
+export type ElemProps = {
 	id: string
 } & (
 		({
@@ -62,7 +62,10 @@ export function getBetweenPercentage(min: number, max: number, n: number) {
 	return ((n - min) / (max - min)) * 100;
 }
 
-export default function Plane({ elems = [], ranges }: PlaneProps) {
+export default function Plane({
+	elems = [],
+	ranges
+}: PlaneProps) {
 	return <div className="w-full h-full relative
 	*:absolute *:w-full *:h-full min-h-52
 	pb-2">
