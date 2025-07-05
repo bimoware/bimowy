@@ -1,5 +1,5 @@
 import ALL_WIDGETS from "@/cpn/widgets"
-import { PlaneProps } from "./math/Plane"
+import { PlaneProps } from "./math/plane"
 import { TrigonometricTableProps } from "./math/TrigonometricTable"
 import { TrigonometricCircleProps } from "./math/TrigonometricCircle"
 

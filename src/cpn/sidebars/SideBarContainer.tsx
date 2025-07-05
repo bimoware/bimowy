@@ -12,7 +12,7 @@ export default function SideBarContainer({ children }: {
 		flex
 		justify-center p-3
 		pb-24 sm:pb-3
-		ml-0 sm:ml-24'>
+		ml-0 sm:ml-24 overflow-x-auto'>
 			{children}
 		</main>
 		<MobileSideBar />

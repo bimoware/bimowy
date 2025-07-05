@@ -1,11 +1,12 @@
+
 export function roundBetween(min: number, n: number, max: number) {
 	return Math.max(min, Math.min(n, max))
 }
 
-export function generateIntegers(start: number, end: number) {
+export function generateIntegers(start: number, end: number, step: number = 1) {
 	const result = [];
 
-	for (let i = start + 1; i < end; i++) {
+	for (let i = start; i <= end; i += step) {
 		result.push(i);
 	}
 	return result;
