@@ -1,10 +1,12 @@
 import { generateMetadataUtil } from "@cpn/sidebars/main"
-import InteractivePLane from "@cpn/math/InteractivePlane"
+import InteractivePlane from "@cpn/math/plane/InteractivePlane/InteractivePlane"
 
 export function generateMetadata() {
 	return generateMetadataUtil("test")
 }
 
 export default function TestPage() {
-	return <InteractivePLane />
+	return <section className="w-full h-full">
+		<InteractivePlane />
+	</section>
 }

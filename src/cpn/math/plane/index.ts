@@ -4,10 +4,6 @@ export const defaultStrokeProps: SVGAttributes<SVGElement> = {
 	strokeLinejoin: "round",
 	strokeLinecap: "round"
 };
-export const defaultPolyProps: SVGAttributes<SVGElement> = {
-	strokeWidth: 1 / 10,
-	stroke: "white",
-};
 export const defaultTextProps: SVGAttributes<SVGTextElement> = {
 	fill: "white"
 }
@@ -18,7 +14,7 @@ export const randomColors = [
 	"#22c55e",
 	"#f59e0b",
 	"#6366f1"
-] as const
+]
 export const strokeWidth = {
 	min: 0.1,
 	normal: 0.2
@@ -36,35 +32,43 @@ const stepBreakpoints = {
 	45: 15,
 	60: 20
 } as const
+
+export enum ElemType {
+	Point = "point",
+	Vector = "vector",
+	ScalarFunction = "scalar-function",
+	VectorFunction = "vector-function",
+	Circle = "circle"
+}
 export type Ranges = { x: Range; y: Range; };
 export type Range = [number, number];
 export type Excluded = "bg" | "x-axis" | "x-labels" | "y-axis" | "y-labels"
 export type DefaultElemProps = { id: string, color?: typeof randomColors[number] }
 export type VectorProps = DefaultElemProps & {
-	type: "vector";
+	type: ElemType.Vector;
 	x1: number; y1: number; x2: number; y2: number;
 };
 export type PointProps = DefaultElemProps & {
-	type: "point";
+	type: ElemType.Point;
 	x: number;
 	y: number;
 };
-export type FunctionProps = DefaultElemProps & {
-	type: "function",
+export type ScalarFunctionProps = DefaultElemProps & {
+	type: ElemType.ScalarFunction,
 	f: (x: number) => number
 }
 export type VectorFunctionProps = DefaultElemProps & {
-	type: "vector-function",
+	type: ElemType.VectorFunction
 	f: (t: number) => [x: number, y: number],
 	interval: [number, number]
 }
 export type CircleProps = DefaultElemProps & {
-	type: "circle",
+	type: ElemType.Circle,
 	x: number,
 	y: number,
 	r: number
 }
-export type ElemProps = VectorProps | PointProps | FunctionProps | CircleProps | VectorFunctionProps;
+export type ElemProps = VectorProps | PointProps | ScalarFunctionProps | CircleProps | VectorFunctionProps;
 export type PlaneProps = {
 	ranges: Ranges;
 	elems?: ElemProps[];

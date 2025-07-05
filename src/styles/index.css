@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
 :root {
 	interpolate-size: allow-keywords;
@@ -10,16 +11,14 @@ body {
 	flex;
 }
 
-input[type="number"],
 input[type="text"] {
-	@apply bg-white/20 dark:bg-neutral-950/20
+	@apply bg-black/5
 	rounded-lg
-	font-mono
   outline
 	outline-neutral-950/20 dark:outline-white/20
-  focus:outline-2
 	focus:outline-neutral-950/50 dark:focus:outline-white/50
-  px-3 py-2 min-w-[3ch]
+  focus:outline-2
+  min-w-[2.5ch]
   field-sizing-content
   shadow-inner
 	shadow-white/20 dark:shadow-black/20

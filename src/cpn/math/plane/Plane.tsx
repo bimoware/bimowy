@@ -30,7 +30,7 @@ export default function Plane({
 export function Defs() {
 	return <defs>
 		<filter id="shadow" x="-100" y="-100" width="1000" height="1000" filterUnits="userSpaceOnUse">
-			<feDropShadow dx="0" dy="0.05" stdDeviation="0.1" floodColor="black" floodOpacity="0.5" />
+			<feDropShadow dx="0" dy="0.05" stdDeviation="0.1" floodColor="black" floodOpacity="0.04" />
 		</filter>
 	</defs>
 }
@@ -42,7 +42,7 @@ export function PlaneElements({ elems = [], ranges }: PlaneProps) {
 				return <Point key={elem.id} {...elem} {...{ ranges }} />
 			case "vector":
 				return <Vector key={elem.id} {...elem} {...{ ranges }} />
-			case "function":
+			case "scalar-function":
 				return <FunctionPlot key={elem.id} {...elem} {...{ ranges }} />
 			case "vector-function":
 				return <VectorFunctionPlot key={elem.id} {...elem} {...{ ranges }} />

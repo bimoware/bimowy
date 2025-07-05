@@ -1,4 +1,4 @@
-import { defaultPolyProps, getXCoor, getYCoor, marginOffset, opacity, PlaneProps } from ".";
+import { defaultStrokeProps, getXCoor, getYCoor, marginOffset, opacity, PlaneProps, strokeWidth } from ".";
 import { generateIntegers } from "..";
 
 export default function PlaneBackground({ ranges, excluded }: PlaneProps) {
@@ -8,7 +8,9 @@ export default function PlaneBackground({ ranges, excluded }: PlaneProps) {
 			{generateIntegers(...ranges.y)
 				.map(i => {
 					const yCoor = getYCoor(ranges, i)
-					return <line {...defaultPolyProps}
+					return <line {...defaultStrokeProps}
+						strokeWidth={strokeWidth.min}
+						stroke="white"
 						key={`horizental-${i}`}
 						x1={getXCoor(ranges, ranges.x[0]) - marginOffset / 2}
 						x2={getXCoor(ranges, ranges.x[1]) + marginOffset / 2}
@@ -20,7 +22,9 @@ export default function PlaneBackground({ ranges, excluded }: PlaneProps) {
 			{generateIntegers(...ranges.x)
 				.map(i => {
 					const xCoor = getXCoor(ranges, i)
-					return <line {...defaultPolyProps}
+					return <line {...defaultStrokeProps}
+						strokeWidth={strokeWidth.min}
+						stroke="white"
 						key={`vertical-${i}`}
 						y1={getYCoor(ranges, ranges.y[1]) - marginOffset / 2}
 						y2={getYCoor(ranges, ranges.y[0]) + marginOffset / 2}

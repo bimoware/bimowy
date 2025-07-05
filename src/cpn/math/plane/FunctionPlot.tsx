@@ -1,7 +1,7 @@
-import { getXCoor, getYCoor, FunctionProps, Ranges, strokeWidth, defaultStrokeProps, opacity } from "."
+import { getXCoor, getYCoor, ScalarFunctionProps, Ranges, strokeWidth, defaultStrokeProps, opacity } from "."
 import { Fragment } from "react"
 
-export default function FunctionPlot({ ranges, f, color }: FunctionProps & { ranges: Ranges }) {
+export default function FunctionPlot({ ranges, f, color }: ScalarFunctionProps & { ranges: Ranges }) {
 	const step = Math.PI / 2 / 3 / 4 / 5
 	const [minY, maxY] = [ranges.y[0] - 1 / 2, ranges.y[1] + 1 / 2]
 	const [minX, maxX] = [ranges.x[0] - 1 / 2, ranges.x[1] + 1 / 2]
