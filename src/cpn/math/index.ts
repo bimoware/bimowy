@@ -6,7 +6,7 @@ export function roundBetween(min: number, n: number, max: number) {
 export function generateIntegers(start: number, end: number, step: number = 1) {
 	const result = [];
 
-	for (let i = start; i <= end; i += step) {
+	for (let i = Math.ceil(start); i <= Math.floor(end); i += step) {
 		result.push(i);
 	}
 	return result;

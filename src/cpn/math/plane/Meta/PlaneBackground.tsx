@@ -1,9 +1,9 @@
-import { defaultStrokeProps, getXCoor, getYCoor, marginOffset, opacity, PlaneProps, strokeWidth } from ".";
-import { generateIntegers } from "..";
+import { generateIntegers } from "@cpn/math";
+import { defaultStrokeProps, marginOffset, opacity, strokeWidth, getXCoor, getYCoor, Excludables, Ranges } from "..";
 
-export default function PlaneBackground({ ranges, excluded }: PlaneProps) {
+export default function PlaneBackground({ ranges, excluded }: { ranges: Ranges, excluded: Excludables[] }) {
 	if (excluded?.includes('bg')) return;
-	return <g opacity={opacity.bg} strokeWidth={3 / 4 / 10}>
+	return <g opacity={opacity.bg}>
 		<g>
 			{generateIntegers(...ranges.y)
 				.map(i => {

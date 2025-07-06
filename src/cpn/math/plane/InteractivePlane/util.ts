@@ -15,5 +15,5 @@ export const rangeInputs: Record<
 } as const
 
 export function numberToLetter(n: number) {
-	return String.fromCharCode(63 + n);
+	return String.fromCharCode(65 + n);
 }

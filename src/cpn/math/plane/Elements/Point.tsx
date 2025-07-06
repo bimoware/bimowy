@@ -1,6 +1,7 @@
-import { getXCoor, getYCoor, PointProps, Ranges, strokeWidth, defaultStrokeProps, opacity } from ".";
+import { PlaneElementEnum, PlaneElementProps } from "..";
+import { defaultStrokeProps, getXCoor, getYCoor, opacity, strokeWidth } from "../extra";
 
-export default function Point({ x, y, ranges, color }: PointProps & { ranges: Ranges }) {
+export default function Point({ x, y, ranges, color }: PlaneElementProps<PlaneElementEnum.Point>) {
 	const xCoor = getXCoor(ranges, x)
 	const yCoor = getYCoor(ranges, y);
 	return <g opacity={opacity.main}

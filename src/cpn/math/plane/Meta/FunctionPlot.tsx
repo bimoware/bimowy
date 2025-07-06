@@ -1,7 +1,9 @@
-import { getXCoor, getYCoor, Ranges, strokeWidth, defaultStrokeProps, VectorFunctionProps, marginOffset, opacity } from "."
 import { Fragment } from "react"
+import { DefaultPlaneElementProps, defaultStrokeProps, getXCoor, getYCoor, marginOffset, opacity, Range, Ranges, strokeWidth } from ".."
 
-export default function VectorFunctionPlot({ ranges, f, interval, color }: VectorFunctionProps & { ranges: Ranges }) {
+type VectorFunction = (t: number) => Range
+
+function getPaths(ranges: Ranges, f: VectorFunction, interval: Range) {
 	const step = Math.PI / 2 / 3 / 4 / 5
 	const [minY, maxY] = [ranges.y[0] - marginOffset / 2, ranges.y[1] + marginOffset / 2]
 	const [minX, maxX] = [ranges.x[0] - marginOffset / 2, ranges.x[1] + marginOffset / 2]
@@ -20,6 +22,16 @@ export default function VectorFunctionPlot({ ranges, f, interval, color }: Vecto
 		}
 	}
 
+	return paths
+}
+
+export default function FunctionPlot({ ranges, f, interval, color }: {
+	ranges: Ranges,
+	f: VectorFunction,
+	interval?: Range
+	color: DefaultPlaneElementProps["color"]
+}) {
+	const paths = getPaths(ranges, f, interval ?? ranges.x)
 	return (
 		<g opacity={opacity.main} filter="url(#shadow)">
 			{

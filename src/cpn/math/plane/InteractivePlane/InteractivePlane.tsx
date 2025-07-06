@@ -1,28 +1,40 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Plane from "../Plane";
-import { ElemProps, Ranges } from "..";
+import { AnyPlaneElementData, defaultRange, Ranges } from "..";
 import LineSplit from "./LineSplit";
 import ElementSection from "./ElementSection";
 import RangesSection from "./RangesSection";
 
 export default function InteractivePlane() {
-	const [elems, setElems] = useState<ElemProps[]>([])
-	const [ranges, setRanges] = useState<Ranges>({ x: [-6, 6], y: [-6, 6] })
+	const [elems, setElems] = useState<Record<string, AnyPlaneElementData>>({})
+	const [ranges, setRanges] = useState<Ranges>(defaultRange)
+	const [nElements, setNElements] = useState(0)
 
-	return <section className="w-full h-full flex">
+	useEffect(() => {
+		setNElements(prev => prev + 1)
+	}, [elems.length])
+	return <section className="w-full h-full flex relative">
 		<section className="w-full
-		flex justify-center">
+		flex justify-center
+		mr-[19rem]">
 			<div>
 				<Plane {...{ elems, ranges }} />
 			</div>
 		</section>
-		<section className="w-1/3 bg-white/5 p-4 flex flex-col gap-2 overflow-y-scroll">
-			<LineSplit label={"Range"} />
-			<RangesSection {...{ ranges, setRanges }} />
-			<LineSplit label={"Elements"} />
-			<ElementSection {...{ elems, setElems }} />
+		<section className="h-screen p-4 fixed right-0">
+			<section className="w-64 h-[95%]
+			bg-white/5
+			flex flex-col gap-2
+			overflow-y-scroll
+			p-4">
+				<LineSplit label={"Range"} onReset={() => { setRanges(defaultRange) }}
+					resetable={JSON.stringify(ranges) != JSON.stringify(defaultRange)} />
+				<RangesSection {...{ ranges, setRanges }} />
+				<LineSplit label={"Elements"} onReset={() => { setElems({}) }} resetable={Object.keys(elems).length > 0} />
+				<ElementSection {...{ elems, setElems, nElements, setNElements }} />
+			</section>
 		</section>
-	</section>
+	</section >
 }

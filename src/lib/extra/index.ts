@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export function sleep(seconds: number) {
 	return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
@@ -13,3 +15,5 @@ export function randomAt<T>(list: T[], id: string): T {
 export function toRounded(v: number) {
 	return +(v).toFixed(2);
 }
+
+export type HookSetter<T> = Dispatch<SetStateAction<T>>

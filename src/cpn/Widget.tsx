@@ -1,5 +1,5 @@
 import ALL_WIDGETS from "@/cpn/widgets"
-import { PlaneProps } from "./math/plane"
+import { RawPlaneProps } from "./math/plane"
 import { TrigonometricTableProps } from "./math/TrigonometricTable"
 import { TrigonometricCircleProps } from "./math/TrigonometricCircle"
 
@@ -18,7 +18,7 @@ export async function Widget({ id, props }: Props<keyof typeof ALL_WIDGETS>) {
 			return <ALL_WIDGETS.TrigonometricTable {...(props as TrigonometricTableProps)} />
 
 		case "Plane":
-			return <ALL_WIDGETS.Plane {...(props as PlaneProps)} />
+			return <ALL_WIDGETS.Plane {...(props as RawPlaneProps)} />
 
 		default:
 			return null

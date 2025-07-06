@@ -1,11 +1,12 @@
-import { Ranges, getXCoor, getYCoor, marginOffset, getBreakPoint, defaultTextProps, AxisOption, Excluded, strokeWidth, defaultStrokeProps, opacity } from ".";
-import { generateIntegers } from "..";
+import { marginOffset, defaultTextProps, strokeWidth, defaultStrokeProps, opacity, getXCoor, getYCoor, getBreakPoint } from "../extra";
+import { generateIntegers } from "../..";
 import Arrow from "./Arrow";
+import { AxisOption, Excludables, Ranges } from "..";
 
 export default function Axis({ ranges, type, excluded }: {
-	ranges: Ranges
-	excluded: Excluded[]
-	type: AxisOption
+	type: AxisOption,
+	ranges: Ranges,
+	excluded: Excludables[]
 }) {
 	const step = getBreakPoint(ranges)
 	const middle = type == "x" ? getYCoor(ranges, 0) : getXCoor(ranges, 0)
@@ -35,12 +36,12 @@ export default function Axis({ ranges, type, excluded }: {
 				.map(n => {
 					if (n == 0) return;
 					const markerWidth = 1 / 10
-					const isBreakPoint = step !== 1 && n % step === 0
+					const isBreakPoint = (step !== 1) && (n % step === 0)
 					const lineWidth = strokeWidth.min * (isBreakPoint ? 1.5 : 1)
 					const fontSize = 1 / 3 * (isBreakPoint ? 1.5 : 1)
 
 					const coor = type == "x" ? getXCoor(ranges, n) : getYCoor(ranges, n)
-					return <g key={n} opacity={(step != 1 && !isBreakPoint) ? 3 / 4 : 1}>
+					return <g key={n} opacity={isBreakPoint ? 1 : (3 / 4)}>
 						<line {...defaultStrokeProps}
 							strokeWidth={lineWidth} stroke="white"
 							{...(type == "x"

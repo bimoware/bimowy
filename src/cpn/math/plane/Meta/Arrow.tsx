@@ -1,4 +1,4 @@
-import { defaultStrokeProps, getXCoor, getYCoor, Ranges, strokeWidth } from ".";
+import { defaultStrokeProps, getXCoor, getYCoor, Ranges, strokeWidth } from ".."
 
 export default function Arrow({
 	ranges, x1, x2, y1, y2,
@@ -44,12 +44,16 @@ export default function Arrow({
 	const rightCoorX = x2Coor + headLength * Math.cos(rightAngleScreen);
 	const rightCoorY = y2Coor + headLength * Math.sin(rightAngleScreen);
 
+	const middleCoorX = (leftCoorX + rightCoorX) / 2
+	const middleCoorY = (leftCoorY + rightCoorY) / 2
 	const points = [
 		[x1Coor, y1Coor],
-		[x2Coor, y2Coor],
+		[middleCoorX, middleCoorY],
 		[leftCoorX, leftCoorY],
+		[x2Coor, y2Coor],
 		[rightCoorX, rightCoorY],
-		[x2Coor, y2Coor]
+		[middleCoorX, middleCoorY],
+		[x1Coor, y1Coor]
 	].map(grps => grps.join(',')).join(' ');
 
 	return <g {...(shadow ? { filter: "url(#shadow)" } : {})}>

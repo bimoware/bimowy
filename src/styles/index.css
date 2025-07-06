@@ -12,13 +12,7 @@ body {
 }
 
 input[type="text"] {
-	@apply bg-black/5
-	rounded-lg
-  outline
-	outline-neutral-950/20 dark:outline-white/20
-	focus:outline-neutral-950/50 dark:focus:outline-white/50
-  focus:outline-2
-  min-w-[2.5ch]
+	@apply min-w-[2.5ch] px-2
   field-sizing-content
   shadow-inner
 	shadow-white/20 dark:shadow-black/20

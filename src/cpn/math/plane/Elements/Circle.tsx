@@ -1,6 +1,7 @@
-import { CircleProps, defaultStrokeProps, getXCoor, getYCoor, opacity, Ranges, strokeWidth } from ".";
+import { PlaneElementEnum, PlaneElementProps } from "..";
+import { defaultStrokeProps, getXCoor, getYCoor, opacity, strokeWidth } from "../extra";
 
-export default function Circle({ x, y, r, ranges, color }: CircleProps & { ranges: Ranges }) {
+export default function Circle({ x, y, r, ranges, color }: PlaneElementProps<PlaneElementEnum.Circle>) {
 	return <g opacity={opacity.main} filter="url(#shadow)">
 		{color && <circle {...defaultStrokeProps}
 			cx={getXCoor(ranges, x)}
