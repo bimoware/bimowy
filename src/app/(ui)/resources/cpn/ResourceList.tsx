@@ -4,8 +4,8 @@ import { AnyResourceBuilder } from "@/lib/resources"
 import { Card } from "./Card"
 import { useLanguage } from "@/lib/locale"
 import { useState } from "react"
-import ToggleIcon from "@icons/ToggleIcon"
 import { generateMetadataUtil } from "@cpn/sidebars/main"
+import SelectedIcon from "@cpn/icons/SelectedIcon"
 
 export async function generateMetadata() {
 	return generateMetadataUtil('resources')
@@ -83,9 +83,8 @@ export default function ResourceList({ resources }: {
 						group"
 						onClick={() => handleToggle(t.id)}>
 
-						<ToggleIcon
-							active={selected}
-							className={selected ? "fill-black" : "fill-white"} />
+						<SelectedIcon {...{ selected }}
+							color={selected ? "black" : "white"} />
 						{t.names[lang]}
 					</div>
 				})

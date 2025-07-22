@@ -1,12 +1,11 @@
 import path from "path"
 import { readdirSync } from 'fs';
 import { AnyResourceBuilder, ResourceType } from "@/lib/resources/builders/resource"
-import { ExerciseBuilder } from "@/lib/resources/builders/exercise";
+import { AnyExerciseBuilder } from "@/lib/resources/builders/exercise";
 
 const printEmojis: Record<ResourceType, string> = {
 	"exercise": "🧪",
-	"note": "📄",
-	"course": "📦"
+	"sandbox": "📦"
 }
 
 class ResourceManager {
@@ -21,7 +20,7 @@ class ResourceManager {
 		return Array.from(this.cache
 			.values()
 			.filter(r => r.type == ResourceType.Exercise)
-		) as ExerciseBuilder[]
+		) as AnyExerciseBuilder[]
 	}
 	async fetchAll() {
 		if (this.allCached) return Array.from(this.cache.values())

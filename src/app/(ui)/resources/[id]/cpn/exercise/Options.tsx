@@ -1,75 +1,68 @@
-import { APIOption, ExerciseBuilder, OptionType } from "@/lib/resources";
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { OptionType } from "@/lib/resources";
+import { ReactNode } from "react";
+import { ExerciseCtx } from "./extra";
+import NumberInput from "@cpn/ui/NumberInput";
 
-export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
-	apiOptions?: ReturnType<ExerciseBuilder["serialize"]>["options"],
-	userOptionValues?: Record<string, unknown>,
-	setUserOptionValues: Dispatch<SetStateAction<Record<string, unknown>>>
-}) {
-	if (!apiOptions || !userOptionValues) return;
-	return Object.entries<APIOption>(apiOptions).map(([id, option]) => {
-		const { type, title } = option
-		switch (type) {
-			case OptionType.Number:
-				const numberMin = option.min
-				const numberMax = option.max
-				const numberValue = userOptionValues[id] as unknown as number
-				return <OptionDiv key={id}>
-					<span>{title}:</span>
-					<input
-						{...{ type }}
-						min={numberMin}
-						max={numberMax}
-						value={numberValue}
-						onChange={(e) => {
-							const value = e.target.value;
-							setUserOptionValues(prev => {
-								const newUserOptions = { ...prev }
-								newUserOptions[id] = value
-								return newUserOptions;
-							})
-						}} />
-				</OptionDiv>
-			case OptionType.Interval:
-				const intervalValue = userOptionValues[id] as [number, number]
-				return <OptionDiv key={id}>
-					<span>{title}: </span>
-					<input
-						type="text"
-						value={intervalValue[0]}
-						onChange={(e) => {
-							const value = Number(e.target.value);
-							if (value < intervalValue[1]) setUserOptionValues(prev => {
-								const newUserOptions = { ...prev }
-								const previousInterval = prev[id] as [number, number]
-								newUserOptions[id] = [value, previousInterval[1]]
-								return newUserOptions;
-							})
-						}} />
-					<span> - </span>
-					<input
-						type="text"
-						value={intervalValue[1]}
-						onChange={(e) => {
-							const value = Number(e.target.value);
-							if (value > intervalValue[0]) setUserOptionValues(prev => {
-								const newUserOptions = { ...prev }
-								const previousInterval = prev[id] as [number, number]
-								newUserOptions[id] = [previousInterval[0], value]
-								return newUserOptions;
-							})
-						}} />
-				</OptionDiv>
-			case OptionType.Checkboxes:
-				const checkboxesOptions = option.options
-				const checkboxesValues = userOptionValues[id] as string[]
-				return <OptionDiv key={id}>
-					<span>{title}: </span>
-					<div className="inline-flex gap-2">
-						{checkboxesOptions.map(o => <div
-							key={o}
-							data-included={checkboxesValues.includes(o)}
-							className="p-1 px-2
+export function Options({ state, setState }: ExerciseCtx) {
+	return Object.entries(state.apiOptions)
+		.map(([id, option]) => {
+			const { type, title } = option
+			switch (type) {
+				case OptionType.Number:
+					const numberMin = option.min
+					const numberMax = option.max
+					const numberValue = state.userOptionValues[id] as unknown as number
+					return <OptionDiv key={id} {...{ title }}>
+						<input
+							{...{ type }}
+							min={numberMin}
+							max={numberMax}
+							value={numberValue}
+							onChange={(e) => {
+								const value = e.target.value;
+								setState(prev => {
+									const newUserOptionValues = { ...prev.userOptionValues }
+									newUserOptionValues[id] = value
+									return { ...prev, userOptionValues: newUserOptionValues };
+								})
+							}} />
+					</OptionDiv>
+				case OptionType.Interval:
+					const intervalValue = state.userOptionValues[id] as [number, number]
+					return <OptionDiv key={id} {...{ title }}>
+						<NumberInput
+							value={intervalValue[0]}
+							setValue={(newValue) => {
+								if (newValue < intervalValue[0]) return;
+								setState(prev => {
+									const newUserOptionValues = { ...prev.userOptionValues }
+									newUserOptionValues[id] = [newValue, intervalValue[1]]
+									return { ...prev, userOptionValues: newUserOptionValues };
+								})
+							}}
+						/>
+						<span> - </span>
+						<NumberInput
+							value={intervalValue[1]}
+							setValue={(newValue) => {
+								if (newValue > intervalValue[1]) return;
+								setState(prev => {
+									const newUserOptionValues = { ...prev.userOptionValues }
+									newUserOptionValues[id] = [intervalValue[0], newValue]
+									return { ...prev, userOptionValues: newUserOptionValues };
+								})
+							}}
+						/>
+					</OptionDiv>
+				case OptionType.Checkboxes:
+					const checkboxesOptions = option.options
+					const checkboxesValues = state.userOptionValues[id] as string[]
+					return <OptionDiv key={id} {...{ title }}>
+						<div className="inline-flex gap-2">
+							{checkboxesOptions.map(o => <div
+								key={o}
+								data-included={checkboxesValues.includes(o)}
+								className="p-1 px-2
 									rounded-xl
 									cursor-pointer duration-150
 									bg-white/5 hover:scale-105
@@ -77,62 +70,63 @@ export function Options({ apiOptions, userOptionValues, setUserOptionValues }: {
 									data-[included=true]:*:text-black
 									data-[included=true]:!font-bold
 									"
-							onClick={() => {
-								setUserOptionValues(prev => {
-									const newUserOptions = { ...prev }
-									const currentValues = newUserOptions[id] as string[]
+								onClick={() => {
+									setState(prev => {
+										const newUserOptionValues = { ...prev.userOptionValues }
+										const currentValues = prev.userOptionValues[id] as string[]
 
-									if (currentValues.includes(o)) {
-										newUserOptions[id] = currentValues.filter(option => option !== o)
-									} else {
-										newUserOptions[id] = [...currentValues, o]
-									}
+										if (currentValues.includes(o)) {
+											newUserOptionValues[id] = currentValues.filter(option => option !== o)
+										} else {
+											newUserOptionValues[id] = [...currentValues, o]
+										}
 
-									return newUserOptions
-								})
-
-							}}>{o}</div>
-						)}
-					</div>
-				</OptionDiv>
-			case 'radio':
-				const radioOptions = option.options
-				const radioValue = userOptionValues[id] as string
-				return <OptionDiv key={id}>
-					<span>{title}: </span>
-					<div className="inline-flex gap-2">
-						{radioOptions.map(o => <div
-							key={o}
-							className={`p-1 px-2
+										return { ...prev, userOptionValues: newUserOptionValues };
+									})
+								}}>
+								{o}
+							</div>
+							)}
+						</div>
+					</OptionDiv>
+				case 'radio':
+					const radioOptions = option.options
+					const radioValue = state.userOptionValues[id] as string
+					return <OptionDiv key={id} {...{ title }}>
+						<div className="inline-flex gap-2">
+							{radioOptions.map(o => <div
+								key={o}
+								className={`p-1 px-2
 								rounded-xl
 								cursor-pointer duration-150
 								hover:scale-105
 								${radioValue == o
-									? "!bg-white/20 text-white px-3 font-bold"
-									: "bg-white/5 "}
+										? "!bg-white/20 text-white px-3 font-bold"
+										: "bg-white/5 "}
 								`}
-							onClick={() => {
-								setUserOptionValues(prev => {
-									const newUserOptions = { ...prev }
-									newUserOptions[id] = o
-									return newUserOptions
-								})
-							}}>{o}</div>
-						)}
-					</div>
-				</OptionDiv>
-		}
-	})
+								onClick={() => {
+									setState(prev => {
+										const newUserOptionValues = { ...prev.userOptionValues }
+										newUserOptionValues[id] = o
+										return { ...prev, userOptionValues: newUserOptionValues };
+									})
+								}}>{o}</div>
+							)}
+						</div>
+					</OptionDiv>
+			}
+		})
 }
 
 
-function OptionDiv({ children }: { children: ReactNode }) {
+function OptionDiv({ children, title }: { children: ReactNode, title: string }) {
 	return <div className="
 	bg-black/5 dark:bg-white/5
 	rounded-2xl p-2 px-5
 	flex items-center gap-2
 	w-fit
 	text-4xl">
+		<span>{title}</span>
 		{children}
 	</div>
 }

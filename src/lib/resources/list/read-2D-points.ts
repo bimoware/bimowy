@@ -17,7 +17,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 	generateSeed() {
 		return [randomNonZeroInt(-6, 6), randomNonZeroInt(-6, 6)]
 	},
-	generateContext([x, y]) {
+	generateContent([x, y]) {
 		return [
 			{
 				type: "p",

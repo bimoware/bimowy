@@ -1,13 +1,13 @@
 import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@/lib/locale";
-import { GLOBAL_TAGS, TAG_ID } from "../tag";
+import { GLOBAL_TAGS, TAG_ID } from "../extra/tag";
+import { AnyExerciseBuilder } from "./exercise";
 
 export enum ResourceType {
 	Exercise = "exercise",
-	Note = "note",
-	Course = "course"
+	Sandbox = "sandbox"
 }
 
-export interface ResourceConfig<T extends ResourceType> {
+export type ResourceConfig<T extends ResourceType> = {
 	id: string;
 	type: T;
 	names: LocaleString;
@@ -16,12 +16,15 @@ export interface ResourceConfig<T extends ResourceType> {
 	tags?: TAG_ID[];
 }
 
-export class ResourceBuilder<
-	T extends ResourceType,
-	Config extends ResourceConfig<T>
+export type AnyResourceConfig = {
+	[K in ResourceType]: ResourceConfig<K>
+}
+
+export class RawResourceBuilder<
+	Config extends ResourceConfig<ResourceType>
 > {
 	id: string
-	type: T
+	type: Config["type"]
 	names: LocaleRecord;
 	descs?: LocaleRecord
 	beta: boolean
@@ -43,10 +46,10 @@ export class ResourceBuilder<
 			href: `/resources/${this.id}`,
 			name: this.names[lang],
 			desc: this.descs?.[lang],
-			beta: this.beta ?? false,
-			tags: (this.tags ?? []).map(t => GLOBAL_TAGS[t].names[lang]),
+			beta: this.beta,
+			tags: this.tags.map(t => GLOBAL_TAGS[t].names[lang]),
 		};
 	}
 }
 
-export type AnyResourceBuilder = ResourceBuilder<ResourceType, ResourceConfig<ResourceType>>
+export type AnyResourceBuilder = AnyExerciseBuilder

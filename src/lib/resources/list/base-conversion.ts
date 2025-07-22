@@ -1,4 +1,4 @@
-import { ExerciseBuilder, NumberOption, RadioOption, randomFromInterval } from "@/lib/resources"
+import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 const bases = ["binary", "decimal", "hexadecimal"] as const
 type Base = (typeof bases)[number]
@@ -7,7 +7,8 @@ type Seed = [n: string, from: Base, to: Base]
 type Answers = { answer: string }
 
 const options = {
-	max: new NumberOption({
+	max: new ExerciseOption({
+		type: OptionType.Number,
 		defaultValue: 2 ** 12,
 		title: {
 			en: "Maximum",
@@ -15,7 +16,8 @@ const options = {
 		},
 		min: 0
 	}),
-	from: new RadioOption({
+	from: new ExerciseOption({
+		type: OptionType.Radio,
 		defaultValue: bases[0],
 		title: {
 			en: "From",
@@ -23,7 +25,8 @@ const options = {
 		},
 		options: [...bases]
 	}),
-	to: new RadioOption({
+	to: new ExerciseOption({
+		type: OptionType.Radio,
 		defaultValue: bases[0],
 		title: {
 			en: "To",
@@ -57,7 +60,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 		]
 	},
 
-	generateContext([n, from, to], lang) {
+	generateContent([n, from, to], lang) {
 		const fixedBases = {
 			en: {
 				decimal: "decimal",

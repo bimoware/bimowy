@@ -36,6 +36,13 @@ export default async function CreditsPage() {
             name="Visual Studio Code"
             href="https://code.visualstudio.com/"
           />
+          <span>{t('on')}</span>
+          <Mention
+            icon="/svgs/w11.svg"
+            notrounded
+            name="Windows 11"
+            href="https://en.wikipedia.org/wiki/Windows_11"
+          />
         </>,
         <>
           <span>{t('deployed_on')}</span>

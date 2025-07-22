@@ -8,7 +8,7 @@
     "made_with": "Made with",
     "by": "by",
     "inspired": "Inspired from",
-    "frameworks": "Coded in",
+    "frameworks": "Coded using",
     "available_in": "Available in French & English with",
     "you_like": "You like it? Then don't forget to",
     "deployed_on": "Deployed on",
@@ -16,7 +16,8 @@
     "domain_price": "11.67 $",
     "title": "Credits",
     "sorry_easter_egg": "🕺 unstoppable black baby dancing 🕺",
-    "no_javascript": "Uh,  video couldn't load, damn"
+    "no_javascript": "Uh,  video couldn't load, damn",
+    "on": "on"
   },
   "ResourcesPage": {
     "title": "Resources"

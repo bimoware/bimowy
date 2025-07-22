@@ -1,18 +1,20 @@
 import { toRounded } from "@/lib/extra"
-import { ExerciseBuilder, IntervalOption, randomFromInterval } from "@/lib/resources"
+import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = [price: number, discount: number]
 type Answers = { finalPrice: number }
 
 const options = {
-	"priceInterval": new IntervalOption({
+	"priceInterval": new ExerciseOption({
+		type: OptionType.Interval,
 		title: {
 			en: "Price range",
 			fr: "Intervalle de prix"
 		},
 		defaultValue: [10, 100]
 	}),
-	"discountInterval": new IntervalOption({
+	"discountInterval": new ExerciseOption({
+		type: OptionType.Interval,
 		title: {
 			en: "Discount percentage range",
 			fr: "Intervalle du pourcentage de remise"
@@ -40,7 +42,7 @@ export default new ExerciseBuilder<
 			randomFromInterval(...discountInterval)
 		]
 	},
-	generateContext([price, discount], lang) {
+	generateContent([price, discount], lang) {
 		return [
 			{
 				type: "p",

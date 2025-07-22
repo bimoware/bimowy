@@ -1,10 +1,11 @@
-import { ExerciseBuilder, factorial, IntervalOption, randomFromInterval } from "@/lib/resources"
+import { ExerciseBuilder, ExerciseOption, factorial, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = [n: number, k: number]
 type Answers = { answer: number }
 
 const options = {
-	interval: new IntervalOption({
+	interval: new ExerciseOption({
+		type: OptionType.Interval,
 		title: {
 			en: "Interval of values",
 			fr: "Intervalle des valeurs"
@@ -29,7 +30,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 		return [n, k]
 	},
 
-	generateContext([n, k]) {
+	generateContent([n, k]) {
 		return [
 			{
 				type: "p",

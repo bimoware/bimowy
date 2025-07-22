@@ -1,17 +1,19 @@
-import { ExerciseBuilder, IntervalOption, NumberOption, randomFromInterval } from "@/lib/resources"
+import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = number[]
 type Answers = { answer: Seed[number] }
 
 const options = {
-	"interval": new IntervalOption({
+	"interval": new ExerciseOption({
+		type: OptionType.Interval,
 		title: {
 			en: "Interval of values",
 			fr: "Intervalle des valeurs"
 		},
 		defaultValue: [0, 10]
 	}),
-	"n_values": new NumberOption({
+	"n_values": new ExerciseOption({
+		type: OptionType.Number,
 		title: {
 			fr: "Nombre de valeurs",
 			en: "Number of values"
@@ -20,6 +22,7 @@ const options = {
 		min: 1
 	})
 }
+
 export default new ExerciseBuilder<
 	Seed,
 	Answers,
@@ -38,7 +41,7 @@ export default new ExerciseBuilder<
 			.from({ length: n_values })
 			.map(() => randomFromInterval(...interval))
 	},
-	generateContext(ns, lang) {
+	generateContent(ns, lang) {
 		return [
 			{
 				type: "p",

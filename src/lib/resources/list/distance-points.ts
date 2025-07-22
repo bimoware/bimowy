@@ -1,11 +1,12 @@
 import { toRounded } from "@/lib/extra"
-import { ExerciseBuilder, IntervalOption, randomFromInterval } from "@/lib/resources"
+import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = [[x1: number, y1: number], [x2: number, y2: number]]
 type Answers = { answer: number }
 
 const options = {
-	interval: new IntervalOption({
+	interval: new ExerciseOption({
+		type: OptionType.Interval,
 		title: {
 			en: "Range of values",
 			fr: "Plage des valeurs"
@@ -34,7 +35,7 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 		]
 	},
 
-	generateContext([[x1, y1], [x2, y2]], lang) {
+	generateContent([[x1, y1], [x2, y2]], lang) {
 		return [
 			{
 				type: "p",

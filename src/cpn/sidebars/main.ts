@@ -38,68 +38,72 @@ export type Route = {
 	names: LocaleRecord
 }
 
+export const DEFAULT_ROUTES: Route[] = [
+	{
+		tags: [Tag.Desktop, Tag.Mobile],
+		id: 'home',
+		favicon: '/favicon.ico',
+		path: '',
+		icon: '/media/icon.png',
+		iconFree: true,
+		names: "Bimowy"
+	},
+	{
+		tags: [Tag.Desktop, Tag.Mobile],
+		id: 'resources',
+		icon: '/svgs/resource.svg',
+		names: {
+			en: "Resources",
+			fr: "Ressources"
+		}
+	},
+	{
+		tags: [],
+		id: 'exercise',
+		icon: '/svgs/lab.svg',
+		names: {
+			en: 'Exercise',
+			fr: 'Exercice'
+		}
+	},
+	{
+		tags: [],
+		id: "note",
+		icon: '/svgs/note.svg',
+		names: 'Notes'
+	},
+	{
+		tags: [],
+		id: "course",
+		icon: '/svgs/course.svg',
+		names: { en: 'Course', fr: "Cours" }
+	},
+	{
+		tags: [],
+		id: 'test',
+		icon: '/svgs/test.svg',
+		names: 'Test'
+	},
+	{
+		tags: [Tag.Desktop, Tag.Mobile, Tag.Meta],
+		id: 'credits',
+		icon: '/svgs/code.svg',
+		names: 'Credits'
+	},
+	{
+		tags: [],
+		id: 'page-not-found',
+		icon: '/svgs/report.svg',
+		names: {
+			en: 'Page not found',
+			fr: 'Page introuvable'
+		}
+	}
+].map(fixRawRoute)
+
 export function getRoutes(user?: User) {
 	const routes: RawRoute[] = [
-		{
-			tags: [Tag.Desktop, Tag.Mobile],
-			id: 'home',
-			favicon: '/favicon.ico',
-			path: '',
-			icon: '/media/icon.png',
-			iconFree: true,
-			names: "Bimowy"
-		},
-		{
-			tags: [Tag.Desktop, Tag.Mobile],
-			id: 'resources',
-			icon: '/svgs/resource.svg',
-			names: {
-				en: "Resources",
-				fr: "Ressources"
-			}
-		},
-		{
-			tags: [],
-			id: 'exercise',
-			icon: '/svgs/lab.svg',
-			names: {
-				en: 'Exercise',
-				fr: 'Exercice'
-			}
-		},
-		{
-			tags: [],
-			id: "note",
-			icon: '/svgs/note.svg',
-			names: 'Notes'
-		},
-		{
-			tags: [],
-			id: "course",
-			icon: '/svgs/course.svg',
-			names: { en: 'Course', fr: "Cours" }
-		},
-		{
-			tags: [],
-			id: 'test',
-			icon: '/svgs/test.svg',
-			names: 'Test'
-		},
-		{
-			tags: [Tag.Desktop, Tag.Mobile, Tag.Meta],
-			id: 'credits',
-			icon: '/svgs/code.svg',
-			names: 'Credits'
-		},
-		{
-			tags: [],
-			id: 'page-not-found',
-			icon: '/svgs/report.svg',
-			names: {
-				en: 'Page not found',
-				fr: 'Page introuvable'
-			}
-		},
+		...DEFAULT_ROUTES,
 		{
 			id: "log",
 			tags: [Tag.Meta, Tag.Mobile, Tag.Desktop],

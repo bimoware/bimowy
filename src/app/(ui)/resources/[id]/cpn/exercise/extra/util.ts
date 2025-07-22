@@ -1,8 +1,8 @@
-import { Exercise } from "./ExercisePage"
+import { FullyGeneratedExerciseState } from "./types"
 
 type ExerciseInputCorrection = { emoji: string, score: number, extra?: string }
 
-export function getExerciseCorrections(exercises: Exercise) {
+export function getExerciseCorrections(state: FullyGeneratedExerciseState) {
 	const data = {
 		total: 0,
 		subtotal: 0,
@@ -12,7 +12,7 @@ export function getExerciseCorrections(exercises: Exercise) {
 		worthShowing: false,
 	}
 
-	const items = exercises.items.map(item => {
+	const items = state.exercises.map(item => {
 		data.total += 1
 
 		const inputs = Object.values(item.inputs)
@@ -40,7 +40,7 @@ export function getExerciseCorrections(exercises: Exercise) {
 
 	data.texts = items
 	data.score = data.subtotal / data.total
-	data.worthShowing = exercises.items.length > 10 && data.score != 0 && data.score != 1
+	data.worthShowing = state.exercises.length > 10 && data.score != 0 && data.score != 1
 	data.exactScore = Math.round(data.score * 100) + "%"
 	return data
 }

@@ -1,128 +1,74 @@
-import { LocaleRecord, LanguageCode } from "@/lib/locale";
+import { LanguageCode, LocaleString, toLocaleString } from "@/lib/locale"
 
 export enum OptionType {
 	Number = "number",
-	Radio = "radio",
-	Interval = "interval",
 	Boolean = "boolean",
+	Interval = "interval",
+	Radio = "radio",
 	Checkboxes = "checkboxes"
 }
 
-// Base Option
-export type BaseOptionConfig = {
-	title: LocaleRecord;
-	defaultValue: unknown;
-};
+type BaseOptionConfig = {
+	title: LocaleString
+}
 
-export abstract class OptionBase<
-	T extends OptionType = OptionType,
-	C extends BaseOptionConfig = BaseOptionConfig
-> {
-	constructor(
-		public type: T,
-		public config: C
-	) { }
+type NumberOptionConfig = {
+	type: OptionType.Number, defaultValue: number
+	min?: number
+	max?: number
+}
+
+type BooleanOptionConfig = {
+	type: OptionType.Boolean, defaultValue: boolean
+}
+
+type IntervalOptionConfig = {
+	type: OptionType.Interval, defaultValue: [number, number]
+}
+
+type AllowedType = string
+type RadioOptionConfig<T extends AllowedType> = {
+	type: OptionType.Radio, defaultValue: T
+	options: T[]
+}
+
+type CheckboxesOptionConfig<T extends AllowedType> = {
+	type: OptionType.Checkboxes, defaultValue: T[]
+	options: T[]
+}
+
+export type OptionConfig<T extends AllowedType = AllowedType> =
+	| NumberOptionConfig
+	| BooleanOptionConfig
+	| IntervalOptionConfig
+	| RadioOptionConfig<T>
+	| CheckboxesOptionConfig<T>
+
+export class ExerciseOption<C extends OptionConfig = OptionConfig> {
+	config: BaseOptionConfig & C
+	constructor(config: BaseOptionConfig & C) {
+		this.config = config
+	}
 	serialize(lang: LanguageCode) {
 		return {
-			type: this.type,
 			...this.config,
-			title: this.config.title?.[lang]
+			title: toLocaleString(this.config.title)[lang]
 		};
 	}
 }
 
-// Opts (Options) is a record w/ keys=option IDs & values=OptType
-export type OptsType = Record<string, OptionBase>
+export type ExerciseOptions = Record<string, ExerciseOption>
+export type UserOptions = Record<string, unknown>
 
+type DefaultValueOfOption<O extends ExerciseOption> = O["config"]["defaultValue"]
 
-// User
-export type ExtractDefaultValueFromOptions<
-	O extends OptsType
-> = {
-		[K in keyof O]: O[K]["config"]["defaultValue"];
-	};
-
-export type UserOptions = Record<string, unknown> & { [DEFAULT_N_QUESTIONS_ID]: number; };
-export type UserAnswers = Record<string, unknown>;
-
-// Number
-type NumberConfig = BaseOptionConfig & {
-	defaultValue: number;
-	min?: number;
-	max?: number;
+export type DefaultValueFromOptions<O extends ExerciseOptions> = {
+	[K in keyof O]: DefaultValueOfOption<O[K]>;
 };
-export class NumberOption extends OptionBase<OptionType.Number, NumberConfig> {
-	constructor(public config: NumberConfig) {
-		super(OptionType.Number, config);
-	}
-}
-// Boolenan
-type BooleanConfig = BaseOptionConfig & {
-	defaultValue: boolean;
-};
-export class BooleanOption extends OptionBase<
-	OptionType.Boolean, BooleanConfig
-> {
-	constructor(public config: BooleanConfig) {
-		super(OptionType.Boolean, config);
-	}
-}
-// Radio
-type AllowedRadioOptionType = number | string;
-type RadioConfig<T> = BaseOptionConfig & {
-	options: T[];
-	defaultValue: T;
-};
-
-export class RadioOption<
-	T extends AllowedRadioOptionType = AllowedRadioOptionType
-> extends OptionBase<
-	OptionType.Radio, RadioConfig<T>
-> {
-	constructor(public config: RadioConfig<T>) {
-		super(OptionType.Radio, config);
-	}
-}
-// Radio
-type IntervalConfig = BaseOptionConfig & {
-	defaultValue: [number, number];
-};
-
-export class IntervalOption extends OptionBase<
-	OptionType.Interval, IntervalConfig
-> {
-	constructor(public config: IntervalConfig) {
-		super(OptionType.Interval, config);
-	}
-}
-// Checkboxes
-type CheckboxesConfig<T> = BaseOptionConfig & {
-	defaultValue: T[];
-	options: T[];
-};
-
-export class CheckboxesOption<
-	T = string
-> extends OptionBase<
-	OptionType.Checkboxes, CheckboxesConfig<T>
-> {
-	constructor(public config: CheckboxesConfig<T>) {
-		super(OptionType.Checkboxes, config);
-	}
-}
-// ..
-export type APIOption = ReturnType<
-	(NumberOption |
-		RadioOption |
-		IntervalOption |
-		BooleanOption |
-		CheckboxesOption)["serialize"]
->;
-
-export type APIOptions = Record<string, APIOption>;
 
 export const DEFAULT_N_QUESTIONS_ID = "_n";
-export const DEFAULT_N_QUESTIONS_OPTION = new NumberOption({
+export const DEFAULT_N_QUESTIONS_OPTION = new ExerciseOption({
+	type: OptionType.Number,
 	defaultValue: 5,
 	max: 10,
 	min: 1,
