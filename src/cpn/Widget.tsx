@@ -8,7 +8,7 @@ type Props<T extends keyof typeof ALL_WIDGETS> = {
 	props: React.ComponentPropsWithRef<typeof ALL_WIDGETS[T]>
 }
 
-export async function Widget({ id, props }: Props<keyof typeof ALL_WIDGETS>) {
+export function Widget({ id, props }: Props<keyof typeof ALL_WIDGETS>) {
 
 	switch (id) {
 		case "TrigonometricCircle":

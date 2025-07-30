@@ -1,8 +1,8 @@
-import { FullyGeneratedExerciseState } from "./extra"
+import { GeneratedExerciseCtx } from "./extra"
 import { getExerciseCorrections } from "./extra/util"
 
-export function End({ state }: { state: FullyGeneratedExerciseState }) {
-	const corrections = getExerciseCorrections(state.exercises)
+export function End({ state }:GeneratedExerciseCtx) {
+	const corrections = getExerciseCorrections(state)
 	return <>
 		<div className="my-4 w-full h-full flex items-center justify-center">
 			<h1 className="!text-6xl">

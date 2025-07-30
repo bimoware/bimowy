@@ -1,16 +1,16 @@
 import { OptionType } from "@/lib/resources";
 import { ReactNode } from "react";
-import { ExerciseCtx } from "./extra";
+import { UngeneratedExerciseCtx } from "./extra";
 import NumberInput from "@cpn/ui/NumberInput";
 
-export function Options({ state, setState }: ExerciseCtx) {
+export function Options({ state, setState }: UngeneratedExerciseCtx) {
+	if(state.step !== "options") return;
 	return Object.entries(state.apiOptions)
 		.map(([id, option]) => {
 			const { type, title } = option
 			switch (type) {
 				case OptionType.Number:
-					const numberMin = option.min
-					const numberMax = option.max
+					const [numberMin,numberMax] = [option.min,option.max]
 					const numberValue = state.userOptionValues[id] as unknown as number
 					return <OptionDiv key={id} {...{ title }}>
 						<input
@@ -28,12 +28,14 @@ export function Options({ state, setState }: ExerciseCtx) {
 							}} />
 					</OptionDiv>
 				case OptionType.Interval:
+					const [intervalMin,intervalMax] = option.defaultValue
 					const intervalValue = state.userOptionValues[id] as [number, number]
 					return <OptionDiv key={id} {...{ title }}>
+						<span>{"["}</span>
 						<NumberInput
 							value={intervalValue[0]}
 							setValue={(newValue) => {
-								if (newValue < intervalValue[0]) return;
+								if (newValue < intervalMin || newValue >= intervalValue[1]) return;
 								setState(prev => {
 									const newUserOptionValues = { ...prev.userOptionValues }
 									newUserOptionValues[id] = [newValue, intervalValue[1]]
@@ -41,11 +43,11 @@ export function Options({ state, setState }: ExerciseCtx) {
 								})
 							}}
 						/>
-						<span> - </span>
+						<span>{";"}</span>
 						<NumberInput
 							value={intervalValue[1]}
 							setValue={(newValue) => {
-								if (newValue > intervalValue[1]) return;
+								if (newValue > intervalMax || newValue <= intervalValue[0]) return;
 								setState(prev => {
 									const newUserOptionValues = { ...prev.userOptionValues }
 									newUserOptionValues[id] = [intervalValue[0], newValue]
@@ -53,6 +55,7 @@ export function Options({ state, setState }: ExerciseCtx) {
 								})
 							}}
 						/>
+						<span>{"]"}</span>
 					</OptionDiv>
 				case OptionType.Checkboxes:
 					const checkboxesOptions = option.options

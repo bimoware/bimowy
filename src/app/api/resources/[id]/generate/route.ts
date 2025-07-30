@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server"
 import { AnyExerciseBuilder } from "@/lib/resources"
-import { DEFAULT_N_QUESTIONS_ID, DEFAULT_N_QUESTIONS_OPTION, UserOptions } from "@/lib/resources"
+import { DEFAULT_N_QUESTIONS_ID, DEFAULT_N_QUESTIONS_OPTION, UserOptionsValues } from "@/lib/resources"
 import { NextError, NextSuccess } from "@api/routing"
 import { isValidLang } from "@/lib/locale"
 import { resourcesManager } from "@/server/resourcesManager"
@@ -23,7 +23,7 @@ export async function POST(
 	if (!isValidLang(lang)) throw NextError("Invalid lang")
 
 	// Options
-	const options: UserOptions = await req.json()
+	const options: UserOptionsValues = await req.json()
 
 	// Problems
 	const problem = exercise.validateOptions(options)

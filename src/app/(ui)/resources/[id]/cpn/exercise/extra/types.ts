@@ -1,4 +1,4 @@
-import { AnyExerciseBuilder, AnyExerciseContent } from "@/lib/resources"
+import { AnyExerciseBuilder, AnyExerciseContent, ExerciseSeed } from "@/lib/resources"
 import { RefObject } from "react"
 import { useExerciseController } from "./use"
 import { HookSetter } from "@/lib/extra"
@@ -6,12 +6,13 @@ import { HookSetter } from "@/lib/extra"
 export type PageStep = 'options' | 'normal' | 'end'
 export type SerializedExercise = ReturnType<AnyExerciseBuilder["serialize"]>
 export type ExerciseData = {
+	seed:ExerciseSeed
 	content: AnyExerciseContent[],
 	state: 'normal' | 'correcting' | 'corrected',
 	inputs: Record<string, Input>,
 }
 export type Input = {
-	value: string
+	value: number
 } & ({
 	corrected: false
 } | {
@@ -24,13 +25,13 @@ export type ExerciseAPIOptions = SerializedExercise["options"]
 export type ExerciseUserOptionValues = {
 	[K in keyof ExerciseAPIOptions]: ExerciseAPIOptions[K]["defaultValue"]
 }
-export type PartialGeneratedExerciseState = {
+export type UngeneratedExerciseState = {
 	exercise_id: string
 	step: "options",
 	apiOptions: ExerciseAPIOptions,
 	userOptionValues: ExerciseUserOptionValues
 }
-export type FullyGeneratedExerciseState = {
+export type GeneratedExerciseState = {
 	exercise_id: string
 	step: 'normal' | 'end'
 	exercises: ExerciseData[];
@@ -40,13 +41,20 @@ export type VFXPlayers = {
 	correct: () => void;
 	incorrect: () => void;
 }
-export type GeneratedExerciseState = PartialGeneratedExerciseState | FullyGeneratedExerciseState
 export type InputRefs = RefObject<Record<string, HTMLInputElement>>
 
-export type ExerciseCtx = ReturnType<typeof useExerciseController> & ({
-	state: PartialGeneratedExerciseState
-	setState: HookSetter<PartialGeneratedExerciseState>
-} | {
-	state: FullyGeneratedExerciseState
-	setState: HookSetter<FullyGeneratedExerciseState>
-})
+export type ExerciseState = UngeneratedExerciseState | GeneratedExerciseState
+
+type BaseExerciseCtx = Omit<ReturnType<typeof useExerciseController>,"state"|"setState">
+
+export type UngeneratedExerciseCtx = BaseExerciseCtx & {
+	state: UngeneratedExerciseState
+	setState: HookSetter<UngeneratedExerciseState>
+} 
+
+export type GeneratedExerciseCtx = BaseExerciseCtx & {
+	state: GeneratedExerciseState
+	setState: HookSetter<GeneratedExerciseState>
+}
+
+export type ExerciseCtx = GeneratedExerciseCtx | UngeneratedExerciseCtx

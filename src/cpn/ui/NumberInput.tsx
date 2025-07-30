@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { Ref, useEffect, useRef, useState } from "react"
 
 type Props = {
 	value: number,
@@ -8,8 +8,10 @@ type Props = {
 	min?: number,
 	setValue: (v: number) => void
 	controls?: boolean
+	ref?: Ref<HTMLInputElement>
+	disabled?: boolean
 }
-export default function NumberInput({ value, setValue, max, min, controls = true }: Props) {
+export default function NumberInput({ value, setValue, max, min, controls = true, ref, disabled }: Props) {
 	const maxValid = typeof max === "number"
 	const minValid = typeof min === "number"
 
@@ -23,6 +25,8 @@ export default function NumberInput({ value, setValue, max, min, controls = true
 
 
 	return <div
+		{...{ disabled }}
+		{...(ref && { ref })}
 		{...(wrong && { "data-wrong": true })}
 		className="
 		flex items-center justify-center
@@ -39,7 +43,7 @@ export default function NumberInput({ value, setValue, max, min, controls = true
 
 		{
 			controls && <SideButton id='-'
-				disabled={minValid && value == min}
+				disabled={disabled || (minValid && value <= min)}
 				onClick={() => { setValue(value - 1) }} />
 		}
 
@@ -69,7 +73,7 @@ export default function NumberInput({ value, setValue, max, min, controls = true
 
 		{
 			controls && <SideButton id='+'
-				disabled={value == max}
+				disabled={disabled || (maxValid && value >= max)}
 				onClick={() => { setValue(value + 1) }} />
 		}
 

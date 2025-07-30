@@ -2,17 +2,14 @@
 import { useLanguage } from "@/lib/locale"
 import { getRoutes, Route, split, Tag } from "@cpn/sidebars/main"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
-import { useAuthStateChange, useAuthUser } from "@/lib/supabase/util"
 
 export default function DesktopSideBar() {
 	const lang = useLanguage()
-	const [user, setUser] = useAuthUser()
 
-	const routes = getRoutes(user)
+	const routes = getRoutes()
 	const isVisible = (route: Route) => route.tags.includes(Tag.Desktop)
 	const routeGroups = split(routes, (route) => !route.tags.includes(Tag.Meta))
 
-	useAuthStateChange(setUser)
 
 	return <div className='h-screen
 	p-3

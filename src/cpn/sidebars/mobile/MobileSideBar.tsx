@@ -1,5 +1,4 @@
 "use client"
-import { useAuthUser } from "@/lib/supabase";
 import { useLanguage } from "@/lib/locale";
 import { getRoutes, Route, Tag } from "@cpn/sidebars/main";
 import Image from "next/image";
@@ -8,8 +7,7 @@ import { useSelectedLayoutSegments } from "next/navigation";
 
 export default function MobileSideBar() {
 	const lang = useLanguage()
-	const [user] = useAuthUser()
-	const routes = getRoutes(user)
+	const routes = getRoutes()
 	const isVisible = (route: Route) => route.tags.includes(Tag.Mobile)
 	const segments = useSelectedLayoutSegments()
 	const pathParts = [...segments].filter(p => !p.includes('('))

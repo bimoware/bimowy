@@ -1,5 +1,4 @@
 import { LanguageCode, LocaleRecord, toLocaleString } from "@/lib/locale"
-import { User } from "@supabase/supabase-js";
 import { Metadata } from "next";
 import { getLocale } from "next-intl/server"
 
@@ -101,30 +100,8 @@ export const DEFAULT_ROUTES: Route[] = [
 	}
 ].map(fixRawRoute)
 
-export function getRoutes(user?: User) {
-	const routes: RawRoute[] = [
-		...DEFAULT_ROUTES,
-		{
-			id: "log",
-			tags: [Tag.Meta, Tag.Mobile, Tag.Desktop],
-			...(user
-				? {
-					icon: "/svgs/logout.svg",
-					names: {
-						en: `Log out`,
-						fr: `Se déco`
-					},
-				}
-				: {
-					icon: '/svgs/login.svg',
-					names: {
-						en: 'Login',
-						fr: 'Connexion'
-					}
-				})
-		}
-	]
-	return routes.map(fixRawRoute)
+export function getRoutes() {
+	return DEFAULT_ROUTES
 }
 
 export function fixRawRoute(route: RawRoute) {

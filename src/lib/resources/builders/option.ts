@@ -58,7 +58,7 @@ export class ExerciseOption<C extends OptionConfig = OptionConfig> {
 }
 
 export type ExerciseOptions = Record<string, ExerciseOption>
-export type UserOptions = Record<string, unknown>
+export type UserOptionsValues = DefaultValueFromOptions<ExerciseOptions>
 
 type DefaultValueOfOption<O extends ExerciseOption> = O["config"]["defaultValue"]
 

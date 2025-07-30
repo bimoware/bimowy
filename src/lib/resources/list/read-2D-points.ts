@@ -45,15 +45,16 @@ export default new ExerciseBuilder<Seed, Answers, typeof options>({
 				id: "Plane",
 				props: {
 					ranges: {
-						x: { min: -7, max: 7 },
-						y: { min: -7, max: 7 }
+						x: [-7, 7],
+						y: [-7, 7]
 					},
 					elems: [
 						{
 							type: "point",
 							id: "A",
 							x,
-							y
+							y,
+							color:"blue"
 						}
 					]
 				}

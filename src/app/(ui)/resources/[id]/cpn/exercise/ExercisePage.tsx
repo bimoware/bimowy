@@ -1,32 +1,31 @@
 "use client";
 
-import { useRef, useState } from "react"
-import useSound from "use-sound"
 import { End } from "./End";
 import { Options } from "./Options";
 import { Title } from "./Title";
 import { Buttons } from "./Buttons";
 import { AnyExerciseBuilder } from "@/lib/resources";
 import { Content } from "./Content";
-import { HookSetter } from "@/lib/extra";
 import {
 	ExerciseCtx,
-	FullyGeneratedExerciseState,
+	GeneratedExerciseCtx,
+	UngeneratedExerciseCtx,
 	useEmptyInputRefsEffect,
 	useEnterKeyEffect,
 	useExerciseController,
 	useFocusInputsEffect,
 } from "./extra";
+import { LanguageCode } from "@/lib/locale";
 
-export default function ExercisePage({ exercise }: {
+export default function ExercisePage({ exercise,locale }: {
+	locale:LanguageCode
 	exercise: ReturnType<AnyExerciseBuilder["serialize"]>
 }) {
-	const ctx = useExerciseController(exercise) as ExerciseCtx
+	const ctx = useExerciseController(exercise,locale) as ExerciseCtx
 
-	useEnterKeyEffect()
+	useEnterKeyEffect(ctx)
 	useEmptyInputRefsEffect(ctx)
 	useFocusInputsEffect(ctx)
-
 
 	return (
 		<div className="w-full h-full flex-col p-4 flex items-center gap-4">
@@ -36,16 +35,14 @@ export default function ExercisePage({ exercise }: {
 				  w-full
 				  rounded-3xl
 				  py-3 px-5 text-4xl
-				  overflow-y-scroll
+				  overflow-y-auto
 					pb-8">
 				{
 					ctx.state.step === "options"
-						? <Options {...ctx} />
+						? <Options {...(ctx as UngeneratedExerciseCtx)} />
 						: ctx.state.step === "end"
-							? <End {...ctx} />
-							: <Content {...ctx}
-								setState={ctx.setState as HookSetter<FullyGeneratedExerciseState>}
-							/>
+							? <End {...(ctx as GeneratedExerciseCtx)} />
+							: <Content {...(ctx as GeneratedExerciseCtx)}/>
 				}
 			</div>
 			<div className="w-full flex gap-4 items-center justify-center">

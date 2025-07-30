@@ -1,8 +1,8 @@
-import { FullyGeneratedExerciseState } from "./types"
+import { GeneratedExerciseState } from "./types"
 
 type ExerciseInputCorrection = { emoji: string, score: number, extra?: string }
 
-export function getExerciseCorrections(state: FullyGeneratedExerciseState) {
+export function getExerciseCorrections(state: GeneratedExerciseState) {
 	const data = {
 		total: 0,
 		subtotal: 0,

@@ -1,9 +1,10 @@
 "use client"
 import { useEffect, useRef, useState } from "react"
-import { ExerciseCtx, ExerciseUserOptionValues, GeneratedExerciseState, InputRefs } from "./types"
+import { ExerciseCtx, ExerciseUserOptionValues, ExerciseState, InputRefs, GeneratedExerciseCtx } from "./types"
 import { focusEmptyOrIncorrectInput, handleEnter } from "./client"
 import { AnyExerciseBuilder } from "@/lib/resources"
 import useSound from "use-sound"
+import { LanguageCode } from "@/lib/locale"
 
 export function useEnterKeyEffect(ctx: ExerciseCtx) {
 	return useEffect(() => {
@@ -26,12 +27,12 @@ export function useEmptyInputRefsEffect({ inputRefs, state }: ExerciseCtx) {
 export function useFocusInputsEffect(ctx: ExerciseCtx) {
 	return useEffect(() => {
 		if (ctx.state.step !== "normal") return
-		focusEmptyOrIncorrectInput(ctx)
+		focusEmptyOrIncorrectInput(ctx as GeneratedExerciseCtx)
 	}, [])
 }
 
-export function useExerciseController(exercise: ReturnType<AnyExerciseBuilder["serialize"]>) {
-	const [state, setState] = useState<GeneratedExerciseState>({
+export function useExerciseController(exercise: ReturnType<AnyExerciseBuilder["serialize"]>, locale:LanguageCode) {
+	const [state, setState] = useState<ExerciseState>({
 		exercise_id: exercise.id,
 		step: "options",
 		apiOptions: exercise.options,
@@ -47,7 +48,6 @@ export function useExerciseController(exercise: ReturnType<AnyExerciseBuilder["s
 	};
 
 	const inputRefs: InputRefs = useRef({})
-
-	return { state, setState, vfxPlayers, inputRefs }
+	return { state, setState, vfxPlayers, inputRefs, locale }
 
 }

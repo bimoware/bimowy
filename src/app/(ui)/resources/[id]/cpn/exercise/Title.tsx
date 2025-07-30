@@ -1,22 +1,19 @@
 import { useTranslations } from "next-intl"
 import { getExerciseCorrections } from "./extra/util"
-import { GeneratedExerciseState } from "./extra"
+import { ExerciseCtx } from "./extra"
 
-export function Title({ state }: {
-	state: GeneratedExerciseState
-}) {
+export function Title({ state }:ExerciseCtx) {
 	const t = useTranslations('ResourcePage')
 	switch (state.step) {
 		case "options":
-			return <h1>{t('Options')}</h1>
-		case "end":
-			return <h1>{t('Finished')}</h1>
+			if(Object.keys(state.apiOptions).length) return <h1>{t('Options')}</h1>
+			return;
 		case "normal":
 			if (!state.exercises) return;
 			return <h1>
 				<div className="inline-flex gap-1">
 					{
-						getExerciseCorrections(state.exercises)
+						getExerciseCorrections(state)
 							.texts
 							.map((correction, i) => <div key={i}
 								data-current={state.index == i}

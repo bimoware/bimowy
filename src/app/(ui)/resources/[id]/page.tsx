@@ -22,7 +22,7 @@ export default async function ResourcePage({ params }: {
 	switch (resource.type) {
 		case ResourceType.Exercise:
 			const exercise = resource.serialize(locale) as ReturnType<AnyExerciseBuilder["serialize"]>
-			return <ExercisePage  {...{ exercise }} />
+			return <ExercisePage  {...{ exercise, locale }} />
 		default:
 			return <>Resource type not supported yet</>
 	}

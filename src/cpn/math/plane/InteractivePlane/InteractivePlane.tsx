@@ -27,7 +27,7 @@ export default function InteractivePlane() {
 			<section className="w-64 h-[95%]
 			bg-white/5
 			flex flex-col gap-2
-			overflow-y-scroll
+			overflow-y-auto
 			p-4">
 				<LineSplit label={"Range"} onReset={() => { setRanges(defaultRange) }}
 					resetable={JSON.stringify(ranges) != JSON.stringify(defaultRange)} />

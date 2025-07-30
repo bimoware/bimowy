@@ -16,7 +16,8 @@ export default function PlaneBackground({ ranges, excluded }: { ranges: Ranges, 
 						x2={getXCoor(ranges, ranges.x[1]) + marginOffset / 2}
 						y1={yCoor} y2={yCoor}
 					/>;
-				})}
+				})
+				}
 		</g>
 		<g>
 			{generateIntegers(...ranges.x)

@@ -1,5 +1,4 @@
 export * from "./builders/exercise"
-export * from "./builders/sandbox"
 export * from "./builders/content"
 export * from "./builders/option"
 export * from "./builders/resource"

@@ -51,8 +51,6 @@ export function Card({ id, beta, href, name, desc, type }: ReturnType<AnyResourc
 				<Image
 					src={{
 						[ResourceType.Exercise]: "/svgs/lab.svg",
-						[ResourceType.Note]: "/svgs/note.svg",
-						[ResourceType.Course]: "/svgs/course.svg"
 					}[type]}
 					alt={type}
 					width={30}

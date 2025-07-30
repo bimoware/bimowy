@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server"
 import { NextError, NextSuccess } from "@api/routing"
-import { ExerciseSeed, UserAnswers } from "@/lib/resources"
+import { ExerciseAnswers, ExerciseSeed } from "@/lib/resources"
 import { ExerciseBuilder } from "@/lib/resources"
 import { resourcesManager } from "@/server/resourcesManager"
 
@@ -14,7 +14,7 @@ export async function POST(
 	if (!exerciseId) return NextError("No exerciseId")
 
 	// Answers & Seed
-	const { answers, seed }: { answers: UserAnswers; seed: ExerciseSeed } =
+	const { answers, seed }: { answers: ExerciseAnswers; seed: ExerciseSeed } =
 		await req.json()
 	if (!answers) return NextError("No answers given")
 	if (typeof answers !== "object") return NextError("Answers must be an object")
