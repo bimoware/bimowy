@@ -13,29 +13,12 @@ export async function generateMetadata() {
 
 const RESOURCE_TYPES = [
 	{
-		id: "note",
-		names: {
-			en: "Notes",
-			fr: "Notes"
-		},
-		icon: "/svgs/note.svg",
-		className: ""
-	},
-	{
 		id: "exercise",
 		names: {
 			en: "Exercises",
 			fr: "Exercises"
 		},
 		icon: "/svgs/lab.svg"
-	},
-	{
-		id: "course",
-		names: {
-			en: "Courses",
-			fr: "Cours"
-		},
-		icon: "/svg/course.svg"
 	}
 ] as const
 
@@ -91,7 +74,7 @@ export default function ResourceList({ resources }: {
 			}
 		</div>
 		<div
-			className="duration-150 flex p-4 gap-6 w-full flex-wrap justify-center items-center">
+			className="duration-150 flex p-4 gap-6 flex-wrap justify-center items-center">
 			{
 				resources
 					.filter(r => selectedTypes.includes(r.type))

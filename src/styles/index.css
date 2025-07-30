@@ -54,17 +54,3 @@ section {
 		}
 	}
 }
-
-table {
-	@apply overflow-clip border-collapse rounded-2xl ring-2 ring-neutral-500;
-}
-th {
-	@apply bg-white/5;
-}
-th,
-td {
-	@apply p-1 pl-3 pr-2 ring ring-neutral-500;
-}
-caption {
-	@apply text-xs opacity-50 mb-1;
-}

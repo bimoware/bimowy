@@ -73,23 +73,6 @@ export function Card({ id, beta, href, name, desc, type }: ReturnType<AnyResourc
 					</Latex>
 				</h5>
 			}
-			{/* {
-				tags && <div
-					className='flex gap-2 flex-wrap justify-center mt-1'>
-					{
-						tags.map(tag => (
-							<span key={tag}
-								className='
-								bg-white/10 text-white/80
-								px-2
-								rounded-full
-								shadow-sm'>
-								{tag}
-							</span>
-						))
-					}
-				</div>
-			} */}
 		</Link >
 	)
 }
