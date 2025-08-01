@@ -16,6 +16,7 @@ export type Route = {
 	favicon?: string
 	iconFree?: boolean
 	names: LocaleRecord
+	descs?: LocaleRecord
 }
 
 export const ROUTES = {
@@ -25,7 +26,11 @@ export const ROUTES = {
 		path: '/',
 		icon: '/media/icon.png',
 		iconFree: true,
-		names: toLocaleString("Bimowy")
+		names: toLocaleString("Bimowy"),
+		descs: {
+			en: "Platform to freely explore math concepts with interactive tools & customizable exercises",
+			fr: "Platforme pour librement explorer des concepts mathématiques avec des outils interactifs & des exercises customizables"
+		}
 	},
 	"resources": {
 		tags: ["desktop", "mobile"],
@@ -33,6 +38,10 @@ export const ROUTES = {
 		names: {
 			en: "Resources",
 			fr: "Ressources"
+		},
+		descs: {
+			en: "List of all resources (tools & exercises) of the platform",
+			fr: "Liste de toutes les resources (outils & exercises) de la platforme"
 		}
 	},
 	"exercise": {
@@ -51,12 +60,16 @@ export const ROUTES = {
 	"test": {
 		tags: [],
 		icon: '/svgs/test.svg',
-		names: toLocaleString('Test')
+		names: toLocaleString('Test'),
 	},
 	"credits": {
 		tags: ["desktop", "mobile", "meta"],
 		icon: '/svgs/code.svg',
-		names: toLocaleString('Credits')
+		names: toLocaleString('Credits'),
+		descs: {
+			en: "Credits for all platforms, users & tools used to create this project",
+			fr: "Credits pour toutes les platformes, utilisateurs & outils pour créer ce projet"
+		}
 	},
 	"page-not-found": {
 		tags: [],
@@ -72,10 +85,10 @@ export const ROUTES = {
 type RouteID = keyof typeof ROUTES
 
 export function getRoute(id: RouteID): Route & { id: RouteID } {
-  const route = ROUTES[id];
-  return { ...route, id }; // inject
+	const route = ROUTES[id];
+	return { ...route, id };
 }
-export function getRoutes(){
+export function getRoutes() {
 	return (Object.keys(ROUTES) as RouteID[]).map(getRoute)
 }
 
@@ -91,6 +104,7 @@ export async function generateMetadataUtil(
 		icons: {
 			icon: "favicon" in routeData ? routeData.favicon : routeData.icon,
 		},
+		description: routeData.descs?.[locale],
 		applicationName: "Bimowy",
 		twitter: {
 			card: "summary_large_image",
