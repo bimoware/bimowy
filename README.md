@@ -17,7 +17,7 @@ A project aimed at helping and guiding students in all math subjects. Inspired b
 
 <div align="center">
 
-https://github.com/user-attachments/assets/6557b363-ef87-4c9f-b26f-a9837bd99abc
+https://github.com/user-attachments/assets/86ffbc81-22b3-4c4a-a035-1651f07a3070
 
 </div>
 If you don't like using your mouse like me, just press <code>Enter</code> and the website will know what to do (Start/Next/Try again/End/Focus on the next input etc..)
