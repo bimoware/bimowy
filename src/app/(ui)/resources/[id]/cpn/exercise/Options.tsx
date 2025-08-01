@@ -4,31 +4,27 @@ import { UngeneratedExerciseCtx } from "./extra";
 import NumberInput from "@cpn/ui/NumberInput";
 
 export function Options({ state, setState }: UngeneratedExerciseCtx) {
-	if(state.step !== "options") return;
+	if (state.step !== "options") return;
 	return Object.entries(state.apiOptions)
 		.map(([id, option]) => {
 			const { type, title } = option
 			switch (type) {
 				case OptionType.Number:
-					const [numberMin,numberMax] = [option.min,option.max]
+					const [numberMin, numberMax] = [option.min, option.max]
 					const numberValue = state.userOptionValues[id] as unknown as number
 					return <OptionDiv key={id} {...{ title }}>
-						<input
-							{...{ type }}
-							min={numberMin}
-							max={numberMax}
+						<NumberInput min={numberMin} max={numberMax}
 							value={numberValue}
-							onChange={(e) => {
-								const value = e.target.value;
+							setValue={newValue => {
 								setState(prev => {
 									const newUserOptionValues = { ...prev.userOptionValues }
-									newUserOptionValues[id] = value
+									newUserOptionValues[id] = newValue
 									return { ...prev, userOptionValues: newUserOptionValues };
 								})
 							}} />
 					</OptionDiv>
 				case OptionType.Interval:
-					const [intervalMin,intervalMax] = option.defaultValue
+					const [intervalMin, intervalMax] = option.defaultValue
 					const intervalValue = state.userOptionValues[id] as [number, number]
 					return <OptionDiv key={id} {...{ title }}>
 						<span>{"["}</span>

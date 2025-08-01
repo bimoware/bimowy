@@ -1,6 +1,6 @@
 "use client"
 import { useLanguage } from "@/lib/locale";
-import { getRoutes, Route, Tag } from "@cpn/sidebars/main";
+import { getRoutes, Route } from "@cpn/sidebars/main";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
@@ -8,9 +8,9 @@ import { useSelectedLayoutSegments } from "next/navigation";
 export default function MobileSideBar() {
 	const lang = useLanguage()
 	const routes = getRoutes()
-	const isVisible = (route: Route) => route.tags.includes(Tag.Mobile)
+	const isVisible = (route: Route) => route.tags.includes("mobile")
 	const segments = useSelectedLayoutSegments()
-	const pathParts = [...segments].filter(p => !p.includes('('))
+	const pathParts = segments.filter(p => !p.includes('('))
 
 	return <div
 		className='w-screen
@@ -44,7 +44,6 @@ export default function MobileSideBar() {
 								w-8
 								group-active:scale-75
 								${isActive ? "-translate-y-1" : "scale-75"}
-								${r.isRounded && "rounded-full"}
 								`}
 								src={r.icon}
 								alt={name}

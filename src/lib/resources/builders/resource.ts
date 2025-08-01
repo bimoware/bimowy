@@ -2,6 +2,7 @@ import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@/lib/
 import { GLOBAL_TAGS, TAG_ID } from "../extra/tag";
 import { AnyExerciseBuilder } from "./exercise";
 import { ToolResourceBuilder } from "./tool";
+import { ROUTES } from "@cpn/sidebars/main";
 
 export enum ResourceType {
 	Exercise = "exercise",
@@ -54,3 +55,10 @@ export class RawResourceBuilder<
 }
 
 export type AnyResourceBuilder = AnyExerciseBuilder | ToolResourceBuilder
+export const RESOURCES_DATA = {
+	"exercise": ROUTES["exercise"],
+	"tool":	ROUTES["tool"]
+ } as const
+
+export type ResourceID = keyof typeof RESOURCES_DATA
+

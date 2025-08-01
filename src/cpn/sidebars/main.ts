@@ -1,6 +1,5 @@
-import { LanguageCode, LocaleRecord, toLocaleString } from "@/lib/locale"
+import { getLanguage, LocaleRecord, toLocaleString } from "@/lib/locale"
 import { Metadata } from "next";
-import { getLocale } from "next-intl/server"
 
 export type MetadataGenerationProps<T extends string[]> = {
 	params: Promise<{
@@ -8,121 +7,89 @@ export type MetadataGenerationProps<T extends string[]> = {
 	}>;
 };
 
-export enum Tag {
-	Desktop = "desktop",
-	Mobile = "mobile",
-	Beta = "beta",
-	Meta = "meta"
-}
-
-type RawRoute = {
-	tags?: Tag[],
-	favicon?: string
-	id: string,
-	path?: string,
-	icon: string,
-	iconFree?: boolean,
-	isRounded?: boolean,
-	names: string | LocaleRecord
-}
+export type Tag = "desktop" | "mobile" | "beta" | "meta";
 
 export type Route = {
 	tags: Tag[]
-	id: string
-	path: string
+	path?: string
 	icon: string
 	favicon?: string
-	isRounded: boolean,
-	iconFree: boolean
+	iconFree?: boolean
 	names: LocaleRecord
 }
 
-export const DEFAULT_ROUTES: Route[] = [
-	{
-		tags: [Tag.Desktop, Tag.Mobile],
-		id: 'home',
+export const ROUTES = {
+	"home": {
+		tags: ["desktop", "mobile"],
 		favicon: '/favicon.ico',
-		path: '',
+		path: '/',
 		icon: '/media/icon.png',
 		iconFree: true,
-		names: "Bimowy"
+		names: toLocaleString("Bimowy")
 	},
-	{
-		tags: [Tag.Desktop, Tag.Mobile],
-		id: 'resources',
+	"resources": {
+		tags: ["desktop", "mobile"],
 		icon: '/svgs/resource.svg',
 		names: {
 			en: "Resources",
 			fr: "Ressources"
 		}
 	},
-	{
+	"exercise": {
 		tags: [],
-		id: 'exercise',
-		icon: '/svgs/lab.svg',
+		icon: '/svgs/exercise.svg',
 		names: {
 			en: 'Exercise',
 			fr: 'Exercice'
 		}
 	},
-	{
+	"tool": {
 		tags: [],
-		id: "tool",
 		icon: '/svgs/tool.svg',
-		names: { en: 'Tool', fr: "Outil"}
+		names: { en: 'Tool', fr: "Outil" }
 	},
-	{
+	"test": {
 		tags: [],
-		id: 'test',
 		icon: '/svgs/test.svg',
-		names: 'Test'
+		names: toLocaleString('Test')
 	},
-	{
-		tags: [Tag.Desktop, Tag.Mobile, Tag.Meta],
-		id: 'credits',
+	"credits": {
+		tags: ["desktop", "mobile", "meta"],
 		icon: '/svgs/code.svg',
-		names: 'Credits'
+		names: toLocaleString('Credits')
 	},
-	{
+	"page-not-found": {
 		tags: [],
-		id: 'page-not-found',
 		icon: '/svgs/report.svg',
+		iconFree: false,
 		names: {
 			en: 'Page not found',
 			fr: 'Page introuvable'
 		}
 	}
-].map(fixRawRoute)
+} as const satisfies Record<string, Route>
 
-export function getRoutes() {
-	return DEFAULT_ROUTES
+type RouteID = keyof typeof ROUTES
+
+export function getRoute(id: RouteID): Route & { id: RouteID } {
+  const route = ROUTES[id];
+  return { ...route, id }; // inject
+}
+export function getRoutes(){
+	return (Object.keys(ROUTES) as RouteID[]).map(getRoute)
 }
 
-export function fixRawRoute(route: RawRoute) {
-	return {
-		...route,
-		tags: route.tags || [],
-		path: route.path ?? route.id,
-		icon: route.icon,
-		iconFree: route.iconFree ?? false,
-		names: toLocaleString(route.names),
-		isRounded: route.isRounded ?? false
-	}
-}
-
-export function getRoute(id: Route["id"]) {
-	return getRoutes().find(r => r.id == id)!
-}
 
 export async function generateMetadataUtil(
-	id: Route["id"],
+	id: RouteID,
 	customTitle?: string
 ): Promise<Metadata> {
 	const routeData = getRoute(id)
+	const locale = await getLanguage()
 	return {
-		title: customTitle ?? routeData.names[await getLocale() as LanguageCode],
+		title: customTitle ?? routeData.names[locale],
 		icons: {
-			icon: routeData.favicon ?? routeData.icon,
+			icon: "favicon" in routeData ? routeData.favicon : routeData.icon,
 		},
 		applicationName: "Bimowy",
 		twitter: {

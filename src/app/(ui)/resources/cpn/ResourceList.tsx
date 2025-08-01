@@ -6,38 +6,18 @@ import { useLanguage } from "@/lib/locale"
 import { useState } from "react"
 import { generateMetadataUtil } from "@cpn/sidebars/main"
 import SelectedIcon from "@cpn/icons/SelectedIcon"
+import { RESOURCES_DATA, ResourceID } from "@/lib/resources/builders/resource"
 
 export async function generateMetadata() {
 	return generateMetadataUtil('resources')
 }
 
-const RESOURCE_TYPES = [
-	{
-		id: "exercise",
-		names: {
-			en: "Exercises",
-			fr: "Exercises"
-		},
-		icon: "/svgs/lab.svg"
-	},
-	{
-		id: "tool",
-		names: {
-			en: "Tools",
-			fr: "Outils"
-		},
-		icon: '/svgs/tool.svg'
-	}
-] as const
-
-type ResourceID = typeof RESOURCE_TYPES[number]["id"]
-
 export default function ResourceList({ resources }: {
 	resources: ReturnType<AnyResourceBuilder["serialize"]>[]
 }) {
 	const lang = useLanguage()
-	const allTypes = RESOURCE_TYPES.map(t => t.id)
-	const [selectedTypes, setSelectedTypes] = useState<ResourceID[]>(allTypes)
+	const resourceTypes = Object.keys(RESOURCES_DATA) as ResourceID[]
+	const [selectedTypes, setSelectedTypes] = useState<ResourceID[]>(resourceTypes)
 
 	const handleToggle = (id: ResourceID) => {
 		setSelectedTypes(selectedTypes => {
@@ -50,13 +30,15 @@ export default function ResourceList({ resources }: {
 			return newSelectedTypes
 		})
 	}
+
 	return <div className="flex flex-col gap-2">
 		<div className="flex items-center justify-center gap-2">
 			{
-				RESOURCE_TYPES.map(t => {
-					const selected = selectedTypes.includes(t.id)
+				resourceTypes.map(type => {
+					const data = RESOURCES_DATA[type]
+					const selected = selectedTypes.includes(type)
 					return <div
-						key={t.id}
+						key={type}
 						{...(
 							selected ? { "data-selected": true } : {}
 						)}
@@ -72,11 +54,11 @@ export default function ResourceList({ resources }: {
 						hover:cursor-pointer
 						transition-all
 						group"
-						onClick={() => handleToggle(t.id)}>
+						onClick={() => handleToggle(type)}>
 
 						<SelectedIcon {...{ selected }}
 							color={selected ? "black" : "white"} />
-						{t.names[lang]}
+						{data.names[lang]}
 					</div>
 				})
 			}

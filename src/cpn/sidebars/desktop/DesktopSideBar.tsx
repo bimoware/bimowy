@@ -1,15 +1,12 @@
 "use client"
 import { useLanguage } from "@/lib/locale"
-import { getRoutes, Route, split, Tag } from "@cpn/sidebars/main"
+import { getRoutes, Route, split } from "@cpn/sidebars/main"
 import DesktopSideBarIcon from "./DesktopSideBarIcon"
 
 export default function DesktopSideBar() {
 	const lang = useLanguage()
-
-	const routes = getRoutes()
-	const isVisible = (route: Route) => route.tags.includes(Tag.Desktop)
-	const routeGroups = split(routes, (route) => !route.tags.includes(Tag.Meta))
-
+	const isVisible = (route: Route) => route.tags.includes("desktop")
+	const routeGroups = split(getRoutes(), route => !route.tags.includes("meta"))
 
 	return <div className='h-screen
 	p-3
@@ -30,12 +27,12 @@ export default function DesktopSideBar() {
 					{
 						routeGroup
 							.filter(isVisible)
-							.map(route => <DesktopSideBarIcon
-								key={route.id}
-								{...route}
-								name={route.names[lang]}
-							/>
-							)
+							.map(route => {
+								return <DesktopSideBarIcon key={route.id}
+									{...route}
+									name={route.names[lang]}
+								/>
+							})
 					}
 				</section>)
 		}

@@ -1,7 +1,5 @@
-import { pathDefaultProps, svgDefaultProps } from ".";
+import Image from "next/image";
 
 export default function DeleteIcon({ onDelete }: { onDelete: VoidFunction }) {
-	return <svg {...svgDefaultProps} onClick={onDelete}>
-		<path {...pathDefaultProps} d="M2,2 3,8 7,8 8,2 2,2" />
-	</svg>
+	return <Image src="/svgs/trash.svg" onClick={onDelete} width={15} height={15} alt="Remove"/>
 }

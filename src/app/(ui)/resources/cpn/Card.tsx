@@ -1,9 +1,10 @@
 import { randomAt } from "@/lib/extra"
 import Image from "next/image"
 import Link from "next/link"
-import { AnyResourceBuilder, ResourceType } from "@/lib/resources"
+import { AnyResourceBuilder } from "@/lib/resources"
 import Latex from "react-latex-next"
 import "katex/dist/katex.min.css"
+import { ROUTES } from "@cpn/sidebars/main"
 
 const rotations = [
 	'',
@@ -48,10 +49,7 @@ export function Card({ id, beta, href, name, desc, type }: ReturnType<AnyResourc
 				flex gap-1"
 			>
 				<Image
-					src={{
-						[ResourceType.Exercise]: "/svgs/lab.svg",
-						[ResourceType.Tool]: "/svgs/tool.svg"
-					}[type]}
+					src={ROUTES[type].icon}
 					alt={type}
 					width={30}
 					height={30}

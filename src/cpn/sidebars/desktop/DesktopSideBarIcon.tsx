@@ -1,6 +1,6 @@
 "use client"
 
-import { Route, Tag } from "@cpn/sidebars/main"
+import { Route } from "@cpn/sidebars/main"
 import { randomAt } from "@/lib/extra"
 import Image from "next/image"
 import Link from "next/link"
@@ -29,25 +29,25 @@ const randomClasses = {
 }
 
 export default function SideBarIcon({
+	id,
 	icon,
 	path,
 	name,
 	tags,
-	iconFree,
-	isRounded
-}: Route & { name: string }) {
+	iconFree
+}: Route & { id:string, name: string }) {
 	const t = useTranslations()
 	const segments = useSelectedLayoutSegments()
 	const pathParts = [...segments].filter(p => !p.includes('('))
 	const isActive = pathParts.length
 		? pathParts[0] === path
 		: path === ""
-	const isBeta = tags.includes(Tag.Beta)
+	const isBeta = tags.includes("beta")
 
 	return <TooltipContainer
 		hidden={isBeta}
 		tooltip={name + (isBeta ? ` (${t('unavailable')})` : "")}>
-		<Link href={`/${path}`}>
+		<Link href={path ?? `/${id}`}>
 			<div
 				className={`
 					aspect-square rounded-xl
@@ -70,7 +70,6 @@ export default function SideBarIcon({
 				<Image
 					className={`select-none
 						duration-150
-						${isRounded && "rounded-full"}
 						${iconFree ? "w-11" : "w-8"}
 						${isBeta && "opacity-50"}
 						${randomAt(randomClasses["scale"], name)}
