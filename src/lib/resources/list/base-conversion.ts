@@ -1,4 +1,4 @@
-import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
+import { ExerciseResourceBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 const bases = ["binary", "decimal", "hexadecimal"] as const
 type Base = (typeof bases)[number]
@@ -36,7 +36,7 @@ const options = {
 	})
 }
 
-export default new ExerciseBuilder<Seed, Answers, typeof options>({
+export default new ExerciseResourceBuilder<Seed, Answers, typeof options>({
 	id: "base-conversion",
 	names: {
 		en: "Base conversion",

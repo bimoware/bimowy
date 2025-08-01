@@ -26,7 +26,6 @@ export function Card({ id, beta, href, name, desc, type }: ReturnType<AnyResourc
 			className={`
 				animate-appear
 				w-fit
-				max-w-full sm:max-w-2/5
 				h-fit p-4 px-
 				bg-black/20 dark:bg-white/5
 				rounded-2xl
@@ -51,6 +50,7 @@ export function Card({ id, beta, href, name, desc, type }: ReturnType<AnyResourc
 				<Image
 					src={{
 						[ResourceType.Exercise]: "/svgs/lab.svg",
+						[ResourceType.Tool]: "/svgs/tool.svg"
 					}[type]}
 					alt={type}
 					width={30}

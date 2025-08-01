@@ -13,12 +13,11 @@ export default function MobileSideBar() {
 	const pathParts = [...segments].filter(p => !p.includes('('))
 
 	return <div
-		className='w-full
-		p-3
+		className='w-screen
 		flex sm:hidden
 		justify-center
-		shrink-0
-		fixed bottom-0'>
+		fixed bottom-4
+		overflow-x-hidden'>
 		<div className="bg-neutral-900
 		shadow-md
 		flex

@@ -67,15 +67,9 @@ export const DEFAULT_ROUTES: Route[] = [
 	},
 	{
 		tags: [],
-		id: "note",
-		icon: '/svgs/note.svg',
-		names: 'Notes'
-	},
-	{
-		tags: [],
-		id: "course",
-		icon: '/svgs/course.svg',
-		names: { en: 'Course', fr: "Cours" }
+		id: "tool",
+		icon: '/svgs/tool.svg',
+		names: { en: 'Tool', fr: "Outil"}
 	},
 	{
 		tags: [],

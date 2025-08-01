@@ -27,7 +27,7 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} className={outfit.className}>
-      <body className='w-screen min-h-screen'>
+      <body className='w-screen min-h-screen overflow-x-hidden'>
         <NextIntlClientProvider>
           <SideBarContainer>
             {children}

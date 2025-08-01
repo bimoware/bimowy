@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { NextError, NextSuccess } from "@api/routing"
 import { ExerciseAnswers, ExerciseSeed } from "@/lib/resources"
-import { ExerciseBuilder } from "@/lib/resources"
+import { ExerciseResourceBuilder } from "@/lib/resources"
 import { resourcesManager } from "@/server/resourcesManager"
 
 export async function POST(
@@ -24,7 +24,7 @@ export async function POST(
 	const exercise = await resourcesManager.fetch(exerciseId)
 	if (!exercise)
 		return NextError(`Resource with ID '${exerciseId}' not found`)
-	if (!(exercise instanceof ExerciseBuilder))
+	if (!(exercise instanceof ExerciseResourceBuilder))
 		return NextError(`Resource with ID '${exerciseId}' is not an exercise.`)
 	const correction = exercise.validateAnswers(seed, answers)
 	return NextSuccess(correction)

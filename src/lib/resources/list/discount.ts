@@ -1,5 +1,5 @@
 import { toRounded } from "@/lib/extra"
-import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
+import { ExerciseResourceBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = [price: number, discount: number]
 type Answers = { finalPrice: number }
@@ -23,7 +23,7 @@ const options = {
 	})
 }
 
-export default new ExerciseBuilder<
+export default new ExerciseResourceBuilder<
 	Seed,
 	Answers,
 	typeof options

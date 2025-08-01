@@ -1,5 +1,5 @@
 import { generateMetadataUtil } from "@cpn/sidebars/main"
-import InteractivePlane from "@cpn/math/plane/InteractivePlane/InteractivePlane"
+import InteractivePlane from "@cpn/math/plane/InteractivePlane"
 
 export function generateMetadata() {
 	return generateMetadataUtil("test")

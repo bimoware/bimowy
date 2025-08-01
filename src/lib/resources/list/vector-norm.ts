@@ -1,5 +1,5 @@
 import { toRounded } from "@/lib/extra"
-import { ExerciseBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
+import { ExerciseResourceBuilder, ExerciseOption, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = [x: number, y: number]
 type Answers = { answer: number }
@@ -15,7 +15,7 @@ const options = {
 	})
 }
 
-export default new ExerciseBuilder<Seed, Answers, typeof options>({
+export default new ExerciseResourceBuilder<Seed, Answers, typeof options>({
 	id: "vector-norm",
 	names: {
 		en: "Vector Norm",

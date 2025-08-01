@@ -1,4 +1,4 @@
-import { ExerciseBuilder, ExerciseOption, factorial, OptionType, randomFromInterval } from "@/lib/resources"
+import { ExerciseResourceBuilder, ExerciseOption, factorial, OptionType, randomFromInterval } from "@/lib/resources"
 
 type Seed = [n: number, k: number]
 type Answers = { answer: number }
@@ -14,7 +14,7 @@ const options = {
 	})
 }
 
-export default new ExerciseBuilder<Seed, Answers, typeof options>({
+export default new ExerciseResourceBuilder<Seed, Answers, typeof options>({
 	id: "permutations",
 	names: {
 		en: "Permutations",

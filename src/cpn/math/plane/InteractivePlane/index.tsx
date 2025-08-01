@@ -15,16 +15,14 @@ export default function InteractivePlane() {
 	useEffect(() => {
 		setNElements(prev => prev + 1)
 	}, [elems.length])
-	return <section className="w-full h-full flex relative">
-		<section className="w-full
-		flex justify-center
-		mr-[19rem]">
+	return <div className="flex">
+		<section className="h-full flex justify-center grow">
 			<div>
 				<Plane {...{ elems, ranges }} />
 			</div>
 		</section>
-		<section className="h-screen p-4 fixed right-0">
-			<section className="w-64 h-[95%]
+		<section className="h-screen p-4 right-0 shrink-0">
+			<section className="w-64 
 			bg-white/5
 			flex flex-col gap-2
 			overflow-y-auto
@@ -36,5 +34,5 @@ export default function InteractivePlane() {
 				<ElementSection {...{ elems, setElems, nElements, setNElements }} />
 			</section>
 		</section>
-	</section >
+	</div>
 }

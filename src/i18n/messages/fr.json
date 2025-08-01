@@ -33,10 +33,11 @@
     "Correcting": "Correction...",
     "TryAgain": "Réessayer",
     "Finished": "Fini",
-    "Options": "Options"
+    "Options": "Options",
+    "unknown-resource-type": "Type de resource inconnu"
   },
   "HomePage": {
-    "Welcome": "De retour",
+    "Welcome": "Yoooo,y'a quoi",
     "or_maybe": "sinon je peux t'appeler"
   },
   "unavailable": "Indisponnible"

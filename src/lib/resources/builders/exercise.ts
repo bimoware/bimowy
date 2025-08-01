@@ -7,7 +7,7 @@ export type ExerciseSeed = unknown[]
 export type ExerciseAnswers = Record<string, unknown>
 
 
-type ExerciseConfigSimple<S, A, O extends ExerciseOptions> =
+type ExerciseResourceConfigSimple<S, A, O extends ExerciseOptions> =
 	Omit<ResourceConfig<ResourceType.Exercise>, "type">
 	& {
 		options: O;
@@ -18,11 +18,11 @@ type ExerciseConfigSimple<S, A, O extends ExerciseOptions> =
 		validateAnswers?: (seed: S, ans: A) => Record<keyof A, boolean>;
 	};
 
-export class ExerciseBuilder<
+export class ExerciseResourceBuilder<
 	S extends ExerciseSeed,
 	A extends ExerciseAnswers,
 	O extends ExerciseOptions
-> extends RawResourceBuilder<ExerciseConfigSimple<S, A, O> & { type: ResourceType.Exercise }> {
+> extends RawResourceBuilder<ExerciseResourceConfigSimple<S, A, O> & { type: ResourceType.Exercise }> {
 	// now only three generics
 	options: O;
 	generateSeed: (opts: DefaultValueFromOptions<O>) => S;
@@ -31,14 +31,13 @@ export class ExerciseBuilder<
 	validateOptions: (opts: DefaultValueFromOptions<O>) => LocaleRecord | void;
 	validateAnswers: (seed: S, ans: A) => Record<keyof A, boolean>;
 
-	constructor(cfg: ExerciseConfigSimple<S, A, O>) {
+	constructor(cfg: ExerciseResourceConfigSimple<S, A, O>) {
 		super({ ...cfg, type: ResourceType.Exercise });
 		this.options = cfg.options;
 		this.generateSeed = cfg.generateSeed;
 		this.generateContent = cfg.generateContent;
 		this.generateSolution = cfg.generateSolution;
 		this.validateOptions = cfg.validateOptions ?? (() => { });
-		// bring in user‑provided or default validateAnswers
 		this.validateAnswers = cfg.validateAnswers
 			?? ((seed, answers) => {
 				const sol = this.generateSolution(seed);
@@ -68,4 +67,4 @@ export class ExerciseBuilder<
 	}
 }
 
-export type AnyExerciseBuilder = ExerciseBuilder<ExerciseSeed, ExerciseAnswers, ExerciseOptions>
+export type AnyExerciseBuilder = ExerciseResourceBuilder<ExerciseSeed, ExerciseAnswers, ExerciseOptions>

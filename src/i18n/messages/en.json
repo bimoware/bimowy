@@ -23,6 +23,7 @@
     "title": "Resources"
   },
   "ResourcePage": {
+    "unknown-resource-type": "Unknown resource type",
     "Start": "Start",
     "Confirm": "Confirm",
     "Finish": "Finish",
@@ -36,7 +37,7 @@
     "Options": "Options"
   },
   "HomePage": {
-    "Welcome": "You're back",
+    "Welcome": " Yoooo wassup",
     "or_maybe": "or maybe should I call you"
   },
   "unavailable": "Unavailable"

@@ -1,10 +1,11 @@
 import { LanguageCode, LocaleString, LocaleRecord, toLocaleString } from "@/lib/locale";
 import { GLOBAL_TAGS, TAG_ID } from "../extra/tag";
 import { AnyExerciseBuilder } from "./exercise";
+import { ToolResourceBuilder } from "./tool";
 
 export enum ResourceType {
 	Exercise = "exercise",
-	Sandbox = "sandbox"
+	Tool = "tool"
 }
 
 export type ResourceConfig<T extends ResourceType> = {
@@ -52,4 +53,4 @@ export class RawResourceBuilder<
 	}
 }
 
-export type AnyResourceBuilder = AnyExerciseBuilder
+export type AnyResourceBuilder = AnyExerciseBuilder | ToolResourceBuilder

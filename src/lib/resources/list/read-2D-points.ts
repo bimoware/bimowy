@@ -1,11 +1,11 @@
-import { ExerciseBuilder, randomNonZeroInt } from "@/lib/resources"
+import { ExerciseResourceBuilder, randomNonZeroInt } from "@/lib/resources"
 
 type Seed = [x: number, y: number]
 type Answers = { x: number, y: number }
 
 const options = {}
 
-export default new ExerciseBuilder<Seed, Answers, typeof options>({
+export default new ExerciseResourceBuilder<Seed, Answers, typeof options>({
 	options,
 	id: "read-2D-points",
 	names: {

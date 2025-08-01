@@ -1,18 +1,18 @@
 import TrigonometricCircle, { TrigonometricCircleProps } from "@cpn/math/TrigonometricCircle"
-import TrigonometricTable, { TrigonometricTableProps } from "@cpn/math/TrigonometricTable"
 import Plane from "@cpn/math/plane/Plane"
+import InteractivePlane from "@cpn/math/plane/InteractivePlane"
 import { PartialPlaneProps } from "./math/plane"
 
 type WidgetComponents = {
 	TrigonometricCircle: React.FC<TrigonometricCircleProps>
-	TrigonometricTable: React.FC<TrigonometricTableProps>
 	Plane: React.FC<PartialPlaneProps>
+	InteractivePlane: React.FC
 }
 
 const ALL_WIDGETS: WidgetComponents = {
 	TrigonometricCircle,
-	TrigonometricTable,
 	Plane,
+	InteractivePlane
 }
 
 export default ALL_WIDGETS
