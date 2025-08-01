@@ -1,9 +1,7 @@
-import { generateMetadataUtil } from "@cpn/sidebars/main"
+"use client"
 
-export function generateMetadata() {
-	return generateMetadataUtil("test")
-}
+import InteractiveChessBoard from '@cpn/chess/interactive';
 
 export default function TestPage() {
-	return 
+	return <InteractiveChessBoard/>
 }
