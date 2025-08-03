@@ -32,11 +32,12 @@ export function EasterEggHeart() {
 			<span>{t('by')}</span>
 			<Mention icon="/media/pfp.jpeg" name="bimoware" href="https://github.com/bimoware" />
 		</>,
-		easterEggEnabled && <span>{t('sorry_easter_egg')}</span>,
-		easterEggEnabled && <video width="238" height="512" autoPlay preload="none" loop>
-			<source src="/media/blackbabydance.mp4" type="video/mp4" />
-			<span>{t('no_javascript')}</span>
-		</video>
+		// easterEggEnabled && <span>{t('sorry_easter_egg')}</span>,
+		// easterEggEnabled && <video width="238" height="512" autoPlay preload="none" loop>
+		// 	<source src="/media/blackbabydance.mp4" type="video/mp4" />
+		// 	<span>{t('no_javascript')}</span>
+		// </video>
+		easterEggEnabled && <><span>Mention honorable à</span><Mention name="Moha" icon="/media/moha.jpg" ultra/></>
 	]
 		.filter(Boolean)
 		.map((group, i) => <GroupLine key={"easteregg-" + i}> {group}</GroupLine>)

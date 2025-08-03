@@ -22,7 +22,7 @@ export default function Cell({ cell, x, y,id }: {
             ${(y + x) % 2 == 0 ? LIGHT_TILE : DARK_TILE}
             flex items-center justify-center
             p-1
-            ${isOver && "shadow-inner shadow-black"}`}>
+            ${isOver && "outline-8 -outline-offset-2 outline-yellow-500/10"}`}>
         {
             cell && <Image
                 {...attributes} {...listeners} {...{ style }} ref={itemRef}
