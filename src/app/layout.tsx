@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import type { ReactNode } from "react";
 import "./style.css";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import SideBarWrapper from "@/cpn/main/SidebarWrapper";
 
 const outfitFont = Outfit({
@@ -21,9 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={`${outfitFont.className} dark`}>
         <SideBarWrapper>
-          <NuqsAdapter>
-            {children}
-          </NuqsAdapter>
+          {children}
         </SideBarWrapper>
       </body>
     </html>
