@@ -7,6 +7,7 @@ import {
   TrendingUpIcon,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { type ReactNode, useState } from "react";
 import {
   Sidebar,
@@ -29,6 +30,7 @@ type NavGroup = {
     icon: LucideIcon;
     href: string;
     name: string;
+    disabled?: boolean;
   }[];
 };
 
@@ -47,25 +49,28 @@ export const data: SidebarData = {
     href: "/",
     icon: MascotIcon,
     subtitle: "BETA",
-    title: "bimo/wy",
+    title: "Bimowy",
   },
   nav: [
     {
       id: "main-nav",
       items: [
         {
+          disabled: true,
           href: "/favorites",
           icon: StarIcon,
           id: "favorites",
           name: "Favorites",
         },
         {
+          disabled: true,
           href: "/history",
           icon: HistoryIcon,
           id: "history",
           name: "History",
         },
         {
+          disabled: true,
           href: "/stats",
           icon: TrendingUpIcon,
           id: "progress",
@@ -135,11 +140,11 @@ function MainNavButtons() {
         <SidebarMenu>
           {n.items.map((item) => (
             <SidebarMenuItem key={item.id}>
-              <SidebarMenuButton asChild>
-                <a href={item.href}>
+              <SidebarMenuButton asChild disabled={item.disabled}>
+                <Link href={item.disabled ? "/" : item.href}>
                   <item.icon />
                   {item.name}
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
@@ -172,7 +177,7 @@ function SidebarCreditsMention() {
         alt=""
         className="rounded-full h-[0.8lh] w-[0.8lh]"
         height={50}
-        src="/malik.jpg"
+        src="/photo/malik.jpg"
         width={50}
       />
       Malik
