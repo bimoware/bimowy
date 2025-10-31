@@ -1,40 +1,31 @@
-import { Outfit } from 'next/font/google'
-const outfit = Outfit({ subsets: ['latin'] })
+import type { Metadata } from "next";
+import { Outfit } from "next/font/google";
+import type { ReactNode } from "react";
+import "./style.css";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import SideBarWrapper from "@/cpn/main/SidebarWrapper";
 
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale } from 'next-intl/server';
+const outfitFont = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 
-import { Viewport } from 'next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+export const metadata: Metadata = {
+  description:
+    "Free & Open source platform where you can choose any math subject and train on it repeatedly with automatically-generated exercises. You can set the options for the difficulty, number of questions, numbers range etc..",
+  title: "Bimowy",
+};
 
-import '@/styles/index.css'
-import { generateMetadataUtil } from '@cpn/sidebars/main';
-import { LanguageCode } from '@/lib/locale';
-import SideBarContainer from '@cpn/sidebars/SideBarContainer';
-
-export async function generateMetadata() {
-  return await generateMetadataUtil('home')
-}
-
-export const viewport: Viewport = { themeColor: '#FFFFFE' }
-
-export default async function RootLayout({
-  children
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  const lang = await getLocale() as LanguageCode
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={lang} className={outfit.className}>
-      <body className='w-screen min-h-screen overflow-x-hidden'>
-        <NextIntlClientProvider>
-          <SideBarContainer>
+    <html lang="en">
+      <body className={`${outfitFont.className} dark`}>
+        <SideBarWrapper>
+          <NuqsAdapter>
             {children}
-          </SideBarContainer>
-        </NextIntlClientProvider>
-        {process.env.NODE_ENV != 'development' && <SpeedInsights />}
+          </NuqsAdapter>
+        </SideBarWrapper>
       </body>
     </html>
-  )
+  );
 }

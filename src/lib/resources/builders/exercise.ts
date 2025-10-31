@@ -1,70 +1,90 @@
-import { LocaleRecord, LanguageCode } from "@/lib/locale";
-import { RawResourceBuilder, ResourceConfig, ResourceType } from "./resource";
-import { DefaultValueFromOptions, ExerciseOption, ExerciseOptions } from "./option";
-import { ExerciseContent } from "./content";
+import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
+import { executeBST } from "./bst/execute";
+import { type BSTNode, BSTType } from "./bst/nodes";
+import { Scope } from "./bst/scope";
 
-export type ExerciseSeed = unknown[]
-export type ExerciseAnswers = Record<string, unknown>
-
-
-type ExerciseResourceConfigSimple<S, A, O extends ExerciseOptions> =
-	Omit<ResourceConfig<ResourceType.Exercise>, "type">
-	& {
-		options: O;
-		generateSeed: (opts: DefaultValueFromOptions<O>) => S;
-		generateContent: (seed: S, lang: LanguageCode) => ExerciseContent;
-		generateSolution: (seed: S) => A;
-		validateOptions?: (opts: DefaultValueFromOptions<O>) => LocaleRecord | void;
-		validateAnswers?: (seed: S, ans: A) => Record<keyof A, boolean>;
-	};
+type ExerciseResourceConfig<Seed extends number[]> = Omit<
+  BaseResourceConfig,
+  "type"
+> & {
+  exampleSeed: Seed;
+  randomSeedPlan: BSTNode | BSTNode[];
+  solutionPlan: BSTNode;
+  uiPlan: BSTNode;
+};
 
 export class ExerciseResourceBuilder<
-	S extends ExerciseSeed,
-	A extends ExerciseAnswers,
-	O extends ExerciseOptions
-> extends RawResourceBuilder<ExerciseResourceConfigSimple<S, A, O> & { type: ResourceType.Exercise }> {
-	// now only three generics
-	options: O;
-	generateSeed: (opts: DefaultValueFromOptions<O>) => S;
-	generateContent: (seed: S, lang: LanguageCode) => ExerciseContent;
-	generateSolution: (seed: S) => A;
-	validateOptions: (opts: DefaultValueFromOptions<O>) => LocaleRecord | void;
-	validateAnswers: (seed: S, ans: A) => Record<keyof A, boolean>;
+  Seed extends number[] = number[],
+> extends BaseResourceBuilder {
+  public exampleSeed!: ExerciseResourceConfig<Seed>["exampleSeed"];
+  public randomSeedPlan!: ExerciseResourceConfig<Seed>["randomSeedPlan"];
+  public solutionPlan!: ExerciseResourceConfig<Seed>["solutionPlan"];
+  public uiPlan!: ExerciseResourceConfig<Seed>["uiPlan"];
+  constructor(config: ExerciseResourceConfig<Seed>) {
+    super({ ...config, type: "exercise" });
+    Object.assign(this, config);
+  }
+  getAllInputIds() {
+    return this.#extractInputsIds(this.uiPlan);
+  }
+  #extractInputsIds(node: BSTNode): string[] {
+    if (
+      typeof node === "string" ||
+      typeof node === "number" ||
+      typeof node === "boolean"
+    )
+      return [];
 
-	constructor(cfg: ExerciseResourceConfigSimple<S, A, O>) {
-		super({ ...cfg, type: ResourceType.Exercise });
-		this.options = cfg.options;
-		this.generateSeed = cfg.generateSeed;
-		this.generateContent = cfg.generateContent;
-		this.generateSolution = cfg.generateSolution;
-		this.validateOptions = cfg.validateOptions ?? (() => { });
-		this.validateAnswers = cfg.validateAnswers
-			?? ((seed, answers) => {
-				const sol = this.generateSolution(seed);
-				return Object.keys(answers)
-					.reduce((res, k) => {
-						res[k as keyof A] = answers[k] === sol[k];
-						return res;
-					}, {} as Record<keyof A, boolean>);
-			});
-	}
+    if (Array.isArray(node)) node.flatMap(this.#extractInputsIds);
 
-	generate(userOptions: DefaultValueFromOptions<O>, lang: LanguageCode) {
-		const seed = this.generateSeed(userOptions)
-		return { seed, exercise_id: this.id, content: this.generateContent(seed, lang) }
-	}
-	serialize(lang: LanguageCode) {
-		const options = Object.entries(this.options).reduce((acc, [id, opt]) => {
-			acc[id] = opt.serialize(lang)
-			return acc
-		}, {} as Record<string, ReturnType<ExerciseOption["serialize"]>>)
-
-
-		return {
-			...super.serialize(lang),
-			options
-		}
-	}
+    switch (node._bsttype) {
+      case BSTType.If:
+        return [
+          ...this.#extractInputsIds(node.fail),
+          ...this.#extractInputsIds(node.success),
+        ];
+      case BSTType.Paragraph:
+        return node.items.flatMap((n) => this.#extractInputsIds(n));
+      case BSTType.NumberInput:
+        return [node.id];
+    }
+    return [];
+  }
+  generateRandomSeed() {
+    return executeBST(this.randomSeedPlan, new Scope())
+  }
+  generateUI(ctx: Scope) {
+    return executeBST(this.uiPlan, ctx)
+  }
+  generateExercise() {
+    const seed = this.generateRandomSeed()
+    const ctx = new Scope()
+      .setVariable("seed", seed);
+    const ui = this.generateUI(ctx)
+    return {
+      seed,
+      ui,
+    };
+  }
+  solve(seed: unknown, inputValues: Record<string, any>) {
+    const ctx = new Scope({ ...inputValues, seed });
+    return executeBST(this.solutionPlan, ctx);
+  }
+  correct(seed: unknown, inputs: Record<string, any>) {
+    const res = this.solve(seed, inputs);
+    const correctionObj: Record<string, boolean> = {};
+    for (const [inputId, inputValue] of Object.entries(res)) {
+      correctionObj[inputId] = inputValue === inputs[inputId];
+    }
+    return correctionObj;
+  }
+  build() {
+    return {
+      ...super.build(),
+    };
+  }
 }
 
-export type AnyExerciseBuilder = ExerciseResourceBuilder<ExerciseSeed, ExerciseAnswers, ExerciseOptions>
+export type BuiltExerciseResource = ReturnType<
+  ExerciseResourceBuilder["build"]
+>;

@@ -1,0 +1,12 @@
+{
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "always"
+  },
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "*.*": true,
+    "node_modules": true,
+    "package.json": false
+  }
+}

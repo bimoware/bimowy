@@ -1,49 +1,36 @@
-![](./public/media/banner.png)
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-<div align="center">
+## Getting Started
 
-# Where curiosity makes the rules
+First, run the development server:
 
-A project aimed at helping and guiding students in all math subjects. Inspired by [Khan Academy](https://www.khanacademy.org/) & [Brilliant](http://brilliant.org/)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-</div>
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-# 🌐 Supported Languages:
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- `French (fr-FR)`
-- `English (en-US)`
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-# <img src="./public/media/icon.png" width="22"/> Demo
+## Learn More
 
-<div align="center">
+To learn more about Next.js, take a look at the following resources:
 
-https://github.com/user-attachments/assets/86ffbc81-22b3-4c4a-a035-1651f07a3070
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-</div>
-If you don't like using your mouse like me, just press <code>Enter</code> and the website will know what to do (Start/Next/Try again/End/Focus on the next input etc..)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-# ⚙️ Setup
+## Deploy on Vercel
 
-1. Clone the repository with either
-   - [Using `git clone` or the green download button `Code` on top](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-   - [Github Desktop](https://github.com/apps/desktop)
-2. Create a supabase database and put the correct environement variables into an `.env` file (you have the copy & rename [`.env.example`](.env.example))
-3. Run the development server with `npm run dev`
-4. Open your browser and visit `http://localhost:3000`
-5. If you want to seriously test the website, use `npm run build`, then `npm run start`, this will make the whole server work extremely fast allowing you to test the platform with ease.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-# 📄 License
-
-This project is licensed under the MIT License - see the
-[LICENSE](LICENSE) file for details.
-
-<div align="center">
-<a href="https://supabase.com">
-  <img
-    width="168"
-    height="30"
-    src="https://supabase.com/badge-made-with-supabase-dark.svg"
-    alt="Made with Supabase"
-  />
-</a>
-</div>
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient id="gradient-1" bx:pinned="true">
+      <title>Logo gradient</title>
+      <stop offset="0" style="stop-color: rgb(255, 86, 133);"/>
+      <stop offset="0.867" style="stop-color: rgb(255, 145, 51);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="247.84" y1="16.424" x2="247.84" y2="486.116" id="gradient-1-0" href="#gradient-1"/>
+  </defs>
+  <path d="M 184.535 50.459 Q 247.84 4.465 311.145 50.459 L 437.754 142.446 Q 501.059 188.439 476.879 262.858 L 428.518 411.697 Q 404.338 486.116 326.089 486.116 L 169.591 486.116 Q 91.342 486.116 67.162 411.697 L 18.801 262.858 Q -5.379 188.439 57.926 142.446 Z" bx:shape="n-gon 247.84 270.715 266.25 266.25 5 0.25 1@7d40e48d" style="transform-box: fill-box; transform-origin: 50% 50%; stroke-width: 6px; stroke-linecap: round; stroke-linejoin: round; fill: url(&quot;#gradient-1-0&quot;);" transform="matrix(0.903718, 0.428128, -0.429731, 0.902959, -1.576881, -28.306235)">
+    <title>Body</title>
+  </path>
+  <ellipse style="fill: rgb(216, 216, 216);" cx="285.111" cy="226.322" rx="151.69" ry="151.69">
+    <title>Eye</title>
+  </ellipse>
+  <g transform="matrix(1, 0, 0, 1, 7.297706, 5.676018)">
+    <path d="M 328.329 102.035 C 371.442 102.035 406.391 141.542 406.391 190.276 L 406.391 232.609 C 406.391 281.342 371.442 320.849 328.329 320.849 C 285.216 320.849 250.265 281.342 250.265 232.609 L 250.265 190.276 C 250.265 141.542 285.216 102.035 328.329 102.035 Z" style="fill: rgb(41, 41, 41); transform-origin: 328.62px 212.581px;" transform="matrix(0.997974, 0.063622, -0.063622, 0.997974, 0, -0.000001)"/>
+    <rect x="441.999" y="175.73" width="155.784" height="121.374" style="fill: rgb(41, 41, 41); transform-origin: 520.384px 187.297px;" transform="matrix(0.998569, 0.053473, -0.053473, 0.998569, -191.764779, 25.28343)" rx="37.902" ry="37.902"/>
+  </g>
+</svg>

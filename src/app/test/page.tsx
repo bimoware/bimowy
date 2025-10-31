@@ -1,7 +1,9 @@
-"use client"
-
-import InteractiveChessBoard from "@cpn/chess/interactive"
+import { NumberInput } from "@/cpn/main/number-input";
 
 export default function TestPage() {
-	return <InteractiveChessBoard />
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <NumberInput />
+    </div>
+  );
 }

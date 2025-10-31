@@ -1,51 +1,24 @@
-import { ExerciseResourceBuilder, ExerciseOption, factorial, OptionType, randomFromInterval } from "@/lib/resources"
+import { ExerciseResourceBuilder } from "../builders";
+import { $ } from "../builders/bst/helpers";
 
-type Seed = [n: number]
-type Answers = { answer: number }
+type Seed = [number];
 
-const options = {
-	"interval": new ExerciseOption({
-		type: OptionType.Interval,
-
-		title: {
-			en: "Interval of values",
-			fr: "Intervalle des valeurs"
-		},
-		defaultValue: [0, 10]
-	})
-}
-export default new ExerciseResourceBuilder<
-	Seed,
-	Answers,
-	typeof options
->({
-	options,
-	id: "factorial",
-	names: ({
-		en: "Factorial",
-		fr: "Factorielle"
-	}),
-	tags: ["arithmetic"],
-	descs: "5! = 5*4*3*2*1 = 120",
-	generateSeed({ interval }) {
-		return [
-			randomFromInterval(...interval)
-		]
-	},
-	generateContent([n]) {
-		return [
-			{
-				type: "p",
-				content: [
-					{ type: "text", text: `${n}! = ` },
-					{ type: "input", id: "answer" }
-				]
-			}
-		]
-	},
-	generateSolution([n]) {
-		return {
-			answer: factorial(n)
-		}
-	}
-})
+export default new ExerciseResourceBuilder<Seed>({
+  exampleSeed: [5],
+  id: "factorial",
+  name: "Factorial",
+  randomSeedPlan: [$.fn("randomInt", [0, 5])],
+  solutionPlan: $.obj({
+    n: $.fn("factorial", [
+      $.i($.var("seed"), 0)
+    ]),
+  }),
+  tags: ["math"],
+  uiPlan: $.prgh([
+    $.concat([
+      $.i($.var("seed"), 0),
+      "! = "
+    ]),
+    $.numinp("n"),
+  ]),
+});
