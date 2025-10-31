@@ -5,8 +5,7 @@
   },
   "editor.formatOnSave": true,
   "files.exclude": {
-    "*.*": true,
+    "*.*": false,
     "node_modules": true,
-    "package.json": false
   }
 }
