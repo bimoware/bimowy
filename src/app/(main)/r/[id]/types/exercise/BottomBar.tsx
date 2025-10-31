@@ -45,13 +45,11 @@ function LeftBottomBar() {
       {time && <Box className="font-mono">{time}</Box>}
       {pageState !== PageState.End && (
         <>
-          {
-            !exercises.length
-              ? null
-              : <Box className="font-mono">
-                {currentIndex + 1}/{exercises.length}
-              </Box>
-          }
+          {!exercises.length ? null : (
+            <Box className="font-mono">
+              {currentIndex + 1}/{exercises.length}
+            </Box>
+          )}
           <span>
             <div className="flex gap-0.5">
               {exercises.map((e, i) => {
@@ -143,7 +141,7 @@ function RightBottomBar() {
     disabled?: boolean;
     icon: any; // TODO fix
     text?: string;
-    onClick?: () => void;
+    onClick?: () => any | Promise<any>;
   } & ({ disabled: true } | { onClick?: () => void });
 
   const buttonsData: {
@@ -273,7 +271,10 @@ function BottomButton({
     <Button
       {...{ disabled, variant }}
       id={variant ? id : "main"}
-      onClick={() => !disabled && onClick?.()}
+      onClick={() => {
+        if (disabled) return;
+        if (onClick) return onClick();
+      }}
     >
       <Icon {...{ strokeWidth }} />
       {text}
@@ -296,7 +297,7 @@ export function Box({
         className,
         `border-border border-1
         leading-none
-        p-1.5 px-2 rounded-sm bg-white/5`
+        p-1.5 px-2 rounded-sm bg-white/5`,
       )}
       {...props}
     >
