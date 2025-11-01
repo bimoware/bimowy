@@ -1,11 +1,5 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.biome": "always"
-  },
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.formatOnSave": true,
   "files.exclude": {
-    "*.*": true,
-    "node_modules": true
+    "*.*": false
   }
 }
