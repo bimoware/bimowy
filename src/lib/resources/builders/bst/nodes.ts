@@ -1,33 +1,34 @@
-import type { BSTFunctionCallNode } from "./nodes/functionCall";
-import type { BSTIfNode } from "./nodes/if";
-import type { BSTNumberInputNode } from "./nodes/number-input";
-import type { BSTObjectNode } from "./nodes/object";
-import type { BSTParagraphNode } from "./nodes/paragraph";
-import type { BSTTextNode } from "./nodes/text";
-import type { BSTVarGetNode } from "./nodes/varget";
+import type { BSTCodeFunctionCallNode } from "./nodes/functionCall";
+import type { BSTCodeIfNode } from "./nodes/if";
+import type { BSTNUIumberInputNode } from "./nodes/number-input";
+import type { BSTCodeObjectNode } from "./nodes/object";
+import type { BSTUIParagraphNode } from "./nodes/paragraph";
+import type { BSTUITextNode } from "./nodes/text";
+import type { BSTCodeVarGetNode } from "./nodes/varget";
 
 export enum BSTType {
-  Object,
-  If,
-  FunctionCall,
-  VarGet,
-  Paragraph,
-  NumberInput,
-  Text,
+  CodeObject,
+  CodeIf,
+  CodeFunctionCall,
+  CodeVarGet,
+  UIParagraph,
+  UINumberInput,
+  UISuperText,
+  TypeNumber
 }
 
 export type BSTRawPrimitive = number | string | boolean;
 
 export type BSTUINode =
-  | BSTTextNode
-  | BSTParagraphNode
-  | BSTNumberInputNode
+  | BSTUITextNode
+  | BSTUIParagraphNode
+  | BSTNUIumberInputNode
   | BSTRawPrimitive;
 
 export type BSTNode =
-  | BSTFunctionCallNode
-  | BSTIfNode
+  | BSTCodeFunctionCallNode
+  | BSTCodeIfNode
   | BSTRawPrimitive
-  | BSTObjectNode
-  | BSTVarGetNode
+  | BSTCodeObjectNode
+  | BSTCodeVarGetNode
   | BSTUINode

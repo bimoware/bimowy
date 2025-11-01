@@ -3,9 +3,9 @@ import { useContext } from "react";
 import { LatexProvider, LatexText } from "@/cpn/main/Latex";
 import { NumberInput } from "@/cpn/main/number-input";
 import { type BSTNode, BSTType } from "@/lib/resources";
-import type { BSTNumberInputNode } from "@/lib/resources/builders/bst/nodes/number-input";
-import type { BSTParagraphNode } from "@/lib/resources/builders/bst/nodes/paragraph";
-import type { BSTTextNode } from "@/lib/resources/builders/bst/nodes/text";
+import type { BSTNUIumberInputNode } from "@/lib/resources/builders/bst/nodes/number-input";
+import type { BSTUIParagraphNode } from "@/lib/resources/builders/bst/nodes/paragraph";
+import type { BSTUITextNode } from "@/lib/resources/builders/bst/nodes/text";
 import { ExerciseContext, ExerciseState } from "./store";
 
 export function UIElements() {
@@ -28,13 +28,13 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
     return <div>Invalid node</div>;
   }
   switch (node._bsttype) {
-    case BSTType.Object:
+    case BSTType.CodeObject:
       return;
-    case BSTType.Text:
+    case BSTType.UISuperText:
       return <TextNode {...{ node }} />;
-    case BSTType.Paragraph:
+    case BSTType.UIParagraph:
       return <ParagraphNode {...{ node }} />;
-    case BSTType.NumberInput:
+    case BSTType.UINumberInput:
       return <NumberInputNode {...{ node }} />;
     default:
       return (
@@ -46,7 +46,7 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
   }
 }
 
-function TextNode({ node }: { node: BSTTextNode }) {
+function TextNode({ node }: { node: BSTUITextNode }) {
   const elem = <UIElementRenderer node={node.text} />;
   return (
     <span>
@@ -55,7 +55,7 @@ function TextNode({ node }: { node: BSTTextNode }) {
   );
 }
 
-function ParagraphNode({ node }: { node: BSTParagraphNode }) {
+function ParagraphNode({ node }: { node: BSTUIParagraphNode }) {
   const items = node.items as BSTNode[];
   return (
     <LatexProvider>
@@ -68,7 +68,7 @@ function ParagraphNode({ node }: { node: BSTParagraphNode }) {
   );
 }
 
-function NumberInputNode({ node }: { node: BSTNumberInputNode }) {
+function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
   const store = useContext(ExerciseContext)!;
   const [
     index,

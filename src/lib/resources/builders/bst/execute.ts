@@ -18,19 +18,19 @@ export function executeBST(node: any, ctx: Scope): any {
   )
     return node;
   switch (node._bsttype) {
-    case BSTType.FunctionCall:
+    case BSTType.CodeFunctionCall:
       return executeFunctionCall(node, ctx);
-    case BSTType.If:
+    case BSTType.CodeIf:
       return executeIf(node, ctx);
-    case BSTType.Object:
+    case BSTType.CodeObject:
       return executeObject(node, ctx);
-    case BSTType.Paragraph:
+    case BSTType.UIParagraph:
       return executeParagraph(node, ctx);
-    case BSTType.Text:
+    case BSTType.UISuperText:
       return executeText(node, ctx);
-    case BSTType.VarGet:
+    case BSTType.CodeVarGet:
       return executeVarGet(node, ctx);
-    case BSTType.NumberInput:
+    case BSTType.UINumberInput:
       return executeNumberInput(node);
     default:
       throw new Error(`Unknown BST node type: ${node._bsttype}`);

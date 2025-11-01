@@ -1,10 +1,10 @@
 import type { BSTType } from "../nodes";
 
-export type BSTNumberInputNode = {
-  _bsttype: BSTType.NumberInput;
+export type BSTNUIumberInputNode = {
+  _bsttype: BSTType.UINumberInput;
   id: string;
 };
 
-export const executeNumberInput = (node: BSTNumberInputNode) => {
+export const executeNumberInput = (node: BSTNUIumberInputNode) => {
   return { ...node };
 };

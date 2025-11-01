@@ -1,11 +1,11 @@
 import type { BSTNode, BSTType } from "../nodes";
 import type { Scope } from "../scope";
 
-export type BSTVarGetNode = {
-  _bsttype: BSTType.VarGet;
+export type BSTCodeVarGetNode = {
+  _bsttype: BSTType.CodeVarGet;
   id: BSTNode;
 };
 
-export function executeVarGet(node: BSTVarGetNode, ctx: Scope) {
+export function executeVarGet(node: BSTCodeVarGetNode, ctx: Scope) {
   return ctx.getVariable(node.id as string);
 }

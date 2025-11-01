@@ -38,14 +38,14 @@ export class ExerciseResourceBuilder<
     if (Array.isArray(node)) node.flatMap(this.#extractInputsIds);
 
     switch (node._bsttype) {
-      case BSTType.If:
+      case BSTType.CodeIf:
         return [
           ...this.#extractInputsIds(node.fail),
           ...this.#extractInputsIds(node.success),
         ];
-      case BSTType.Paragraph:
+      case BSTType.UIParagraph:
         return node.items.flatMap((n) => this.#extractInputsIds(n));
-      case BSTType.NumberInput:
+      case BSTType.UINumberInput:
         return [node.id];
     }
     return [];

@@ -9,16 +9,8 @@ export default new ExerciseResourceBuilder<Seed>({
   name: "Factorial",
   randomSeedPlan: [$.fn("randomInt", [0, 5])],
   solutionPlan: $.obj({
-    n: $.fn("factorial", [
-      $.i($.var("seed"), 0)
-    ]),
+    n: $.fn("factorial", [$.i($.var("seed"), 0)]),
   }),
   tags: ["math"],
-  uiPlan: $.prgh([
-    $.concat([
-      $.i($.var("seed"), 0),
-      "! = "
-    ]),
-    $.numinp("n"),
-  ]),
+  uiPlan: $.prgh([$.concat([$.i($.var("seed"), 0), "! = "]), $.numinp("n")]),
 });
