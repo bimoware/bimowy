@@ -21,8 +21,7 @@ const strokeWidth = 3;
 export function MetaBar() {
   return (
     <div
-      className="p-3
-    flex items-center justify-between flex-wrap gap-3"
+      className="py-1 flex items-center justify-between flex-wrap gap-3"
     >
       <LeftBottomBar />
       <RightBottomBar />
@@ -270,7 +269,7 @@ function BottomButton({
   return (
     <Button
       {...{ disabled, variant }}
-      id={variant ? id : "main"}
+      id={variant === "default" ? "main" : id}
       onClick={() => {
         if (disabled) return;
         if (onClick) return onClick();
