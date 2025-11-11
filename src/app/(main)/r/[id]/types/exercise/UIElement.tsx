@@ -53,7 +53,9 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
 function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
   const Widget = Widgets[node.id];
   return (
-    <div className="h-full w-full flex items-center justify-center aspect-square">
+    <div className="flex items-center justify-center
+    aspect-square
+    size-full">
       <Widget {...node.props[0]} />
     </div>
   );
