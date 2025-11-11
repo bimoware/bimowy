@@ -13,11 +13,10 @@ import { ExerciseContext, ExerciseState } from "./store";
 export function UIElements() {
   const store = useContext(ExerciseContext)!;
   const node = store((state) => state.getCurrentExercise().data.ui);
-
-  return <UIElementRenderer {...{ node }} />;
+  return <UIElementRenderer {...{ node }} big />;
 }
 
-function UIElementRenderer({ node }: { node: BSTNode }) {
+function UIElementRenderer({ node, big }: { node: BSTNode; big?: boolean }) {
   if (
     typeof node === "string" ||
     typeof node === "number" ||
@@ -35,7 +34,7 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
     case BSTType.UISuperText:
       return <TextNode {...{ node }} />;
     case BSTType.UIParagraph:
-      return <ParagraphNode {...{ node }} />;
+      return <ParagraphNode {...{ big, node }} />;
     case BSTType.UINumberInput:
       return <NumberInputNode {...{ node }} />;
     case BSTType.UIWidget:
@@ -53,9 +52,11 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
 function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
   const Widget = Widgets[node.id];
   return (
-    <div className="flex items-center justify-center
+    <div
+      className="flex items-center justify-center
     aspect-square
-    size-full">
+    size-full"
+    >
       <Widget {...node.props[0]} />
     </div>
   );
@@ -70,11 +71,20 @@ function TextNode({ node }: { node: BSTUITextNode }) {
   );
 }
 
-function ParagraphNode({ node }: { node: BSTUIParagraphNode }) {
+function ParagraphNode({
+  node,
+  big,
+}: {
+  node: BSTUIParagraphNode;
+  big?: boolean;
+}) {
   const items = node.items as BSTNode[];
   return (
     <LatexProvider>
-      <div className="p-2 flex gap-2 flex-wrap items-center **:text-2xl">
+      <div
+        className={`p-2 flex gap-2 flex-wrap items-center
+        ${big ? "**:text-5xl h-full w-full justify-center" : "**:text-2xl"}`}
+      >
         {items.map((node, i) => (
           <UIElementRenderer key={i} {...{ node }} />
         ))}
