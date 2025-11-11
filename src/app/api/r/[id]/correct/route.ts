@@ -21,7 +21,7 @@ export async function GET(
       return ErrorResponse(`Query parameter "${name}" missing`);
     inputValues[name] = +searchParams.get(name)!;
   }
-  const seed = searchParams.get("seed")!.split(',');
+  const seed = searchParams.get("seed")!.split(",").map(Number);
 
   const correction = resource.correct(seed, inputValues);
 

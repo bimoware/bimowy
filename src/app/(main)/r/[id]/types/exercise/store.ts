@@ -25,15 +25,15 @@ export type InputInstance = {
   ref: HTMLInputElement | null;
   value: string;
   correction:
-  | {
-    corrected: false;
-  }
-  | {
-    tries: number;
-    corrected: true;
-    correct: boolean;
-    correctOnFirstTry: boolean;
-  };
+    | {
+        corrected: false;
+      }
+    | {
+        tries: number;
+        corrected: true;
+        correct: boolean;
+        correctOnFirstTry: boolean;
+      };
 };
 
 export type ExerciseInstance = {
@@ -73,17 +73,17 @@ export type ExerciseStoreAttributes = {
   time: number;
   interval?: ReturnType<typeof setInterval>;
 } & (
-    | {
+  | {
       atLeastOneFetched: false;
       exercises: [];
       pageState: PageState.Idle | PageState.Loading;
     }
-    | {
+  | {
       atLeastOneFetched: true;
       exercises: ExerciseInstance[];
       pageState: PageState.End | PageState.Loading | PageState.OnGoing;
     }
-  );
+);
 
 export type ExerciseStoreData = ExerciseStoreProps &
   ExerciseStoreActions &
@@ -95,9 +95,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       const state = getCurrentState();
       if (!state.atLeastOneFetched) throw Error();
       const exercise = state.getCurrentExercise();
-      let url =
-        `/api/r/${state.resource.id}/correct` +
-        `?seed=${encodeURIComponent(exercise.data.seed)}`;
+      let url = `/api/r/${state.resource.id}/correct?seed=${exercise.data.seed.join(",")}`;
       const inputs = state.getCurrentExercise().inputs;
       for (const [id, input] of Object.entries(inputs)) {
         url += `&${id}=${input.value}`;
@@ -138,7 +136,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         newExercises[state.currentIndex!].state = ExerciseState.Correcting;
         return { exercises: newExercises };
       });
-      const state = getCurrentState()
+      const state = getCurrentState();
       const correction = await state._fetchCorrection();
 
       setState((state) => {
