@@ -160,7 +160,7 @@ function RightBottomBar() {
     buttonsData.main = {
       icon: RotateCcwIcon,
       id: "redo",
-      onClick: () => router.refresh(),
+      onClick: () => location.reload(),
       text: "Redo",
     };
     buttonsData.secondary = [
@@ -295,7 +295,7 @@ export function Box({
     <div
       className={twMerge(
         className,
-        `border-border border-1
+        `border-border border
         leading-none
         p-1.5 px-2 rounded-sm bg-white/5`,
       )}
