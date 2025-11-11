@@ -6,17 +6,24 @@ import { executeObject } from "./nodes/object";
 import { executeParagraph } from "./nodes/paragraph";
 import { executeText } from "./nodes/text";
 import { executeVarGet } from "./nodes/varget";
+import { executeWidget } from "./nodes/widget";
 import type { Scope } from "./scope";
 
 export function executeBST(node: any, ctx: Scope): any {
-  if (Array.isArray(node)) return node.map(n => executeBST(n, ctx))
+  if (Array.isArray(node)) return node.map((n) => executeBST(n, ctx));
   if (
     typeof node === "number" ||
     typeof node === "string" ||
-    typeof node === "boolean" ||
-    (typeof node === "object" && !("_bsttype" in node))
+    typeof node === "boolean"
   )
     return node;
+
+  if (typeof node === "object" && !("_bsttype" in node))
+    return Object.entries(node).reduce(
+      (prev, [k, v]) => ({ ...prev, [k]: executeBST(v, ctx) }),
+      {},
+    );
+
   switch (node._bsttype) {
     case BSTType.CodeFunctionCall:
       return executeFunctionCall(node, ctx);
@@ -32,6 +39,8 @@ export function executeBST(node: any, ctx: Scope): any {
       return executeVarGet(node, ctx);
     case BSTType.UINumberInput:
       return executeNumberInput(node);
+    case BSTType.UIWidget:
+      return executeWidget(node, ctx);
     default:
       throw new Error(`Unknown BST node type: ${node._bsttype}`);
   }

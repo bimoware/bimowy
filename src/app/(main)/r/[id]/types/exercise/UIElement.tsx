@@ -2,10 +2,12 @@ import { CircleAlertIcon } from "lucide-react";
 import { useContext } from "react";
 import { LatexProvider, LatexText } from "@/cpn/main/Latex";
 import { NumberInput } from "@/cpn/main/number-input";
+import { Widgets } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "@/lib/resources";
 import type { BSTNUIumberInputNode } from "@/lib/resources/builders/bst/nodes/number-input";
 import type { BSTUIParagraphNode } from "@/lib/resources/builders/bst/nodes/paragraph";
 import type { BSTUITextNode } from "@/lib/resources/builders/bst/nodes/text";
+import type { BSTUIWidgetNode } from "@/lib/resources/builders/bst/nodes/widget";
 import { ExerciseContext, ExerciseState } from "./store";
 
 export function UIElements() {
@@ -36,6 +38,8 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
       return <ParagraphNode {...{ node }} />;
     case BSTType.UINumberInput:
       return <NumberInputNode {...{ node }} />;
+    case BSTType.UIWidget:
+      return <WidgetNode {...{ node }} />;
     default:
       return (
         <CircleAlertIcon
@@ -44,6 +48,15 @@ function UIElementRenderer({ node }: { node: BSTNode }) {
         />
       );
   }
+}
+
+function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
+  const Widget = Widgets[node.id];
+  return (
+    <div className="h-full w-full flex items-center justify-center aspect-square">
+      <Widget {...node.props[0]} />
+    </div>
+  );
 }
 
 function TextNode({ node }: { node: BSTUITextNode }) {
@@ -93,9 +106,9 @@ function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
   return (
     <NumberInput
       allowNothing
-      className="data-[correct=correct]:ring-green-400/50 data-[correct=correct]:!bg-green-400/10
-       data-[correct=incorrect]:ring-red-400/50 data-[correct=incorrect]:!bg-red-400/10
-       data-[correct]:ring-2
+      className="data-[correct=correct]:ring-green-400/50 data-[correct=correct]:bg-green-400/10!
+       data-[correct=incorrect]:ring-red-400/50 data-[correct=incorrect]:bg-red-400/10!
+       data-[correct=correct]:ring-2!
        duration-75"
       control={{
         onNewValue: (newValue) => {

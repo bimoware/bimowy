@@ -1,9 +1,7 @@
 import { ExerciseResourceBuilder } from "../builders";
 import { $ } from "../builders/bst/helpers";
 
-type Seed = [number];
-
-export default new ExerciseResourceBuilder<Seed>({
+export default new ExerciseResourceBuilder({
   exampleSeed: [5],
   id: "factorial",
   name: "Factorial",

@@ -24,8 +24,11 @@ const randomClassNames = [
 ];
 
 export function getPseudoRandomClassName(id: string) {
-  const uniqueId = id
-    .split("")
-    .reduce((prev, curr) => prev + curr.charCodeAt(0), 0);
-  return randomClassNames.map((grp) => grp[uniqueId % grp.length]).join(" ");
+  return getPseudoRandom(randomClassNames, id);
+}
+
+export function getPseudoRandom<T>(list: T[], id: string | number) {
+  if (typeof id === "string")
+    id = id.split("").reduce((prev, curr) => prev + curr.charCodeAt(0), 0);
+  return list[id % list.length];
 }

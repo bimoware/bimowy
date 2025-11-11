@@ -3,20 +3,15 @@ import { executeBST } from "./bst/execute";
 import { type BSTNode, BSTType } from "./bst/nodes";
 import { Scope } from "./bst/scope";
 
-type ExerciseResourceConfig<Seed extends number[]> = Omit<
-  BaseResourceConfig,
-  "type"
-> & {
+type ExerciseResourceConfig<Seed> = Omit<BaseResourceConfig, "type"> & {
   exampleSeed: Seed;
-  randomSeedPlan: BSTNode | BSTNode[];
+  randomSeedPlan: BSTNode | BSTNode[] | BSTNode[][];
   solutionPlan: BSTNode;
-  uiPlan: BSTNode;
+  uiPlan: BSTNode | BSTNode[];
 };
 
-export class ExerciseResourceBuilder<
-  Seed extends number[] = number[],
-> extends BaseResourceBuilder {
-  public exampleSeed!: ExerciseResourceConfig<Seed>["exampleSeed"];
+export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
+  public exampleSeed!: Seed;
   public randomSeedPlan!: ExerciseResourceConfig<Seed>["randomSeedPlan"];
   public solutionPlan!: ExerciseResourceConfig<Seed>["solutionPlan"];
   public uiPlan!: ExerciseResourceConfig<Seed>["uiPlan"];
@@ -27,7 +22,7 @@ export class ExerciseResourceBuilder<
   getAllInputIds() {
     return this.#extractInputsIds(this.uiPlan);
   }
-  #extractInputsIds(node: BSTNode): string[] {
+  #extractInputsIds(node: BSTNode | BSTNode[]): string[] {
     if (
       typeof node === "string" ||
       typeof node === "number" ||
@@ -35,7 +30,8 @@ export class ExerciseResourceBuilder<
     )
       return [];
 
-    if (Array.isArray(node)) node.flatMap(this.#extractInputsIds);
+    if (Array.isArray(node))
+      return node.flatMap((n) => this.#extractInputsIds(n));
 
     switch (node._bsttype) {
       case BSTType.CodeIf:
@@ -51,16 +47,15 @@ export class ExerciseResourceBuilder<
     return [];
   }
   generateRandomSeed() {
-    return executeBST(this.randomSeedPlan, new Scope())
+    return executeBST(this.randomSeedPlan, new Scope());
   }
   generateUI(ctx: Scope) {
-    return executeBST(this.uiPlan, ctx)
+    return executeBST(this.uiPlan, ctx);
   }
   generateExercise() {
-    const seed = this.generateRandomSeed()
-    const ctx = new Scope()
-      .setVariable("seed", seed);
-    const ui = this.generateUI(ctx)
+    const seed = this.generateRandomSeed();
+    const ctx = new Scope().setVariable("seed", seed);
+    const ui = this.generateUI(ctx);
     return {
       seed,
       ui,
@@ -74,7 +69,7 @@ export class ExerciseResourceBuilder<
     const res = this.solve(seed, inputs);
     const correctionObj: Record<string, boolean> = {};
     for (const [inputId, inputValue] of Object.entries(res)) {
-      correctionObj[inputId] = inputValue === inputs[inputId];
+      correctionObj[inputId] = Number(inputValue) === inputs[inputId];
     }
     return correctionObj;
   }

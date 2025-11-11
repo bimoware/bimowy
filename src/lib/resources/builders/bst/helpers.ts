@@ -1,3 +1,4 @@
+import type { WidgetId, WidgetProps } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "./nodes";
 import type { BSTCodeFunctionCallNode, FnID } from "./nodes/functionCall";
 import type { BSTNUIumberInputNode } from "./nodes/number-input";
@@ -5,6 +6,7 @@ import type { BSTCodeObjectNode } from "./nodes/object";
 import type { BSTUIParagraphNode } from "./nodes/paragraph";
 import type { BSTUITextNode } from "./nodes/text";
 import type { BSTCodeVarGetNode } from "./nodes/varget";
+import type { BSTUIWidgetNode } from "./nodes/widget";
 
 export const $ = {
   concat: (args: BSTNode[], extra?: BSTUITextNode["extra"]): BSTUITextNode => ({
@@ -36,12 +38,21 @@ export const $ = {
     _bsttype: BSTType.UIParagraph,
     items: items,
   }),
-  text: (text: BSTNode): BSTUITextNode => ({
+  text: (text: BSTNode, extra?: BSTUITextNode["extra"]): BSTUITextNode => ({
     _bsttype: BSTType.UISuperText,
+    extra,
     text,
   }),
   var: (id: BSTNode): BSTCodeVarGetNode => ({
     _bsttype: BSTType.CodeVarGet,
     id,
+  }),
+  widget: <ID extends WidgetId>(
+    id: ID,
+    props: WidgetProps<ID>,
+  ): BSTUIWidgetNode => ({
+    _bsttype: BSTType.UIWidget,
+    id,
+    props,
   }),
 };
