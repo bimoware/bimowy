@@ -9,7 +9,7 @@ export default new ExerciseResourceBuilder({
   solutionPlan: $.obj({
     n: $.fn("**", $.var("seed")),
   }),
-  tags: ["math"],
+  tags: ["arithmetic"],
   uiPlan: $.prgh([
     $.concat(
       ["\\(", $.i($.var("seed"), 0), "^{", $.i($.var("seed"), 1), "}\\) ="],

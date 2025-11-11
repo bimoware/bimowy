@@ -11,7 +11,7 @@ export default new ExerciseResourceBuilder({
     x: $.i($.var("seed"), 0),
     y: $.i($.var("seed"), 1),
   }),
-  tags: ["math", "2D"],
+  tags: ["2D"],
   uiPlan: [
     $.prgh([
       $.text("(x,y) = (", { latex: true }),

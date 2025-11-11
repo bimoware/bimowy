@@ -20,7 +20,7 @@ export default new ExerciseResourceBuilder({
     y1: $.i($.var("seed"), 1),
     y2: $.i($.var("seed"), 3),
   }),
-  tags: ["math", "2D"],
+  tags: ["2D"],
   uiPlan: [
     $.prgh([
       "This vector (",

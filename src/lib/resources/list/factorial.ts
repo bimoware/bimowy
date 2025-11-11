@@ -9,6 +9,6 @@ export default new ExerciseResourceBuilder({
   solutionPlan: $.obj({
     n: $.fn("factorial", [$.i($.var("seed"), 0)]),
   }),
-  tags: ["math"],
+  tags: ["arithmetic"],
   uiPlan: $.prgh([$.concat([$.i($.var("seed"), 0), "! = "]), $.numinp("n")]),
 });
