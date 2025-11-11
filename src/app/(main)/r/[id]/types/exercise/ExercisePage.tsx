@@ -1,11 +1,12 @@
 "use client";
 import { useContext, useRef } from "react";
+import { Separator } from "@/cpn/ui/separator";
 import {
   type ExerciseResourceBuilder,
   resourceTypeData,
 } from "@/lib/resources";
-import { BottomBar } from "./BottomBar";
 import { EndPage } from "./EndPage";
+import { MetaBar } from "./MetaBar";
 import { createExerciseStore, ExerciseContext, PageState } from "./store";
 import { UIElements } from "./UIElement";
 
@@ -24,13 +25,15 @@ export default function ExerciseResourcePage({
           {resourceType.emoji} {resource.name}
         </span>
         <div className="w-full h-full p-1 flex flex-col">
+          <Separator className="my-2" />
+          <MetaBar />
+          <Separator className="my-1" />
           <div
             className="h-full w-full
           "
           >
             <MainLayout />
           </div>
-          <BottomBar />
         </div>
       </div>
     </ExerciseContext.Provider>
@@ -41,8 +44,8 @@ function MainLayout() {
   const store = useContext(ExerciseContext)!;
   const [pageState, atLeastOneFetched] = [
     store((state) => state.pageState),
-    store((state) => state.atLeastOneFetched)
-  ]
+    store((state) => state.atLeastOneFetched),
+  ];
 
   if (!atLeastOneFetched) {
     return (

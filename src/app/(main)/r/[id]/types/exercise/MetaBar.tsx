@@ -18,7 +18,7 @@ import { ExerciseContext, ExerciseState, PageState } from "./store";
 
 const strokeWidth = 3;
 
-export function BottomBar() {
+export function MetaBar() {
   return (
     <div
       className="p-3
