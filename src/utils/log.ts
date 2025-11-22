@@ -1,8 +1,9 @@
 import { inspect } from "node:util";
 
-const DEBUG_ENABLED = false
+const DEBUG_ENABLED = false;
 
-export const bimolog = (obj: any) => DEBUG_ENABLED && console.log(`${getTime()} -> ${inspect(obj)}`)
+export const bimolog = (obj: any) =>
+  DEBUG_ENABLED && console.log(`${getTime()} -> ${inspect(obj)}`);
 
 function getTime() {
   const now = new Date();

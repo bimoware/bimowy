@@ -62,8 +62,7 @@ export function MascotIcon(props?: SVGProps<SVGSVGElement>) {
         <title>{"Eye"}</title>
       </circle>
       <g
-        className="group-hover/icon:-translate-x-20 group-hover/icon:translate-y-8
-        group-hover/icon:-rotate-[9] duration-150"
+        className="group-hover/icon:-translate-x-20 group-hover/icon:translate-y-8 group-hover/icon:-rotate-[9] duration-150"
         transform="translate(7.298 5.676)"
       >
         <path

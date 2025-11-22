@@ -19,9 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${outfitFont.className} dark`}>
-        <SideBarWrapper>
-          {children}
-        </SideBarWrapper>
+        <SideBarWrapper>{children}</SideBarWrapper>
       </body>
     </html>
   );

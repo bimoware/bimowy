@@ -8,14 +8,14 @@ export function Button({
   disabled,
   children,
   className,
-  variant = "default"
+  variant = "default",
 }: {
-  id?: string
+  id?: string;
   onClick?: () => void;
   disabled?: boolean;
   children: ReactNode;
   className?: string;
-  variant?: Parameters<typeof ShadcnButton>["0"]["variant"]
+  variant?: Parameters<typeof ShadcnButton>["0"]["variant"];
 }) {
   return (
     <ShadcnButton

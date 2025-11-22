@@ -87,7 +87,7 @@ export default function SideBarWrapper({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider open={isOpen}>
       <CustomSidebar />
-      <main className="w-full h-screen p-5 pt-10 flex flex-col gap-5">
+      <main className={`w-full h-screen p-5 pt-10 flex flex-col gap-5`}>
         {/* Main stuff */}
         {children}
       </main>
@@ -166,9 +166,7 @@ function SidebarCredits() {
 function SidebarCreditsMention() {
   return (
     <a
-      className="inline-flex gap-1 items-center
-    hover:cursor-pointer hover:-translate-y-0.5 duration-75
-    opacity-50 hover:opacity-100 hover:scale-110 hover:translate-x-1"
+      className="inline-flex gap-1 items-center hover:cursor-pointer hover:-translate-y-0.5 duration-75 opacity-50 hover:opacity-100 hover:scale-110 hover:translate-x-1"
       href="https://github.com/bimoware/bimowy"
       rel="noopener"
       target="_blank"

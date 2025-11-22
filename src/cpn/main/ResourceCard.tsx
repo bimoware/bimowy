@@ -29,10 +29,10 @@ export function ResourceCard({ data }: { data: BaseResourceData }) {
       style={{
         ...(isHover
           ? {
-            boxShadow: `0px 1px 5px ${color}`,
-            outlineColor: color,
-            outlineWidth: "3px",
-          }
+              boxShadow: `0px 1px 5px ${color}`,
+              outlineColor: color,
+              outlineWidth: "3px",
+            }
           : {}),
         outlineStyle: "solid",
       }}
@@ -40,18 +40,20 @@ export function ResourceCard({ data }: { data: BaseResourceData }) {
       <ResourceCardAbsoluteNote {...{ isHover, type }} />
       <span className="font-semibold text-xl">{data.name}</span>
       {data.description && <span>{data.description}</span>}
-      {data.tags && <div className="flex gap-2 justify-center text-sm">
-        {data.tags.map((tagId) => (
-          <ResourceCardTag key={tagId} {...{ tagId }} />
-        ))}
-      </div>}
+      {data.tags && (
+        <div className="flex gap-2 justify-center text-sm">
+          {data.tags.map((tagId) => (
+            <ResourceCardTag key={tagId} {...{ tagId }} />
+          ))}
+        </div>
+      )}
     </a>
   );
 }
 function ResourceCardAbsoluteNote({ type }: { type: ResourceType }) {
   return (
     <div
-      className="absolute -top-3 -left-4.5
+      className={`absolute -top-3 -left-4.5
       p-1 group-hover/card:pr-1.5
       rounded-full shadow-md
       origin-top-left -rotate-2
@@ -59,7 +61,7 @@ function ResourceCardAbsoluteNote({ type }: { type: ResourceType }) {
       flex items-center justify-center
       text-background font-semibold duration-75
       group-hover/card:-translate-y-2 group-hover/card:scale-110
-      grayscale-25 group-hover/card:grayscale-0"
+      grayscale-25 group-hover/card:grayscale-0`}
       style={{ backgroundColor: type.color }}
     >
       <type.icon
