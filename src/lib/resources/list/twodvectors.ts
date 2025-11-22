@@ -27,20 +27,15 @@ export default new ExerciseResourceBuilder({
   tags: ["2D"],
   uiPlan: [
     $.prgh([
-      "This vector (",
+      $.text("\\(\\vec{v}\\)", { latex: true }),
+      " = (",
       $.numinp("x"),
       ", ",
       $.numinp("y"),
-      ") goes from (",
-      $.numinp("x1"),
-      ", ",
-      $.numinp("y1"),
-      ") to (",
-      $.numinp("x2"),
-      ", ",
-      $.numinp("y2"),
       ")",
     ]),
+    $.prgh(["From (", $.numinp("x1"), ", ", $.numinp("y1"), ")"]),
+    $.prgh(["To (", $.numinp("x2"), ", ", $.numinp("y2"), ")"]),
     $.widget("Plane", {
       elems: [
         {

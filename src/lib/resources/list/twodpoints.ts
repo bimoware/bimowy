@@ -21,7 +21,8 @@ export default new ExerciseResourceBuilder({
   tags: ["2D"],
   uiPlan: [
     $.prgh([
-      $.text("(x,y) = (", { latex: true }),
+      $.text("P", { latex: true }),
+      " = (",
       $.numinp("x"),
       ", ",
       $.numinp("y"),
