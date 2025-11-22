@@ -1,6 +1,5 @@
 import { PlaneElements } from "./Elements/PlaneElements";
 import Axis from "./Meta/Axis";
-import Defs from "./Meta/Defs";
 import PlaneBackground from "./Meta/PlaneBackground";
 import { defaultRange, getViewBox, type PartialPlaneProps } from "./util";
 
@@ -21,7 +20,7 @@ export default function Plane({
         .join(" ")}
     >
       <title>Plane</title>
-      <Defs />
+      {/* <Defs /> */}
       <PlaneBackground {...{ excluded, ranges }} />
       {(["x", "y"] as const).map((type) => (
         <Axis key={type} {...{ excluded, ranges, type }} />
