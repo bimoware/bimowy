@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  HistoryIcon,
-  type LucideIcon,
-  StarIcon,
-  TrendingUpIcon,
-} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { type ReactNode, useState } from "react";
@@ -51,35 +46,7 @@ export const data: SidebarData = {
     subtitle: "BETA",
     title: "Bimowy",
   },
-  nav: [
-    {
-      id: "main-nav",
-      items: [
-        {
-          disabled: true,
-          href: "/favorites",
-          icon: StarIcon,
-          id: "favorites",
-          name: "Favorites",
-        },
-        {
-          disabled: true,
-          href: "/history",
-          icon: HistoryIcon,
-          id: "history",
-          name: "History",
-        },
-        {
-          disabled: true,
-          href: "/stats",
-          icon: TrendingUpIcon,
-          id: "progress",
-          name: "Progress",
-        },
-      ],
-      name: "",
-    },
-  ],
+  nav: [],
 } as const;
 
 export default function SideBarWrapper({ children }: { children: ReactNode }) {
