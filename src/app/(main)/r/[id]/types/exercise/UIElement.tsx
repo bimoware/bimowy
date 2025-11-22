@@ -63,9 +63,7 @@ function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
 function TextNode({ node }: { node: BSTUITextNode }) {
   const elem = <UIElementRenderer node={node.text} />;
   return (
-    <span>
-      <LatexText key={node.text as string}>{elem}</LatexText>
-    </span>
+    <LatexText key={node.text as string}>{elem}</LatexText>
   );
 }
 
@@ -81,7 +79,7 @@ function ParagraphNode({
     <LatexProvider>
       <div
         className={`p-2 flex gap-2 flex-wrap items-center
-        ${big ? "**:text-5xl h-full w-full justify-center" : "**:text-2xl"}`}
+        ${big ? "**:text-5xl h-full w-full justify-center" : "text-2xl"}`}
       >
         {items.map((node, i) => (
           <UIElementRenderer key={i} {...{ node }} />
@@ -98,18 +96,18 @@ function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
     setCurrentExerciseInputValue,
     currentExercise,
   ] = [
-    useExerciseStore((state) => state.currentIndex),
-    useExerciseStore((state) => state.initExerciseInputRef),
-    useExerciseStore((state) => state.setCurrentExerciseInputValue),
-    useExerciseStore((state) => state.exercises[state.currentIndex]),
-  ];
+      useExerciseStore((state) => state.currentIndex),
+      useExerciseStore((state) => state.initExerciseInputRef),
+      useExerciseStore((state) => state.setCurrentExerciseInputValue),
+      useExerciseStore((state) => state.exercises[state.currentIndex]),
+    ];
 
   const input = currentExercise.inputs[node.id];
 
   const disabled = !input
     ? false
     : currentExercise.state !== ExerciseState.OnGoing ||
-      (input.correction.corrected && input.correction.correct);
+    (input.correction.corrected && input.correction.correct);
 
   const stateStr = !input
     ? "?"
