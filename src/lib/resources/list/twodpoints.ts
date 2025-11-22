@@ -6,11 +6,18 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [2, 1],
   id: "twodpoints",
   name: "Reading 2D Points",
-  randomSeedPlan: [$.fn("randomInt", [-5, 5]), $.fn("randomInt", [-5, 5])],
-  solutionPlan: $.obj({
+  options: {
+    x_interval: $.intervaloption("X Axis", [-5, 5]),
+    y_interval: $.intervaloption("Y Axis", [-5, 5]),
+  },
+  randomSeedPlan: [
+    $.fn("randomInt", $.var("x_interval")),
+    $.fn("randomInt", $.var("y_interval")),
+  ],
+  solutionPlan: {
     x: $.i($.var("seed"), 0),
     y: $.i($.var("seed"), 1),
-  }),
+  },
   tags: ["2D"],
   uiPlan: [
     $.prgh([
@@ -20,19 +27,18 @@ export default new ExerciseResourceBuilder({
       $.numinp("y"),
       ")",
     ]),
-    $.widget("Plane", [
-      {
-        elems: [
-          {
-            type: PlaneElementEnum.Point,
-            // @ts-expect-error
-            x: $.i($.var("seed"), 0),
-            // @ts-expect-error
-            y: $.i($.var("seed"), 1),
-          },
-        ],
-        ranges: { x: [-5, 5], y: [-5, 5] },
-      },
-    ]),
+    $.widget("Plane", {
+      elems: [
+        {
+          type: PlaneElementEnum.Point,
+          // @ts-expect-error
+          x: $.i($.var("seed"), 0),
+          // @ts-expect-error
+          y: $.i($.var("seed"), 1),
+        },
+      ],
+      // @ts-expect-error
+      ranges: { x: $.var("x_interval"), y: $.var("y_interval") },
+    }),
   ],
 });

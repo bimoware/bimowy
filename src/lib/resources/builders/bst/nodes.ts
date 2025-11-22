@@ -1,5 +1,6 @@
 import type { BSTCodeFunctionCallNode } from "./nodes/functionCall";
 import type { BSTCodeIfNode } from "./nodes/if";
+import type { BSTOptionInterval } from "./nodes/interval-option";
 import type { BSTNUIumberInputNode } from "./nodes/number-input";
 import type { BSTCodeObjectNode } from "./nodes/object";
 import type { BSTUIParagraphNode } from "./nodes/paragraph";
@@ -17,6 +18,7 @@ export enum BSTType {
   UINumberInput,
   UISuperText,
   TypeNumber,
+  OptionInterval,
 }
 
 export type BSTRawPrimitive = number | string | boolean;
@@ -35,3 +37,5 @@ export type BSTNode =
   | BSTCodeObjectNode
   | BSTCodeVarGetNode
   | BSTUINode;
+
+export type BSTOptionNode = BSTOptionInterval;

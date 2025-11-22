@@ -1,11 +1,15 @@
 export function EndPage() {
   return (
     <div
-      className="w-full h-full
-  flex items-center justify-center
-  text-4xl"
+      className={`size-full
+      flex items-center justify-center
+      flex-col
+      text-center`}
     >
-      End.
+      <p className="text-4xl">End</p>
+      <p className="text-2xl opacity-80">
+        Yes, just "End.", there's nothing here yet give it some time
+      </p>
     </div>
   );
 }

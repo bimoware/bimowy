@@ -5,10 +5,17 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [5, 1],
   id: "power",
   name: "Power",
-  randomSeedPlan: [$.fn("randomInt", [0, 5]), $.fn("randomInt", [0, 3])],
-  solutionPlan: $.obj({
+  options: {
+    base_interval: $.intervaloption("Base", [0, 6], { min: 0 }),
+    exponent_interval: $.intervaloption("Exponent", [0, 6], { min: 0 }),
+  },
+  randomSeedPlan: [
+    $.fn("randomInt", $.var("base_interval")),
+    $.fn("randomInt", $.var("exponent_interval")),
+  ],
+  solutionPlan: {
     n: $.fn("**", $.var("seed")),
-  }),
+  },
   tags: ["arithmetic"],
   uiPlan: $.prgh([
     $.concat(

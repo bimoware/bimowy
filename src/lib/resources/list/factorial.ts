@@ -5,10 +5,13 @@ export default new ExerciseResourceBuilder({
   exampleSeed: [5],
   id: "factorial",
   name: "Factorial",
-  randomSeedPlan: [$.fn("randomInt", [0, 5])],
-  solutionPlan: $.obj({
+  options: {
+    interval: $.intervaloption("Interval", [0, 6], { min: 0 }),
+  },
+  randomSeedPlan: [$.fn("randomInt", $.var("interval"))],
+  solutionPlan: {
     n: $.fn("factorial", [$.i($.var("seed"), 0)]),
-  }),
+  },
   tags: ["arithmetic"],
   uiPlan: $.prgh([$.concat([$.i($.var("seed"), 0), "! = "]), $.numinp("n")]),
 });

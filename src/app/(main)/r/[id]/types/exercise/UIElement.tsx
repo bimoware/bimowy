@@ -1,18 +1,16 @@
 import { CircleAlertIcon } from "lucide-react";
-import { useContext } from "react";
 import { LatexProvider, LatexText } from "@/cpn/main/Latex";
-import { NumberInput } from "@/cpn/main/number-input";
-import { Widgets } from "@/cpn/widgets";
+import { NumberInput } from "@/cpn/main/NumberInput";
+import { WidgetsRegistry } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "@/lib/resources";
 import type { BSTNUIumberInputNode } from "@/lib/resources/builders/bst/nodes/number-input";
 import type { BSTUIParagraphNode } from "@/lib/resources/builders/bst/nodes/paragraph";
 import type { BSTUITextNode } from "@/lib/resources/builders/bst/nodes/text";
 import type { BSTUIWidgetNode } from "@/lib/resources/builders/bst/nodes/widget";
-import { ExerciseContext, ExerciseState } from "./store";
+import { ExerciseState, useExerciseStore } from "./store";
 
 export function UIElements() {
-  const store = useContext(ExerciseContext)!;
-  const node = store((state) => state.getCurrentExercise().data.ui);
+  const node = useExerciseStore((state) => state.getCurrentExercise().data.ui);
   return <UIElementRenderer {...{ node }} big />;
 }
 
@@ -50,14 +48,14 @@ function UIElementRenderer({ node, big }: { node: BSTNode; big?: boolean }) {
 }
 
 function WidgetNode({ node }: { node: BSTUIWidgetNode }) {
-  const Widget = Widgets[node.id];
+  const Widget = WidgetsRegistry[node.id];
   return (
     <div
-      className="flex items-center justify-center
+      className={`flex items-center justify-center
     aspect-square
-    size-full"
+    size-full`}
     >
-      <Widget {...node.props[0]} />
+      <Widget {...node.props} />
     </div>
   );
 }
@@ -94,48 +92,45 @@ function ParagraphNode({
 }
 
 function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
-  const store = useContext(ExerciseContext)!;
   const [
     index,
-    exerciseState,
     initExerciseInputRef,
-    correction,
-    inputValue,
     setCurrentExerciseInputValue,
+    currentExercise,
   ] = [
-      store((state) => state.currentIndex),
-      store((state) => state.getCurrentExercise().state),
-      store((state) => state.initExerciseInputRef),
-      store((state) => state.getCurrentExercise().inputs[node.id]?.correction),
-      store((state) => state.getCurrentExercise().inputs[node.id]?.value),
-      store((state) => state.setCurrentExerciseInputValue),
-    ];
+    useExerciseStore((state) => state.currentIndex),
+    useExerciseStore((state) => state.initExerciseInputRef),
+    useExerciseStore((state) => state.setCurrentExerciseInputValue),
+    useExerciseStore((state) => state.exercises[state.currentIndex]),
+  ];
 
-  const disabled =
-    exerciseState !== ExerciseState.OnGoing ||
-    (correction?.corrected && correction.correct);
+  const input = currentExercise.inputs[node.id];
+
+  const disabled = !input
+    ? false
+    : currentExercise.state !== ExerciseState.OnGoing ||
+      (input.correction.corrected && input.correction.correct);
+
+  const stateStr = !input
+    ? "?"
+    : input.correction.corrected
+      ? input.correction.correct
+        ? "correct"
+        : "incorrect"
+      : "?";
 
   return (
     <NumberInput
-      allowNothing
-      className="data-[correct=correct]:ring-green-400/50 data-[correct=correct]:bg-green-400/10!
-       data-[correct=incorrect]:ring-red-400/50 data-[correct=incorrect]:bg-red-400/10!
-       data-[correct=correct]:ring-2!
-       duration-75"
-      control={{
-        onNewValue: (newValue) => {
-          setCurrentExerciseInputValue(node.id, `${newValue}`);
-        },
-        value: inputValue,
-      }}
-      data-correct={
-        !correction?.corrected
-          ? "?"
-          : correction.correct
-            ? "correct"
-            : "incorrect"
-      }
       disabled={disabled}
+      data-state={stateStr}
+      allowEmpty
+      className={`data-[state=correct]:ring-2!
+        data-[state=correct]:ring-green-400/50
+        data-[state=correct]:bg-green-400/20!
+        data-[state=incorrect]:ring-red-400/50
+        data-[state=incorrect]:bg-red-400/20!
+       duration-75`}
+      onNewValue={(newValue) => setCurrentExerciseInputValue(node.id, newValue)}
       id={`${index}-${node.id}`}
       key={`${index}-${node.id}`}
       ref={(el: HTMLInputElement | null) => {

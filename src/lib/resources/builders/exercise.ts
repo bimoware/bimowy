@@ -1,18 +1,22 @@
 import { BaseResourceBuilder, type BaseResourceConfig } from "./base";
 import { executeBST } from "./bst/execute";
-import { type BSTNode, BSTType } from "./bst/nodes";
+import { type BSTNode, type BSTOptionNode, BSTType } from "./bst/nodes";
 import { Scope } from "./bst/scope";
 
 type ExerciseResourceConfig<Seed> = Omit<BaseResourceConfig, "type"> & {
   exampleSeed: Seed;
   randomSeedPlan: BSTNode | BSTNode[] | BSTNode[][];
-  solutionPlan: BSTNode;
+  options: Record<string, BSTOptionNode>;
+  solutionPlan: Record<string, BSTNode>;
   uiPlan: BSTNode | BSTNode[];
 };
+
+export type OptionValues = Record<string, any>;
 
 export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
   public exampleSeed!: Seed;
   public randomSeedPlan!: ExerciseResourceConfig<Seed>["randomSeedPlan"];
+  public options!: ExerciseResourceConfig<Seed>["options"];
   public solutionPlan!: ExerciseResourceConfig<Seed>["solutionPlan"];
   public uiPlan!: ExerciseResourceConfig<Seed>["uiPlan"];
   constructor(config: ExerciseResourceConfig<Seed>) {
@@ -46,15 +50,22 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
     }
     return [];
   }
-  generateRandomSeed() {
-    return executeBST(this.randomSeedPlan, new Scope());
+  generateRandomSeed(ctx: Scope = new Scope()) {
+    return executeBST(this.randomSeedPlan, ctx);
   }
   generateUI(ctx: Scope) {
     return executeBST(this.uiPlan, ctx);
   }
-  generateExercise() {
-    const seed = this.generateRandomSeed();
-    const ctx = new Scope().setVariable("seed", seed);
+  #applyOptionValuesToCtx(ctx: Scope, optionValues: OptionValues = {}) {
+    for (const [id, value] of Object.entries(optionValues)) {
+      ctx.setVariable(id, value);
+    }
+  }
+  generateExercise(optionValues?: OptionValues) {
+    const ctx = new Scope();
+    this.#applyOptionValuesToCtx(ctx, optionValues);
+    const seed = this.generateRandomSeed(ctx);
+    ctx.setVariable("seed", seed);
     const ui = this.generateUI(ctx);
     return {
       seed,
@@ -76,6 +87,7 @@ export class ExerciseResourceBuilder<Seed = any> extends BaseResourceBuilder {
   build() {
     return {
       ...super.build(),
+      options: this.options,
     };
   }
 }

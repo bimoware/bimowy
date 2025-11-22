@@ -1,6 +1,7 @@
 import type { WidgetId, WidgetProps } from "@/cpn/widgets";
 import { type BSTNode, BSTType } from "./nodes";
 import type { BSTCodeFunctionCallNode, FnID } from "./nodes/functionCall";
+import type { BSTOptionInterval } from "./nodes/interval-option";
 import type { BSTNUIumberInputNode } from "./nodes/number-input";
 import type { BSTCodeObjectNode } from "./nodes/object";
 import type { BSTUIParagraphNode } from "./nodes/paragraph";
@@ -26,6 +27,16 @@ export const $ = {
     }) as const,
   i: (arr: BSTNode, index: BSTNode): BSTCodeFunctionCallNode =>
     $.fn("getIndex", [arr, index]),
+  intervaloption: (
+    name: string,
+    defaultValue: [number, number],
+    extra?: { min?: number; max?: number },
+  ): BSTOptionInterval => ({
+    _bsttype: BSTType.OptionInterval,
+    defaultValue,
+    name,
+    ...extra,
+  }),
   numinp: (id: string): BSTNUIumberInputNode => ({
     _bsttype: BSTType.UINumberInput,
     id,

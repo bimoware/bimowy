@@ -1,9 +1,10 @@
-import { createContext } from "react";
-import { create } from "zustand";
+import { createContext, useContext } from "react";
+import { create, useStore } from "zustand";
 import type {
   BuiltExerciseResource,
   ExerciseResourceBuilder,
 } from "@/lib/resources";
+import type { BSTOptionInterval } from "@/lib/resources/builders/bst/nodes/interval-option";
 
 export type ExerciseStoreProps = {
   resource: BuiltExerciseResource;
@@ -15,7 +16,7 @@ export enum ExerciseState {
   Corrected, // API has answered and UI is waiting for user to click on "Retry" or "Next"
 }
 export enum PageState {
-  Idle,
+  Options,
   Loading,
   OnGoing,
   End,
@@ -43,9 +44,6 @@ export type ExerciseInstance = {
 };
 
 export type ExerciseStoreActions = {
-  _fetchCorrection(): Promise<Record<string, InputInstance["correction"]>>;
-  _fetchNewExercise(): Promise<ExerciseInstance>;
-
   start: () => void;
   correct: () => void;
   retry: () => void;
@@ -53,22 +51,38 @@ export type ExerciseStoreActions = {
   previous: () => void;
   end: () => void;
 
+  setCurrentExerciseIndex(i: number): void;
+
+  fetchCorrection(): Promise<Record<string, InputInstance["correction"]>>;
+  fetchNewExercise(): Promise<ExerciseInstance>;
+
+  loadNewExercise: () => void;
+
+  setOptionValue: (
+    id: string,
+    value: BSTOptionInterval["defaultValue"],
+  ) => void;
+  setCurrentExerciseInputValue: (
+    id: string,
+    newValue: number | undefined,
+  ) => void;
+
+  initExerciseInputRef: (id: string, ref: HTMLInputElement | null) => void;
+
   startTimeInterval: () => void;
   stopTimeInterval: () => void;
 
-  setCurrentExerciseInputValue: (id: string, newValue: string) => void;
-  loadNewExercise: () => void;
-  initExerciseInputRef: (id: string, ref: HTMLInputElement | null) => void;
   getCurrentExercise: () => ExerciseInstance;
   getCurrentExerciseInputFromID: (id: string) => InputInstance;
   getInputCorrection: (id: string) => InputInstance["correction"];
   getIsCurrentExerciseFullyCorrect(): boolean;
-  hasCurrentExerciseBeenCorrectedOnce(): boolean;
-  getFullCorrection(): any;
   getFormattedTime(): string | undefined;
+
+  hasCurrentExerciseBeenCorrectedOnce(): boolean;
 };
 
 export type ExerciseStoreAttributes = {
+  optionValues: Record<string, number[]>; // TODO, not necessarly an interval. Remove hardcodance
   currentIndex: number;
   time: number;
   interval?: ReturnType<typeof setInterval>;
@@ -76,7 +90,7 @@ export type ExerciseStoreAttributes = {
   | {
       atLeastOneFetched: false;
       exercises: [];
-      pageState: PageState.Idle | PageState.Loading;
+      pageState: PageState.Options | PageState.Loading;
     }
   | {
       atLeastOneFetched: true;
@@ -91,12 +105,35 @@ export type ExerciseStoreData = ExerciseStoreProps &
 
 export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
   create<ExerciseStoreData>()((setState, getCurrentState) => ({
-    async _fetchCorrection() {
+    currentIndex: 0,
+    pageState: PageState.Options,
+    atLeastOneFetched: false,
+    exercises: [],
+    resource,
+    optionValues: Object.entries(resource.options).reduce(
+      (prev, [id, opt]) => ({ ...prev, [id]: opt.defaultValue }),
+      {},
+    ),
+
+    time: 0,
+    startTimeInterval() {
+      const interval = setInterval(() => {
+        setState((s) => ({ time: s.time + 1 }));
+      }, 1000);
+      setState({ interval });
+    },
+    stopTimeInterval() {
+      clearInterval(getCurrentState().interval);
+    },
+
+    async fetchCorrection() {
       const state = getCurrentState();
       if (!state.atLeastOneFetched) throw Error();
+
       const exercise = state.getCurrentExercise();
-      let url = `/api/r/${state.resource.id}/correct?seed=${exercise.data.seed.join(",")}`;
       const inputs = state.getCurrentExercise().inputs;
+
+      let url = `/api/r/${state.resource.id}/correct?seed=${exercise.data.seed.join(",")}`;
       for (const [id, input] of Object.entries(inputs)) {
         url += `&${id}=${input.value}`;
       }
@@ -119,43 +156,57 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       }
       return correctionObj;
     },
-    async _fetchNewExercise() {
-      return await fetch(`/api/r/${getCurrentState().resource.id}/generate`)
+    async fetchNewExercise() {
+      const options = getCurrentState().optionValues;
+
+      let url = `/api/r/${getCurrentState().resource.id}/generate?`;
+      for (const [id, value] of Object.entries(options)) {
+        const fixedValue = Array.isArray(value) ? value.join(",") : value;
+        url += `${url.endsWith("?") ? "" : `&`}${id}=${fixedValue}`;
+      }
+
+      return await fetch(url)
         .then((r) => r.json())
-        .then((data) => ({
-          data,
-          inputs: {},
-          state: ExerciseState.OnGoing,
-        }));
+        .then((data) => {
+          return {
+            data,
+            inputs: {},
+            state: ExerciseState.OnGoing,
+          };
+        });
     },
-    atLeastOneFetched: false,
     async correct() {
       setState((state) => {
         if (!state.atLeastOneFetched) throw Error();
         const newExercises = [...state.exercises];
-        newExercises[state.currentIndex!].state = ExerciseState.Correcting;
+        newExercises[state.currentIndex!] = {
+          ...newExercises[state.currentIndex!],
+          state: ExerciseState.Correcting,
+        };
         return { exercises: newExercises };
       });
       const state = getCurrentState();
-      const correction = await state._fetchCorrection();
+      const correction = await state.fetchCorrection();
 
       setState((state) => {
         if (!state.atLeastOneFetched) throw Error();
         const newExercises = [...state.exercises];
-        const newInputs = Object.entries(
-          newExercises[state.currentIndex!].inputs,
-        ).reduce((prev, [id, input]) => {
-          return {
-            ...prev,
-            [id]: {
-              ...input,
-              correction: correction[id],
-            },
-          };
-        }, {});
+        const currentExercise = newExercises[state.currentIndex!];
+        const newInputs = Object.entries(currentExercise.inputs).reduce(
+          (prev, [id, input]) => {
+            return {
+              ...prev,
+              [id]: {
+                ...input,
+                correction: correction[id],
+              },
+            };
+          },
+          {},
+        );
 
         newExercises[state.currentIndex!] = {
-          ...newExercises[state.currentIndex!],
+          ...currentExercise,
           inputs: newInputs,
           state: ExerciseState.Corrected,
         };
@@ -163,12 +214,10 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         return { exercises: newExercises };
       });
     },
-    currentIndex: 0,
     end() {
       getCurrentState().stopTimeInterval();
       setState({ pageState: PageState.End });
     },
-    exercises: [],
     getCurrentExercise() {
       const state = getCurrentState();
       return state.exercises[state.currentIndex];
@@ -182,15 +231,6 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       const s = String(time % 60).padStart(2, "0");
       const m = String(Math.floor(time / 60)).padStart(2, "0");
       return `${m}:${s}`;
-    },
-    getFullCorrection() {
-      const { exercises } = getCurrentState();
-      for (const exercise of exercises) {
-        for (const [_, input] of Object.entries(exercise.inputs)) {
-          input.correction;
-        }
-      }
-      return {};
     },
     getInputCorrection(id) {
       return getCurrentState().getCurrentExerciseInputFromID(id)?.correction;
@@ -211,21 +251,28 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
       return false;
     },
     initExerciseInputRef(id, ref) {
-      if (getCurrentState().getCurrentExerciseInputFromID(id)) return;
       setState((state) => {
         if (!state.atLeastOneFetched) throw Error();
-        const exercises = [...state.exercises];
-        exercises[state.currentIndex!].inputs = {
-          ...exercises[state.currentIndex!].inputs,
-          [id]: {
+        const newExercises = [...state.exercises];
+        const currentInputs = { ...newExercises[state.currentIndex!].inputs };
+        if (currentInputs[id]) {
+          // Update only the ref, keep other properties
+          currentInputs[id] = {
+            ...currentInputs[id],
+            ref,
+          };
+        } else {
+          // Create new input entry
+          currentInputs[id] = {
             correction: {
               corrected: false,
             },
             ref,
             value: "",
-          },
-        };
-        return { exercises };
+          };
+        }
+        newExercises[state.currentIndex!].inputs = currentInputs;
+        return { exercises: newExercises };
       });
     },
     async loadNewExercise() {
@@ -234,7 +281,7 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 
       setState({ pageState: PageState.Loading });
 
-      const ex = await getCurrentState()._fetchNewExercise();
+      const ex = await getCurrentState().fetchNewExercise();
 
       setState((state) => {
         if (!state.atLeastOneFetched) throw Error();
@@ -244,33 +291,60 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
 
       state.next();
     },
+    setCurrentExerciseIndex(i) {
+      return setState({ currentIndex: i });
+    },
     next() {
-      return setState({ currentIndex: getCurrentState().currentIndex + 1 });
+      return this.setCurrentExerciseIndex(getCurrentState().currentIndex + 1);
     },
-    pageState: PageState.Idle,
     previous() {
-      return setState({ currentIndex: getCurrentState().currentIndex - 1 });
+      return this.setCurrentExerciseIndex(getCurrentState().currentIndex - 1);
     },
-    resource,
     retry() {
       return setState((state) => {
         if (!state.atLeastOneFetched) throw Error();
-        const exercises = [...state.exercises];
-        exercises[state.currentIndex!].state = ExerciseState.OnGoing;
-        return { exercises };
+        const newExercises = [...state.exercises];
+        newExercises[state.currentIndex!].state = ExerciseState.OnGoing;
+        return { exercises: newExercises };
       });
     },
     setCurrentExerciseInputValue(id, newValue) {
       setState((state) => {
         const newExercises = [...state.exercises];
-        newExercises[state.currentIndex].inputs[id].value = newValue;
+
+        // clone the specific exercise object
+        const exIndex = state.currentIndex;
+        const oldEx = newExercises[exIndex];
+        const newEx = { ...oldEx };
+
+        // clone inputs object
+        const oldInputs = newEx.inputs || {};
+        const newInputs = { ...oldInputs };
+
+        // clone the specific input
+        const oldInput = newInputs[id] || {};
+        const newInput = { ...oldInput };
+
+        // update value
+        newInput.value = typeof newValue === "number" ? `${newValue}` : "";
+
+        // reassemble
+        newInputs[id] = newInput;
+        newEx.inputs = newInputs;
+        newExercises[exIndex] = newEx;
+
         return { exercises: newExercises };
       });
+    },
+    setOptionValue(id, value) {
+      setState((state) => ({
+        optionValues: { ...state.optionValues, [id]: value },
+      }));
     },
     async start() {
       const state = getCurrentState();
       setState({ pageState: PageState.Loading });
-      const ex = await state._fetchNewExercise();
+      const ex = await state.fetchNewExercise();
       state.startTimeInterval();
       return setState({
         atLeastOneFetched: true,
@@ -278,17 +352,15 @@ export const createExerciseStore = ({ resource }: ExerciseStoreProps) =>
         pageState: PageState.OnGoing,
       });
     },
-    startTimeInterval() {
-      const interval = setInterval(() => {
-        setState({ time: getCurrentState().time + 1 });
-      }, 1000);
-      setState({ interval });
-    },
-    stopTimeInterval() {
-      clearInterval(getCurrentState().interval);
-    },
-    time: 0,
   }));
 
 export type ExerciseStore = ReturnType<typeof createExerciseStore>;
 export const ExerciseContext = createContext<ExerciseStore | null>(null);
+
+export function useExerciseStore<T>(
+  selector: (state: ExerciseStoreData) => T,
+): T {
+  const store = useContext(ExerciseContext);
+  if (!store) throw new Error("Missing BearContext.Provider in the tree");
+  return useStore(store, selector);
+}

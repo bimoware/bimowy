@@ -10,19 +10,23 @@ import {
   UndoIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { type HTMLAttributes, type ReactNode, useContext } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { Button } from "@/cpn/main/button";
 import { Spinner } from "@/cpn/ui/spinner";
-import { ExerciseContext, ExerciseState, PageState } from "./store";
+import {
+  type ExerciseInstance,
+  ExerciseState,
+  type InputInstance,
+  PageState,
+  useExerciseStore,
+} from "./store";
 
 const strokeWidth = 3;
 
 export function MetaBar() {
   return (
-    <div
-      className="py-1 flex items-center justify-between flex-wrap gap-3"
-    >
+    <div className="py-1 flex items-center justify-between flex-wrap gap-3">
       <LeftBottomBar />
       <RightBottomBar />
     </div>
@@ -30,80 +34,91 @@ export function MetaBar() {
 }
 
 function LeftBottomBar() {
-  const store = useContext(ExerciseContext)!;
-  const [time, exercises, currentIndex, pageState, exercise] = [
-    store((state) => state.getFormattedTime()),
-    store((state) => state.exercises),
-    store((state) => state.currentIndex),
-    store((state) => state.pageState),
-    store((state) => state.getCurrentExercise()),
+  const [time, exercises, exercisesLength, currentIndex, pageState] = [
+    useExerciseStore((state) => state.getFormattedTime()),
+    useExerciseStore((state) => state.exercises),
+    useExerciseStore((state) => state.exercises.length),
+    useExerciseStore((state) => state.currentIndex),
+    useExerciseStore((state) => state.pageState),
   ];
 
-  return (
-    <div className="flex gap-2">
-      {time && <Box className="font-mono">{time}</Box>}
+  return !exercisesLength ? (
+    <></>
+  ) : (
+    <div className="flex gap-2 bg-white/5 rounded-md px-3 py-2">
+      <Box className="font-mono">{time}</Box>
       {pageState !== PageState.End && (
         <>
-          {!exercises.length ? null : (
-            <Box className="font-mono">
-              {currentIndex + 1}/{exercises.length}
-            </Box>
-          )}
-          <span>
-            <div className="flex gap-0.5">
-              {exercises.map((e, i) => {
-                const inputs = Object.values(e.inputs);
-                return (
-                  <button
-                    className="enabled:cursor-pointer disabled:cursor-progress
-                duration-75
-                enabled:hover:scale-110 enabled:data-[current=true]:scale-125
-                disabled:grayscale-50"
-                    data-current={i === currentIndex}
-                    disabled={
-                      pageState === PageState.Loading ||
-                      exercise.state === ExerciseState.Correcting
-                    }
-                    key={i}
-                    onClick={(ev) => {
-                      if (!ev.currentTarget.disabled)
-                        store.setState({ currentIndex: i });
-                    }}
-                    type="button"
-                  >
-                    {e.state === ExerciseState.Correcting
-                      ? "✒️"
-                      : e.state === ExerciseState.OnGoing && i === currentIndex
-                        ? "✏️"
-                        : inputs.every((inp) => !inp.correction.corrected)
-                          ? i === currentIndex
-                            ? "⬜"
-                            : "⚪"
-                          : inputs.every(
-                            (inp) =>
-                              inp.correction.corrected &&
-                              inp.correction.correct,
-                          )
-                            ? i === currentIndex
-                              ? "🟩"
-                              : "🟢"
-                            : i === currentIndex
-                              ? "🟥"
-                              : "🔴"}
-                  </button>
-                );
-              })}
-            </div>
-          </span>
+          <Box className="font-mono">
+            {currentIndex + 1}/{exercises.length}
+          </Box>
+          <div className="flex gap-0.5">
+            {exercises.map((exercise, i) => (
+              <LeftBottomExerciseButton key={i} {...{ exercise, i }} />
+            ))}
+          </div>
         </>
       )}
     </div>
   );
 }
 
-function RightBottomBar() {
-  const store = useContext(ExerciseContext)!;
+function LeftBottomExerciseButton({
+  exercise,
+  i,
+}: {
+  i: number;
+  exercise: ExerciseInstance;
+}) {
+  const [currentIndex, pageState, setCurrentExerciseIndex] = [
+    useExerciseStore((state) => state.currentIndex),
+    useExerciseStore((state) => state.pageState),
+    useExerciseStore((state) => state.setCurrentExerciseIndex),
+  ];
+  const isCurrent = i === currentIndex;
 
+  const inputs = Object.values(exercise.inputs);
+  return (
+    <button
+      className={`enabled:cursor-pointer disabled:cursor-progress
+        duration-75
+        enabled:hover:scale-110 enabled:data-[current=true]:scale-125
+        disabled:grayscale-50`}
+      data-current={isCurrent}
+      disabled={
+        pageState === PageState.Loading ||
+        exercise.state === ExerciseState.Correcting
+      }
+      onClick={(ev) => {
+        if (!ev.currentTarget.disabled) setCurrentExerciseIndex(i);
+      }}
+      type="button"
+    >
+      <LeftBottomExerciseButtonEmoji {...{ exercise, inputs, isCurrent }} />
+    </button>
+  );
+}
+
+function LeftBottomExerciseButtonEmoji({
+  exercise,
+  inputs,
+  isCurrent,
+}: {
+  exercise: ExerciseInstance;
+  inputs: InputInstance[];
+  isCurrent: boolean;
+}) {
+  if (exercise.state === ExerciseState.Correcting) return "✒️";
+  if (exercise.state === ExerciseState.OnGoing && isCurrent) return "✏️";
+  const isNotCorrectedYet = inputs.every((inp) => !inp.correction.corrected);
+  if (isNotCorrectedYet) return isCurrent ? "⬜" : "⚪";
+  const isAllCorrect = inputs.every(
+    (inp) => inp.correction.corrected && inp.correction.correct,
+  );
+  if (isAllCorrect) return isCurrent ? "🟩" : "🟢";
+  return isCurrent ? "🟥" : "🔴";
+}
+function RightBottomBar() {
   const [
     pageState,
     exercises,
@@ -119,20 +134,22 @@ function RightBottomBar() {
     loadNewExercise,
     end,
   ] = [
-      store((state) => state.pageState),
-      store((state) => state.exercises),
-      store((state) => state.getCurrentExercise()?.state),
-      store((state) => state.getIsCurrentExerciseFullyCorrect()),
-      store((state) => state.currentIndex === state.exercises.length - 1),
-      store((state) => state.currentIndex === 0),
-      store((state) => state.start),
-      store((state) => state.correct),
-      store((state) => state.previous),
-      store((state) => state.next),
-      store((state) => state.retry),
-      store((state) => state.loadNewExercise),
-      store((state) => state.end),
-    ];
+    useExerciseStore((state) => state.pageState),
+    useExerciseStore((state) => state.exercises),
+    useExerciseStore((state) => state.getCurrentExercise()?.state),
+    useExerciseStore((state) => state.getIsCurrentExerciseFullyCorrect()),
+    useExerciseStore(
+      (state) => state.currentIndex === state.exercises.length - 1,
+    ),
+    useExerciseStore((state) => state.currentIndex === 0),
+    useExerciseStore((state) => state.start),
+    useExerciseStore((state) => state.correct),
+    useExerciseStore((state) => state.previous),
+    useExerciseStore((state) => state.next),
+    useExerciseStore((state) => state.retry),
+    useExerciseStore((state) => state.loadNewExercise),
+    useExerciseStore((state) => state.end),
+  ];
 
   type ButtonData = {
     id: string;
@@ -170,7 +187,7 @@ function RightBottomBar() {
         text: "Quit",
       },
     ];
-  } else if (pageState === PageState.Idle) {
+  } else if (pageState === PageState.Options) {
     buttonsData.main = {
       icon: PlayIcon,
       id: "start",
@@ -269,7 +286,7 @@ function BottomButton({
   return (
     <Button
       {...{ disabled, variant }}
-      id={variant === "default" ? "main" : id}
+      id={id}
       onClick={() => {
         if (disabled) return;
         if (onClick) return onClick();
