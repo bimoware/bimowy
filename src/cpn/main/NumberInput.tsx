@@ -8,6 +8,7 @@ const isValidNumber = (str: string) => str && !Number.isNaN(Number(str));
 
 type Base = React.ComponentProps<"input"> & {
   className?: string;
+  placeholder?: string;
 };
 
 type PropsEmptyAllowed = Base & {
@@ -29,6 +30,7 @@ export function NumberInput({
   className,
   onNewValue,
   defaultValue,
+  placeholder,
   ...props
 }: PropsEmptyAllowed | PropsEmptyUnAllowed) {
   const [isValid, setIsValid] = useState(true);
@@ -40,7 +42,7 @@ export function NumberInput({
 
   return (
     <Input
-      {...{ defaultValue }}
+      {...{ defaultValue, placeholder }}
       {...props}
       className={twMerge(
         className,

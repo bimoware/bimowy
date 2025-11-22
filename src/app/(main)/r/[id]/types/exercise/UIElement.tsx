@@ -119,6 +119,7 @@ function NumberInputNode({ node }: { node: BSTNUIumberInputNode }) {
 
   return (
     <NumberInput
+      placeholder={node.id}
       disabled={disabled}
       data-state={stateStr}
       allowEmpty
